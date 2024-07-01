@@ -8,7 +8,10 @@ const BookItem = () => {
   return (
     <div>
       <div className="book-item">
-        <div className="book-image">
+        <div
+          className="book-image"
+          onClick={() => (window.location.href = book.image)}
+        >
           <Image
             rounded
             style={{
