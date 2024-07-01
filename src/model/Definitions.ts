@@ -15,4 +15,12 @@ type SearchFormProps = {
   onSearchSubmit: (event: FormEvent<HTMLFormElement>) => void;
 };
 
-export type { Book, SearchFormProps };
+type Branch = {
+  id: number;
+  name: string;
+  address: string;
+  state: string;
+  zip: number;
+};
+
+export type { Book, SearchFormProps, Branch };

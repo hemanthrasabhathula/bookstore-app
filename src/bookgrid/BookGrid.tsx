@@ -32,12 +32,6 @@ const BookList = ({ booklist }: { booklist: Book[] }) => {
                 />
               </div>
               <div className="book-title">{book.title}</div>
-              {/* Uncomment to display additional book details */}
-              {/* <span>{book.author}</span>
-              <span>{book.ISBN}</span>
-              <span>{book.genre}</span>
-              <span>{book.published}</span>
-              <span>{book.pages}</span> */}
             </div>
           </Col>
         ))}

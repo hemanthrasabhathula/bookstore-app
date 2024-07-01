@@ -2,6 +2,7 @@ import { useLocation } from "react-router-dom";
 import { Book } from "../model/Definitions";
 import { Col, Container, Image, Row } from "react-bootstrap";
 import "./BookItem.css";
+import { branchesList } from "../data/Branches_dummy";
 
 const BookItem = () => {
   const location = useLocation();
@@ -18,7 +19,6 @@ const BookItem = () => {
           sm={5}
           md={4}
           lg={2}
-          className="book-image book-item"
           onClick={() => (window.location.href = book.image)}
         >
           <Image
@@ -32,13 +32,25 @@ const BookItem = () => {
             alt={book.title}
           />
         </Col>
-        <Col className="justify-content-center book-text" sm={6} md={6} lg={6}>
-          <div className="book-title">{book.title}</div>
-          <div>{`Author: ${book.author}`}</div>
-          <div>{`ISBN: ${book.ISBN}`}</div>
-          <div>{`Genre: ${book.genre}`}</div>
-          <div>{`Published: ${book.published}`}</div>
-          <div>{`Pages: ${book.pages}`}</div>
+        <Col className="justify-content-center book-text " sm={6} md={6} lg={6}>
+          <div className="book-details-container">
+            <Row>
+              <div className="book-title">{book.title}</div>
+              <div>{`Author: ${book.author}`}</div>
+              <div>{`ISBN: ${book.ISBN}`}</div>
+              <div>{`Genre: ${book.genre}`}</div>
+              <div>{`Published: ${book.published}`}</div>
+              <div>{`Pages: ${book.pages}`}</div>
+            </Row>
+            <Row>
+              <div>Available at:</div>
+              <span>
+                {branchesList.map((branch) => (
+                  <li key={branch.id}>{branch.name}</li>
+                ))}
+              </span>
+            </Row>
+          </div>
         </Col>
       </Row>
     </Container>
