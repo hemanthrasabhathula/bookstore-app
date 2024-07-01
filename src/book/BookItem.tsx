@@ -1,37 +1,47 @@
 import { useLocation } from "react-router-dom";
 import { Book } from "../model/Definitions";
-import { Image } from "react-bootstrap";
+import { Col, Container, Image, Row } from "react-bootstrap";
+import "./BookItem.css";
 
 const BookItem = () => {
   const location = useLocation();
   const book: Book = location.state?.book;
   return (
-    <div>
-      <div className="book-item">
-        <div
-          className="book-image"
+    <Container
+      className="book-list-container"
+      fluid="md"
+      style={{ paddingTop: "100px" }}
+    >
+      <Row className="justify-content-center">
+        <Col sm={1} md={2} lg={4}></Col>
+        <Col
+          sm={5}
+          md={4}
+          lg={2}
+          className="book-image book-item"
           onClick={() => (window.location.href = book.image)}
         >
           <Image
             rounded
             style={{
-              width: "20%",
-              height: "auto",
+              width: "200px",
               aspectRatio: "2/3",
               objectFit: "cover",
             }}
             src={book.image}
             alt={book.title}
           />
-        </div>
-        <div className="book-title">{book.title}</div>
-        <span>{book.author}</span>
-        <span>{book.ISBN}</span>
-        <span>{book.genre}</span>
-        <span>{book.published}</span>
-        <span>{book.pages}</span>
-      </div>
-    </div>
+        </Col>
+        <Col className="justify-content-center book-text" sm={6} md={6} lg={6}>
+          <div className="book-title">{book.title}</div>
+          <div>{`Author: ${book.author}`}</div>
+          <div>{`ISBN: ${book.ISBN}`}</div>
+          <div>{`Genre: ${book.genre}`}</div>
+          <div>{`Published: ${book.published}`}</div>
+          <div>{`Pages: ${book.pages}`}</div>
+        </Col>
+      </Row>
+    </Container>
   );
 };
 
