@@ -21,7 +21,7 @@ const App = () => {
     setSearchTerm(searchTerm);
   };
 
-  const filteredBooks: Book[] = booksList.filter((book) =>
+  const filteredBooks: Book[] = books.filter((book) =>
     book.title.toLowerCase().includes(searchTerm.toLowerCase())
   );
   return (
