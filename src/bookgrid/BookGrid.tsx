@@ -1,8 +1,11 @@
 import { Row, Col, Image } from "react-bootstrap";
 import { Book } from "../model/Definitions";
 import "./BookGrid.css";
+import { useNavigate } from "react-router-dom";
 
 const BookList = ({ booklist }: { booklist: Book[] }) => {
+  const navigate = useNavigate();
+
   return (
     <>
       <Row>
@@ -12,7 +15,9 @@ const BookList = ({ booklist }: { booklist: Book[] }) => {
             <div className="book-item">
               <div
                 className="book-image"
-                onClick={() => (window.location.href = book.image)}
+                onClick={() =>
+                  navigate(`/book/${book.id}`, { state: { book } })
+                }
               >
                 <Image
                   rounded
