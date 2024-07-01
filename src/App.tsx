@@ -31,7 +31,7 @@ const App = () => {
 
   return (
     <>
-      <h1> L M S </h1>
+      <h1> Book Store </h1>
       <Container className="book-list-container">
         <Row lg={2} sm={1} className="justify-content-center">
           <BookSearchForm
