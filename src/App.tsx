@@ -1,12 +1,13 @@
 import React, { ChangeEvent, FormEvent, useState } from "react";
 import "./App.css";
 import { booksList } from "./data/Books_dummy";
-import BookList from "./components/BookGrid";
 import { BookSearchForm } from "./components/search/BookSearchForm";
 import { Container } from "react-bootstrap";
 import { Book } from "./model/Definitions";
+import BookList from "./bookgrid/BookGrid";
 
 const App = () => {
+  console.log("App");
   const [books, setBooks] = useState(booksList);
   const [searchTerm, setSearchTerm] = useState("");
 
@@ -22,8 +23,12 @@ const App = () => {
   };
 
   const filteredBooks: Book[] = books.filter((book) =>
-    book.title.toLowerCase().includes(searchTerm.toLowerCase())
+    book.title
+      .replaceAll(" ", "")
+      .toLowerCase()
+      .includes(searchTerm.replaceAll(" ", "").toLowerCase())
   );
+
   return (
     <>
       <h1> L M S </h1>

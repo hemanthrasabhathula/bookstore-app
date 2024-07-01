@@ -1,7 +1,4 @@
 import { Button, Form, InputGroup } from "react-bootstrap";
-import { SearchFormProps } from "../../model/Definitions";
-import { ChangeEvent } from "react";
-import FormEvent from "react";
 
 const BookSearchForm = ({
   searchTerm,

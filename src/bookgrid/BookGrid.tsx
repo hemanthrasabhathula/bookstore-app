@@ -1,5 +1,4 @@
-import React from "react";
-import { Container, Row, Col, Image } from "react-bootstrap";
+import { Row, Col, Image } from "react-bootstrap";
 import { Book } from "../model/Definitions";
 import "./BookGrid.css";
 
