@@ -5,10 +5,10 @@ import "./BookGrid.css";
 const BookList = ({ booklist }: { booklist: Book[] }) => {
   return (
     <>
-      <h2>Book List</h2>
       <Row>
+        <h2 className="mb-3">All Books</h2>
         {booklist.map((book) => (
-          <Col xs={6} sm={6} md={3} lg={2} key={book.id} className="mb-4">
+          <Col xs={4} sm={4} md={3} lg={2} key={book.id} className="mb-4">
             <div className="book-item">
               <div
                 className="book-image"
@@ -16,7 +16,12 @@ const BookList = ({ booklist }: { booklist: Book[] }) => {
               >
                 <Image
                   rounded
-                  style={{ width: "100%", height: "auto" }}
+                  style={{
+                    width: "100%",
+                    height: "auto",
+                    aspectRatio: "2/3",
+                    objectFit: "cover",
+                  }} // Set width to 100%, height to auto, and aspectRatio to maintain a 2:3 ratio for all images
                   src={book.image}
                   alt={book.title}
                 />

@@ -2,7 +2,7 @@ import React, { ChangeEvent, FormEvent, useState } from "react";
 import "./App.css";
 import { booksList } from "./data/Books_dummy";
 import { BookSearchForm } from "./components/search/BookSearchForm";
-import { Container } from "react-bootstrap";
+import { Container, Row } from "react-bootstrap";
 import { Book } from "./model/Definitions";
 import BookList from "./bookgrid/BookGrid";
 
@@ -33,12 +33,16 @@ const App = () => {
     <>
       <h1> L M S </h1>
       <Container className="book-list-container">
-        <BookSearchForm
-          searchTerm={searchTerm}
-          onSearchInput={handleSearchInput}
-          onSearchSubmit={handleSearchSubmit}
-        />
-        <BookList booklist={filteredBooks} />
+        <Row lg={2} sm={1} className="justify-content-center">
+          <BookSearchForm
+            searchTerm={searchTerm}
+            onSearchInput={handleSearchInput}
+            onSearchSubmit={handleSearchSubmit}
+          />
+        </Row>
+        <Row>
+          <BookList booklist={filteredBooks} />
+        </Row>
       </Container>
     </>
   );
