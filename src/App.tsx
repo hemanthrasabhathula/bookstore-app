@@ -41,7 +41,11 @@ const App = () => {
           />
         </Row>
         <Row>
-          <BookList booklist={filteredBooks} />
+          {filteredBooks.length === 0 ? ( // If no books are found, display a message to the user
+            <h2>No books found</h2>
+          ) : (
+            <BookList booklist={filteredBooks} />
+          )}
         </Row>
       </Container>
     </>
