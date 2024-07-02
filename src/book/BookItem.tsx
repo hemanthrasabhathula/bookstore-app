@@ -1,12 +1,44 @@
 import { useLocation } from "react-router-dom";
-import { Book } from "../model/Definitions";
-import { Col, Container, Image, Row } from "react-bootstrap";
+import { Book, Branch } from "../model/Definitions";
+import { Button, Col, Container, Image, Row } from "react-bootstrap";
 import "./BookItem.css";
 import { branchesList } from "../data/Branches_dummy";
+import { useEffect, useState } from "react";
+import BranchItem from "../branch/BranchItem";
 
 const BookItem = () => {
   const location = useLocation();
-  const book: Book = location.state?.book;
+  const [book, setBook] = useState(location.state?.book);
+  const [totalCount, setTotalCount] = useState(0);
+
+  const branchCopies: Branch[] = branchesList;
+
+  const handletotalCount = (num: number, branch: Branch) => {
+    branchCopies.map((b) => {
+      if (b.id === branch.id) {
+        if (b.count === undefined) {
+          b.count = 0;
+        }
+        b.count = branch.count;
+      }
+    });
+    console.log(branchCopies);
+
+    console.log(`For ${branch.name} added ${num} of books. `);
+    const totalCountNum = totalCount + num;
+    setTotalCount(totalCountNum);
+  };
+
+  useEffect(() => {
+    console.log(`Updated total count ${totalCount} of books.`);
+    if (book) {
+      // Assuming book is an object and can have a branches property
+      const updatedBook = { ...book, branches: branchCopies };
+      setBook(updatedBook);
+    }
+    console.log(book);
+  }, [totalCount]);
+
   return (
     <Container
       className="book-list-container"
@@ -46,7 +78,10 @@ const BookItem = () => {
               <div>Available at:</div>
               <span>
                 {branchesList.map((branch) => (
-                  <li key={branch.id}>{branch.name}</li>
+                  <BranchItem
+                    branch={branch}
+                    onCountChange={handletotalCount}
+                  />
                 ))}
               </span>
             </Row>

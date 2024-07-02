@@ -26,3 +26,25 @@
   font-size: 14px;
   font-weight: bold;
 }
+
+.quantity-input {
+  justify-content: center;
+  align-items: center;
+  width: 20px;
+}
+
+.button-input-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-left: 3px;
+}
+
+.button-input-container button {
+  padding: 2; /* Removes additional padding from buttons */
+}
+
+.item-container {
+  display: flex;
+  align-items: center; /* Align items vertically in the center */
+}

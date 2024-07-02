@@ -21,6 +21,7 @@ type Branch = {
   address: string;
   state: string;
   zip: number;
+  count?: 0;
 };
 
 export type { Book, SearchFormProps, Branch };
