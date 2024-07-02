@@ -9,11 +9,6 @@ const BookSearchForm = ({
   onSearchInput: (event: React.ChangeEvent<HTMLInputElement>) => void;
   onSearchSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
 }) => {
-  //   const handleOnSubmit = (event: React.ChangeEvent<HTMLInputElement>) => {
-  //     event.preventDefault();
-  //     console.log(event.target.value);
-  //   };
-
   return (
     <Form onSubmit={onSearchSubmit}>
       <InputGroup className="mb-3" onSubmit={onSearchSubmit}>

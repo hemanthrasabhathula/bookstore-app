@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FormEvent, useState } from "react";
+import React, { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import "./App.css";
 import { booksList } from "./data/Books_dummy";
 import { BookSearchForm } from "./components/search/BookSearchForm";
@@ -8,7 +8,7 @@ import BookList from "./bookgrid/BookGrid";
 
 const App = () => {
   console.log("App");
-  const [books, setBooks] = useState(booksList);
+  const [books, setBooks] = useState<Book[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
 
   const handleSearchInput = (event: ChangeEvent<HTMLInputElement>) => {
@@ -29,9 +29,12 @@ const App = () => {
       .includes(searchTerm.replaceAll(" ", "").toLowerCase())
   );
 
+  useEffect(() => {
+    setBooks(booksList);
+  }, []);
+
   return (
     <>
-      <h1> Book Store </h1>
       <Container className="book-list-container">
         <Row lg={2} sm={1} className="justify-content-center">
           <BookSearchForm

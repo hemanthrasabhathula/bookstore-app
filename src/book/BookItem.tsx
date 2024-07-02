@@ -35,22 +35,12 @@ const BookItem = () => {
     const updatedBook = { ...book, branches: branchCopies };
     setBook(updatedBook);
 
-    // branchCopies.map((b) => {
-    //   if (b.id === branch.id) {
-    //     if (b.count === undefined) {
-    //       b.count = 0;
-    //     }
-    //     b.count = branch.count;
-    //   }
-    // });
-
     const totalCountNum = totalCount + num;
     setTotalCount(totalCountNum);
   };
 
   useEffect(() => {
     console.log("book ", book);
-    console.log("branchCopies ", branchCopies);
     console.log("totalCount ", totalCount);
   }, [totalCount]);
 

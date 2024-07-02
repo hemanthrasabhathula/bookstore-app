@@ -19,7 +19,6 @@ const BranchItem = ({
     }
     branchCopy.count += num;
     console.log("branchCopy ", branchCopy);
-    //setCounter(num);
 
     setCounter(counter + num);
     setBranchCopy(branchCopy);
@@ -33,7 +32,6 @@ const BranchItem = ({
         <Button
           onClick={() => {
             counter > 0 && handleCounter(-1, branch);
-            //counter > 0 && onCountChange(-1, branch);
           }}
         >
           -
@@ -49,7 +47,6 @@ const BranchItem = ({
         <Button
           onClick={() => {
             handleCounter(+1, branch);
-            // onCountChange(+1, branch);
           }}
         >
           +
