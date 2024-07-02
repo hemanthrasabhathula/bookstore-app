@@ -6,23 +6,39 @@ import { branchesList } from "../data/Branches_dummy";
 import { useEffect, useState } from "react";
 import BranchItem from "../branch/BranchItem";
 
+const branchCopies: Branch[] = [];
 const BookItem = () => {
   const location = useLocation();
   const [book, setBook] = useState(location.state?.book);
   const [totalCount, setTotalCount] = useState(0);
 
-  const branchCopies: Branch[] = branchesList;
-
   const handletotalCount = (num: number, branch: Branch) => {
-    branchCopies.map((b) => {
-      if (b.id === branch.id) {
-        if (b.count === undefined) {
-          b.count = 0;
+    if (branchCopies.length === 0) {
+      branchCopies.push(branch);
+    } else {
+      const index = branchCopies.findIndex((b) => b.id === branch.id);
+      if (index !== -1) {
+        // If branch is found, replace the old branch with the new one
+        if (branch.count === 0) {
+          branchCopies.splice(index, 1);
+        } else {
+          branchCopies.splice(index, 1, branch);
         }
-        b.count = branch.count;
+      } else {
+        // If branch is not found, push the new branch into branchCopies
+        branchCopies.push(branch);
       }
-    });
-    console.log(branchCopies);
+    }
+
+    // branchCopies.map((b) => {
+    //   if (b.id === branch.id) {
+    //     if (b.count === undefined) {
+    //       b.count = 0;
+    //     }
+    //     b.count = branch.count;
+    //   }
+    // });
+    console.log("branch copies ", branchCopies);
 
     console.log(`For ${branch.name} added ${num} of books. `);
     const totalCountNum = totalCount + num;
@@ -45,7 +61,7 @@ const BookItem = () => {
       fluid="md"
       style={{ paddingTop: "100px" }}
     >
-      <Row className="justify-content-center">
+      <Row id="image" className="justify-content-center">
         <Col sm={1} md={2} lg={4}></Col>
         <Col
           sm={5}
@@ -64,7 +80,13 @@ const BookItem = () => {
             alt={book.title}
           />
         </Col>
-        <Col className="justify-content-center book-text " sm={6} md={6} lg={6}>
+        <Col
+          id="details"
+          className="justify-content-center book-text "
+          sm={6}
+          md={6}
+          lg={6}
+        >
           <div className="book-details-container">
             <Row>
               <div className="book-title">{book.title}</div>
@@ -79,6 +101,7 @@ const BookItem = () => {
               <span>
                 {branchesList.map((branch) => (
                   <BranchItem
+                    key={branch.id}
                     branch={branch}
                     onCountChange={handletotalCount}
                   />

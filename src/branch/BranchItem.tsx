@@ -26,7 +26,7 @@ const BranchItem = ({
   };
 
   return (
-    <div key={branch.id} className="item-container">
+    <div className="item-container">
       <li>{branch.name}</li>
       <div className="button-input-container">
         <Button
