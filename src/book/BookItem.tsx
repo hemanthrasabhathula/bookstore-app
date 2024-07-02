@@ -1,6 +1,6 @@
-import { useLocation } from "react-router-dom";
-import { Book, Branch } from "../model/Definitions";
-import { Button, Col, Container, Image, Row } from "react-bootstrap";
+import { Link, useLocation } from "react-router-dom";
+import { Branch } from "../model/Definitions";
+import { Breadcrumb, Col, Container, Image, Row } from "react-bootstrap";
 import "./BookItem.css";
 import { branchesList } from "../data/Branches_dummy";
 import { useEffect, useState } from "react";
@@ -45,62 +45,71 @@ const BookItem = () => {
   }, [totalCount]);
 
   return (
-    <Container
-      className="book-list-container"
-      fluid="md"
-      style={{ paddingTop: "100px" }}
-    >
-      <Row id="image" className="justify-content-center">
-        <Col sm={1} md={2} lg={4}></Col>
-        <Col
-          sm={5}
-          md={4}
-          lg={2}
-          onClick={() => (window.location.href = book.image)}
-        >
-          <Image
-            rounded
-            style={{
-              width: "200px",
-              aspectRatio: "2/3",
-              objectFit: "cover",
-            }}
-            src={book.image}
-            alt={book.title}
-          />
-        </Col>
-        <Col
-          id="details"
-          className="justify-content-center book-text "
-          sm={6}
-          md={6}
-          lg={6}
-        >
-          <div className="book-details-container">
-            <Row>
-              <div className="book-title">{book.title}</div>
-              <div>{`Author: ${book.author}`}</div>
-              <div>{`ISBN: ${book.ISBN}`}</div>
-              <div>{`Genre: ${book.genre}`}</div>
-              <div>{`Published: ${book.published}`}</div>
-              <div>{`Pages: ${book.pages}`}</div>
-            </Row>
-            <Row>
-              <div>Available at:</div>
-              <span>
-                {branchesList.map((branch) => (
-                  <BranchItem
-                    key={branch.id}
-                    branch={branch}
-                    onCountChange={handletotalCount}
-                  />
-                ))}
-              </span>
-            </Row>
-          </div>
-        </Col>
-      </Row>
-    </Container>
+    <>
+      <Breadcrumb>
+        <Breadcrumb.Item>
+          <Link to={"/"}>Home </Link>
+        </Breadcrumb.Item>
+
+        <Breadcrumb.Item active>Book</Breadcrumb.Item>
+      </Breadcrumb>
+      <Container
+        className="book-list-container"
+        fluid="md"
+        style={{ paddingTop: "100px" }}
+      >
+        <Row id="image" className="justify-content-center">
+          <Col sm={1} md={2} lg={4}></Col>
+          <Col
+            sm={5}
+            md={4}
+            lg={2}
+            onClick={() => (window.location.href = book.image)}
+          >
+            <Image
+              rounded
+              style={{
+                width: "200px",
+                aspectRatio: "2/3",
+                objectFit: "cover",
+              }}
+              src={book.image}
+              alt={book.title}
+            />
+          </Col>
+          <Col
+            id="details"
+            className="justify-content-center book-text "
+            sm={6}
+            md={6}
+            lg={6}
+          >
+            <div className="book-details-container">
+              <Row>
+                <div className="book-title">{book.title}</div>
+                <div>{`Author: ${book.author}`}</div>
+                <div>{`ISBN: ${book.ISBN}`}</div>
+                <div>{`Genre: ${book.genre}`}</div>
+                <div>{`Published: ${book.published}`}</div>
+                <div>{`Pages: ${book.pages}`}</div>
+              </Row>
+              <Row>
+                <div>Available at:</div>
+                <span>
+                  {branchesList.map((branch) => (
+                    <BranchItem
+                      key={branch.id}
+                      branch={branch}
+                      onCountChange={handletotalCount}
+                    />
+                  ))}
+                </span>
+              </Row>
+            </div>
+          </Col>
+        </Row>
+      </Container>
+    </>
   );
 };
 
