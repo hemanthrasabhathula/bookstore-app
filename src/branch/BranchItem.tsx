@@ -9,20 +9,21 @@ const BranchItem = ({
   branch: Branch;
   onCountChange: (num: number, branch: Branch) => void;
 }) => {
+  console.log("branch Item Loaded ", branch);
   const [counter, setCounter] = useState(0);
+  const [branchCopy, setBranchCopy] = useState<Branch>({ ...branch });
 
   const handleCounter = (num: number, branch: Branch) => {
-    setCounter(counter + num);
-    if (branch.count === undefined) {
-      branch.count = 0;
+    if (branchCopy.count === undefined) {
+      branchCopy.count = 0;
     }
-    branch.count += num;
-
-    console.log(`For ${branch.name} added ${num} of books. `);
+    branchCopy.count += num;
+    console.log("branchCopy ", branchCopy);
     //setCounter(num);
-    console.log(branch);
-    console.log(counter);
-    onCountChange(num, branch);
+
+    setCounter(counter + num);
+    setBranchCopy(branchCopy);
+    onCountChange(num, branchCopy);
   };
 
   return (

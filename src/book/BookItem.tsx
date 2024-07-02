@@ -6,11 +6,11 @@ import { branchesList } from "../data/Branches_dummy";
 import { useEffect, useState } from "react";
 import BranchItem from "../branch/BranchItem";
 
-const branchCopies: Branch[] = [];
 const BookItem = () => {
   const location = useLocation();
   const [book, setBook] = useState(location.state?.book);
   const [totalCount, setTotalCount] = useState(0);
+  const [branchCopies, setBranchCopies] = useState<Branch[]>([]);
 
   const handletotalCount = (num: number, branch: Branch) => {
     if (branchCopies.length === 0) {
@@ -30,6 +30,11 @@ const BookItem = () => {
       }
     }
 
+    setBranchCopies(branchCopies);
+
+    const updatedBook = { ...book, branches: branchCopies };
+    setBook(updatedBook);
+
     // branchCopies.map((b) => {
     //   if (b.id === branch.id) {
     //     if (b.count === undefined) {
@@ -38,21 +43,15 @@ const BookItem = () => {
     //     b.count = branch.count;
     //   }
     // });
-    console.log("branch copies ", branchCopies);
 
-    console.log(`For ${branch.name} added ${num} of books. `);
     const totalCountNum = totalCount + num;
     setTotalCount(totalCountNum);
   };
 
   useEffect(() => {
-    console.log(`Updated total count ${totalCount} of books.`);
-    if (book) {
-      // Assuming book is an object and can have a branches property
-      const updatedBook = { ...book, branches: branchCopies };
-      setBook(updatedBook);
-    }
-    console.log(book);
+    console.log("book ", book);
+    console.log("branchCopies ", branchCopies);
+    console.log("totalCount ", totalCount);
   }, [totalCount]);
 
   return (
