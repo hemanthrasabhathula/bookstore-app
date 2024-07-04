@@ -7,6 +7,8 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { Route, Routes, BrowserRouter } from "react-router-dom";
 import BookItem from "./book/BookItem";
 import NavBar from "./navbar/navbar";
+import { BookProvider } from "./bookcontext/BookContext";
+import Cart from "./cart/Cart";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
@@ -15,12 +17,15 @@ root.render(
   // <React.StrictMode>
 
   <BrowserRouter>
-    <NavBar>
-      <Routes>
-        <Route path="/" element={<App />} />
-        <Route path="/book/:bookId" element={<BookItem />} />
-      </Routes>
-    </NavBar>
+    <BookProvider>
+      <NavBar>
+        <Routes>
+          <Route path="/" element={<App />} />
+          <Route path="/book/:bookId" element={<BookItem />} />
+          <Route path="/cart/" element={<Cart />} />
+        </Routes>
+      </NavBar>
+    </BookProvider>
   </BrowserRouter>
   // </React.StrictMode>
 );

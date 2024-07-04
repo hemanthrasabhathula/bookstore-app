@@ -2,10 +2,13 @@ import { Row, Col, Image } from "react-bootstrap";
 import { Book } from "../model/Definitions";
 import "./BookGrid.css";
 import { useNavigate } from "react-router-dom";
+import { useBooks } from "../bookcontext/BookContext";
 
 const BookList = ({ booklist }: { booklist: Book[] }) => {
   const navigate = useNavigate();
+  const { bookslist } = useBooks();
 
+  console.log("BooksList", bookslist);
   return (
     <>
       <Row>

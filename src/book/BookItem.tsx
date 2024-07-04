@@ -1,16 +1,19 @@
 import { Link, useLocation } from "react-router-dom";
-import { Branch } from "../model/Definitions";
+import { BookAndBranches, Branch } from "../model/Definitions";
 import { Breadcrumb, Col, Container, Image, Row } from "react-bootstrap";
 import "./BookItem.css";
 import { branchesList } from "../data/Branches_dummy";
 import { useEffect, useState } from "react";
 import BranchItem from "../branch/BranchItem";
+import { useBooks } from "../bookcontext/BookContext";
 
 const BookItem = () => {
   const location = useLocation();
   const [book, setBook] = useState(location.state?.book);
   const [totalCount, setTotalCount] = useState(0);
   const [branchCopies, setBranchCopies] = useState<Branch[]>([]);
+
+  const { updateBooklist } = useBooks();
 
   const handletotalCount = (num: number, branch: Branch) => {
     if (branchCopies.length === 0) {
@@ -32,8 +35,9 @@ const BookItem = () => {
 
     setBranchCopies(branchCopies);
 
-    const updatedBook = { ...book, branches: branchCopies };
+    const updatedBook: BookAndBranches = { ...book, branches: branchCopies };
     setBook(updatedBook);
+    updateBooklist(updatedBook);
 
     const totalCountNum = totalCount + num;
     setTotalCount(totalCountNum);
@@ -48,7 +52,7 @@ const BookItem = () => {
     <>
       <Breadcrumb>
         <Breadcrumb.Item>
-          <Link to={"/"}>Home </Link>
+          <Link to={"/"}>Home</Link>
         </Breadcrumb.Item>
 
         <Breadcrumb.Item active>Book</Breadcrumb.Item>

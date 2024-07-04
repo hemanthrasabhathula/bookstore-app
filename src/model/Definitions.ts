@@ -24,4 +24,16 @@ type Branch = {
   count?: 0;
 };
 
-export type { Book, SearchFormProps, Branch };
+type BookAndBranches = {
+  id: number;
+  title: string;
+  author: string;
+  ISBN: string;
+  genre: string;
+  published: number;
+  pages: number;
+  image: string;
+  branches?: Branch[];
+};
+
+export type { Book, SearchFormProps, Branch, BookAndBranches };

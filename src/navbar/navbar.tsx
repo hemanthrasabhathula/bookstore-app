@@ -2,8 +2,14 @@ import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
+import { useBooks } from "../bookcontext/BookContext";
+import { Badge } from "react-bootstrap";
+import { Link, useNavigate } from "react-router-dom";
 
 const NavBar = (props: { children: React.ReactNode }) => {
+  const { bookslist } = useBooks();
+  const navigate = useNavigate();
+
   return (
     <div>
       <Navbar collapseOnSelect expand="lg" className="bg-body-tertiary">
@@ -14,25 +20,26 @@ const NavBar = (props: { children: React.ReactNode }) => {
             <Nav className="me-auto">
               <Nav.Link href="#features">Books</Nav.Link>
               <Nav.Link href="#pricing">Branches</Nav.Link>
-              <NavDropdown title="Transactions" id="collapsible-nav-dropdown">
-                <NavDropdown.Item href="#action/3.1">
-                  Completed
-                </NavDropdown.Item>
-                <NavDropdown.Item href="#action/3.2">Pending</NavDropdown.Item>
-                <NavDropdown.Item href="#action/3.3">
-                  Something
-                </NavDropdown.Item>
-                <NavDropdown.Divider />
-                <NavDropdown.Item href="#action/3.4">
-                  Separated link
-                </NavDropdown.Item>
-              </NavDropdown>
             </Nav>
             <Nav>
-              <Nav.Link href="#deets">User</Nav.Link>
-              <Nav.Link eventKey={2} href="#memes">
-                Log out
+              {/* <Nav.Link href="#deets">User</Nav.Link> */}
+              <Nav.Link eventKey={2} onClick={() => navigate(`/cart`)}>
+                Cart
+                {bookslist.length === 0 ? null : ( // If no books are found, display a message to the user
+                  <Badge bg="warning" text="dark">
+                    {bookslist.length}
+                  </Badge>
+                )}
               </Nav.Link>
+              <NavDropdown title="User" id="collapsible-nav-dropdown">
+                <NavDropdown.Item href="#action/3.1">Profile</NavDropdown.Item>
+                <NavDropdown.Item href="#action/3.2">
+                  Transactions
+                </NavDropdown.Item>
+                {/* <NavDropdown.Item href="#action/3.3">logout</NavDropdown.Item> */}
+                <NavDropdown.Divider />
+                <NavDropdown.Item href="#action/3.4">Log out</NavDropdown.Item>
+              </NavDropdown>
             </Nav>
           </Navbar.Collapse>
         </Container>
