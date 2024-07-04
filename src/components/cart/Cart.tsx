@@ -11,12 +11,12 @@ const Cart = () => {
   return (
     <>
       <Breadcrumb>
-        <Breadcrumb.Item>
-          <Link to={"/"}>Home</Link>
-        </Breadcrumb.Item>
-
+        <li className="breadcrumb-item">
+          <Link to="/">Home</Link>
+        </li>
         <Breadcrumb.Item active>Cart</Breadcrumb.Item>
       </Breadcrumb>
+
       {bookslist.length === 0 ? ( // If no books are found, display a message to the user
         <h2>No Books in the Cart</h2>
       ) : (
