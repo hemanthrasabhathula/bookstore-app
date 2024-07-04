@@ -4,7 +4,7 @@ import { booksList } from "./data/Books_dummy";
 import { BookSearchForm } from "./components/search/BookSearchForm";
 import { Container, Row } from "react-bootstrap";
 import { Book } from "./model/Definitions";
-import BookList from "./bookgrid/BookGrid";
+import BookList from "./components/bookgrid/BookGrid";
 
 const App = () => {
   console.log("App");

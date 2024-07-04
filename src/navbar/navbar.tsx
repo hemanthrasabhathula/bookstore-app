@@ -2,14 +2,18 @@ import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
-import { useBooks } from "../bookcontext/BookContext";
+import { useBooks } from "../components/bookcontext/BookContext";
 import { Badge } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 
 const NavBar = (props: { children: React.ReactNode }) => {
   const { bookslist } = useBooks();
   const navigate = useNavigate();
-
+  const [booksCount, setBooksCount] = useState(0);
+  useEffect(() => {
+    setBooksCount(bookslist.length);
+  }, [bookslist]);
   return (
     <div>
       <Navbar collapseOnSelect expand="lg" className="bg-body-tertiary">
@@ -25,9 +29,9 @@ const NavBar = (props: { children: React.ReactNode }) => {
               {/* <Nav.Link href="#deets">User</Nav.Link> */}
               <Nav.Link eventKey={2} onClick={() => navigate(`/cart`)}>
                 Cart
-                {bookslist.length === 0 ? null : ( // If no books are found, display a message to the user
+                {booksCount === 0 ? null : ( // If no books are found, display a message to the user
                   <Badge bg="warning" text="dark">
-                    {bookslist.length}
+                    {booksCount}
                   </Badge>
                 )}
               </Nav.Link>

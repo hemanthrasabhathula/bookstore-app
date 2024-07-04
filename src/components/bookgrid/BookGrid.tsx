@@ -1,5 +1,5 @@
 import { Row, Col, Image } from "react-bootstrap";
-import { Book } from "../model/Definitions";
+import { Book } from "../../model/Definitions";
 import "./BookGrid.css";
 import { useNavigate } from "react-router-dom";
 import { useBooks } from "../bookcontext/BookContext";

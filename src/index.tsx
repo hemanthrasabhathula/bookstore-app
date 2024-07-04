@@ -5,10 +5,10 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Route, Routes, BrowserRouter } from "react-router-dom";
-import BookItem from "./book/BookItem";
+import BookItem from "./components/book/BookItem";
 import NavBar from "./navbar/navbar";
-import { BookProvider } from "./bookcontext/BookContext";
-import Cart from "./cart/Cart";
+import { BookProvider } from "./components/bookcontext/BookContext";
+import Cart from "./components/cart/Cart";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement

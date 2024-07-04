@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Branch } from "../model/Definitions";
+import { Branch } from "../../model/Definitions";
 import { Button } from "react-bootstrap";
 
 const BranchItem = ({
@@ -30,6 +30,7 @@ const BranchItem = ({
       <li>{branch.name}</li>
       <div className="button-input-container">
         <Button
+          disabled={counter === 0}
           onClick={() => {
             counter > 0 && handleCounter(-1, branch);
           }}

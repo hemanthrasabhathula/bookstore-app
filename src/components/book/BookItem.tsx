@@ -1,8 +1,8 @@
 import { Link, useLocation } from "react-router-dom";
-import { BookAndBranches, Branch } from "../model/Definitions";
+import { BookAndBranches, Branch } from "../../model/Definitions";
 import { Breadcrumb, Col, Container, Image, Row } from "react-bootstrap";
 import "./BookItem.css";
-import { branchesList } from "../data/Branches_dummy";
+import { branchesList } from "../../data/Branches_dummy";
 import { useEffect, useState } from "react";
 import BranchItem from "../branch/BranchItem";
 import { useBooks } from "../bookcontext/BookContext";
