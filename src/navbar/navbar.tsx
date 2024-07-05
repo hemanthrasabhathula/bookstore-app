@@ -18,16 +18,23 @@ const NavBar = (props: { children: React.ReactNode }) => {
     <div>
       <Navbar collapseOnSelect expand="lg" className="bg-body-tertiary">
         <Container>
-          <Navbar.Brand href="#home">Book-Store App</Navbar.Brand>
+          <Navbar.Brand as={Link} to="/">
+            Book-Store App
+          </Navbar.Brand>
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav">
             <Nav className="me-auto">
-              <Nav.Link href="#features">Books</Nav.Link>
+              <Nav.Link as={Link} to="/">
+                Books
+              </Nav.Link>
               <Nav.Link href="#pricing">Branches</Nav.Link>
+              <Nav.Link as={Link} to="/addbook">
+                Add Book
+              </Nav.Link>
             </Nav>
             <Nav>
-              {/* <Nav.Link href="#deets">User</Nav.Link> */}
-              <Nav.Link eventKey={2} onClick={() => navigate(`/cart`)}>
+              {/* <Nav.Link href="#deets">User</Nav.Link .Link> */}
+              <Nav.Link eventKey={2} as={Link} to="/cart">
                 Cart
                 {booksCount === 0 ? null : ( // If no books are found, display a message to the user
                   <Badge bg="warning" text="dark">
