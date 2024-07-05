@@ -49,13 +49,14 @@ const BranchItem = ({
           onChange={(e) => {
             // Assuming handleCounter is designed to correctly update the counter state
             // based on the new input value. Adjust as necessary for your application logic.
+            if (parseInt(e.target.value) < 0) {
+              e.target.value = "0";
+              return;
+            }
             const newValue = parseInt(e.target.value, 10);
             if (!isNaN(newValue)) {
               // Check if the parsed value is a number
               handleCounter(newValue - counter, branch); // Adjust the counter based on the difference
-            } else {
-              // Handle case where the input is cleared with backspace, setting counter to 0 or another default value
-              handleCounter(-counter, branch); // Reset counter to 0 or another logic if needed
             }
           }}
         />
