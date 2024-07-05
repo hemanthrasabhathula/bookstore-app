@@ -11,9 +11,33 @@ const BookItem = () => {
   const location = useLocation();
   const [book, setBook] = useState(location.state?.book);
   const [totalCount, setTotalCount] = useState(0);
-  const [branchCopies, setBranchCopies] = useState<Branch[]>([]);
 
-  const { updateBooklist } = useBooks();
+  const { bookslist, updateBooklist } = useBooks();
+
+  const bookIndex = bookslist.findIndex((b) => b.id === book.id);
+  const [branchCopies, setBranchCopies] = useState<Branch[]>(
+    bookIndex >= 0 ? bookslist[bookIndex].branches : []
+  );
+  const branchesCombined: Branch[] = [];
+  if (bookIndex >= 0) {
+    console.log("found book in bookslist");
+    branchesCombined.push(...bookslist[bookIndex].branches);
+  }
+
+  branchesList.forEach((branchFromList) => {
+    // Check if the branch is not already in branchesCombined
+    const isBranchAlreadyIncluded = branchesCombined.some(
+      (combinedBranch) => combinedBranch.id === branchFromList.id
+    );
+
+    // If the branch is not in branchesCombined, push it to branchesCombined
+    if (!isBranchAlreadyIncluded) {
+      branchesCombined.push(branchFromList);
+    }
+  });
+  branchesCombined.sort((a, b) =>
+    a.id.toString().localeCompare(b.id.toString())
+  );
 
   const handletotalCount = (num: number, branch: Branch) => {
     if (branchCopies.length === 0) {
@@ -99,7 +123,7 @@ const BookItem = () => {
               <Row>
                 <div>Available at:</div>
                 <span>
-                  {branchesList.map((branch) => (
+                  {branchesCombined.map((branch) => (
                     <BranchItem
                       key={branch.id}
                       branch={branch}

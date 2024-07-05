@@ -11,7 +11,7 @@ const BranchItem = ({
   onCountChange: (num: number, branch: Branch) => void;
 }) => {
   console.log("branch Item Loaded ", branch);
-  const [counter, setCounter] = useState(0);
+  const [counter, setCounter] = useState(branch.count || 0);
   const [branchCopy, setBranchCopy] = useState<Branch>({ ...branch });
 
   const handleCounter = (num: number, branch: Branch) => {

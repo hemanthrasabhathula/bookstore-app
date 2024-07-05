@@ -33,7 +33,7 @@ type BookAndBranches = {
   published: number;
   pages: number;
   image: string;
-  branches?: Branch[];
+  branches: Branch[];
 };
 
 export type { Book, SearchFormProps, Branch, BookAndBranches };
