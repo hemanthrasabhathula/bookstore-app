@@ -21,7 +21,7 @@ type Branch = {
   address: string;
   state: string;
   zip: number;
-  count?: 0;
+  count?: 0 | number;
 };
 
 type BookAndBranches = {

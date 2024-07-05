@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Branch } from "../../model/Definitions";
 import { Button } from "react-bootstrap";
+import "./BranchItem.css";
 
 const BranchItem = ({
   branch,
@@ -38,12 +39,25 @@ const BranchItem = ({
           -
         </Button>{" "}
         <input
+          type="number"
           key={branch.id}
           className="quantity-input"
           value={counter}
-          onChange={(e) =>
-            handleCounter(parseInt(e.target.value || "0"), branch)
-          }
+          // onChange={(e) => {
+          //   handleCounter(parseInt(e.target.value || "0"), branch);
+          // }}
+          onChange={(e) => {
+            // Assuming handleCounter is designed to correctly update the counter state
+            // based on the new input value. Adjust as necessary for your application logic.
+            const newValue = parseInt(e.target.value, 10);
+            if (!isNaN(newValue)) {
+              // Check if the parsed value is a number
+              handleCounter(newValue - counter, branch); // Adjust the counter based on the difference
+            } else {
+              // Handle case where the input is cleared with backspace, setting counter to 0 or another default value
+              handleCounter(-counter, branch); // Reset counter to 0 or another logic if needed
+            }
+          }}
         />
         <Button
           onClick={() => {

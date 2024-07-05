@@ -4,3 +4,9 @@
   align-items: center;
   padding-left: 3px;
 }
+
+.quantity-input {
+  justify-content: center;
+  align-items: center;
+  width: 20px;
+}
