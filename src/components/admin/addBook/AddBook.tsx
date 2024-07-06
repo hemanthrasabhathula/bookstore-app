@@ -1,14 +1,9 @@
-import {
-  Button,
-  Col,
-  Container,
-  FloatingLabel,
-  Form,
-  Row,
-} from "react-bootstrap";
+import { Button, Col, Container, FloatingLabel, Form } from "react-bootstrap";
 import "./AddBook.css";
 import { ChangeEvent, ChangeEventHandler, FormEvent, useState } from "react";
 import { branchesList } from "../../../data/Branches_dummy";
+import { Row } from "react-bootstrap";
+import { Branch } from "../../../model/Definitions";
 type FormData = {
   title: string;
   author: string;
@@ -17,6 +12,10 @@ type FormData = {
   published: string;
   pages: string;
   image: string;
+  branchCopy: BranchCopy[];
+};
+
+type BranchCopy = {
   branch: string;
   copies: string;
 };
@@ -31,8 +30,7 @@ const AddBook = () => {
     published: "",
     pages: "",
     image: "",
-    branch: "",
-    copies: "",
+    branchCopy: [{ branch: "", copies: "" }],
   });
 
   const handleFormData = (e: FormEvent<HTMLFormElement>) => {
@@ -56,11 +54,39 @@ const AddBook = () => {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+  const handleCopiesChange = (
+    e: ChangeEvent<HTMLInputElement>,
+    index: number
+  ) => {
+    console.log("handleCopiesChange", e.target.value, index);
     const { name, value } = e.target;
+    const updatedBranchCopy = [...formData.branchCopy];
+    console.log("Updated Branch Copy", updatedBranchCopy);
+    if (name === "copies") {
+      updatedBranchCopy[index].copies = value;
+    }
+
     setFormData({
       ...formData,
-      [name]: value,
+      branchCopy: updatedBranchCopy,
+    });
+  };
+
+  const handleSelectChange = (
+    e: React.ChangeEvent<HTMLSelectElement>,
+    index: number
+  ) => {
+    const { name, value } = e.target;
+    console.log("handleSelectChange", value, index);
+    const updatedBranchCopy = [...formData.branchCopy];
+    console.log("Updated Branch Copy", updatedBranchCopy);
+    if (name === "branch") {
+      updatedBranchCopy[index].branch = value;
+    }
+
+    setFormData({
+      ...formData,
+      branchCopy: updatedBranchCopy,
     });
   };
 
@@ -90,7 +116,6 @@ const AddBook = () => {
             please enter a title.
           </Form.Control.Feedback>
         </FloatingLabel>
-
         <FloatingLabel controlId="author" label="Author" className="mb-3">
           <Form.Control
             required
@@ -140,7 +165,6 @@ const AddBook = () => {
             </FloatingLabel>
           </Col>
         </Row>
-
         <Row className="g-2">
           <Col md sm xs>
             <FloatingLabel
@@ -208,8 +232,33 @@ const AddBook = () => {
             please enter a valid url.
           </Form.Control.Feedback>
         </FloatingLabel>
-
-        <Row className="g-2">
+        {formData.branchCopy.map((branch, index) => (
+          <BranchesForm
+            key={index}
+            formData={formData}
+            handleSelectChange={handleSelectChange}
+            handleCopiesChange={handleCopiesChange}
+            validated={validated}
+            index={index}
+          />
+        ))}
+        {branchesList.length !== formData.branchCopy.length && (
+          <Button
+            className="mb-3"
+            onClick={() => {
+              setFormData({
+                ...formData,
+                branchCopy: [
+                  ...formData.branchCopy,
+                  { branch: "", copies: "" },
+                ],
+              });
+            }} // Add a new branch form
+          >
+            Add Branch
+          </Button>
+        )}
+        {/* <Row className="g-2">
           <Col md sm xs>
             <FloatingLabel
               controlId="branch"
@@ -231,9 +280,6 @@ const AddBook = () => {
                     {branch.name}
                   </option>
                 ))}
-                {/* <option value="1">One</option>
-              <option value="2">Two</option>
-              <option value="3">Three</option> */}
               </Form.Select>
               <Form.Control.Feedback type="invalid">
                 please select a branch.
@@ -256,7 +302,7 @@ const AddBook = () => {
               </Form.Control.Feedback>
             </FloatingLabel>
           </Col>
-        </Row>
+        </Row> */}
         <Row className="g-2">
           <Button className="floating-label-container" type="submit">
             Submit
@@ -264,6 +310,96 @@ const AddBook = () => {
         </Row>
       </Form>
     </Container>
+  );
+};
+
+const BranchesForm = ({
+  formData,
+  handleSelectChange,
+  handleCopiesChange,
+  validated,
+  index,
+}: {
+  formData: FormData;
+  handleSelectChange: (
+    e: React.ChangeEvent<HTMLSelectElement>,
+    index: number
+  ) => void;
+  handleCopiesChange: (e: ChangeEvent<HTMLInputElement>, index: number) => void;
+  validated: boolean;
+  index: number;
+}) => {
+  const [newBranch, setNewBranch] = useState<Branch[]>(
+    branchesList.filter((branch) => {
+      return !formData.branchCopy.some((branchCopy) => {
+        return branchCopy.branch === branch.id.toString();
+      });
+    })
+  );
+
+  //   const branchesListmod = branchesList.filter((branch) => {
+  //     return !formData.branchCopy.some((branchCopy) => {
+  //       return branchCopy.branch === branch.id.toString();
+  //     });
+  //   });
+  //   console.log("BranchesListMod:: ", branchesListmod);
+
+  console.log("New Branches:: ", newBranch);
+
+  return (
+    <>
+      <Row className="g-2">
+        <Col md sm xs>
+          <FloatingLabel
+            controlId={`branch${index}`}
+            label="Select Branch"
+            className="mb-3"
+          >
+            <Form.Select
+              required
+              aria-label="Select Branch"
+              className="mb-3"
+              name="branch"
+              value={formData.branchCopy[index].branch}
+              onChange={(e) => handleSelectChange(e, index)}
+              isInvalid={validated && !formData.branchCopy[index].branch}
+            >
+              <option></option>
+              {newBranch.map((branch) => (
+                <option key={branch.id} value={branch.id}>
+                  {branch.name}
+                </option>
+              ))}
+            </Form.Select>
+            <Form.Control.Feedback type="invalid">
+              please select a branch.
+            </Form.Control.Feedback>
+          </FloatingLabel>
+        </Col>
+        <Col md sm xs>
+          <FloatingLabel
+            controlId={`copies${index}`}
+            label="Copies"
+            className="mb-3"
+          >
+            <Form.Control
+              required
+              type="number"
+              placeholder="Copies"
+              name="copies"
+              value={formData.branchCopy[index].copies}
+              onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                handleCopiesChange(e, index)
+              }
+              isInvalid={validated && !formData.branchCopy[index].copies}
+            />
+            <Form.Control.Feedback type="invalid">
+              please enter no of copies.
+            </Form.Control.Feedback>
+          </FloatingLabel>
+        </Col>
+      </Row>
+    </>
   );
 };
 
