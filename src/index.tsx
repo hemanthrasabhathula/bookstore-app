@@ -10,6 +10,7 @@ import NavBar from "./navbar/navbar";
 import { BookProvider } from "./components/bookcontext/BookContext";
 import Cart from "./components/cart/Cart";
 import AddBook from "./components/admin/addBook/AddBook";
+import AddBranch from "./components/admin/addBranch/AddBranch";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
@@ -25,6 +26,7 @@ root.render(
           <Route path="/book/:bookId" element={<BookItem />} />
           <Route path="/cart/" element={<Cart />} />
           <Route path="/addbook" element={<AddBook />} />
+          <Route path="/addbranch" element={<AddBranch />} />
         </Routes>
       </NavBar>
     </BookProvider>

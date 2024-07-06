@@ -28,6 +28,9 @@ const NavBar = (props: { children: React.ReactNode }) => {
                 Books
               </Nav.Link>
               <Nav.Link href="#pricing">Branches</Nav.Link>
+              <Nav.Link as={Link} to="/addbranch">
+                Add Branch
+              </Nav.Link>
               <Nav.Link as={Link} to="/addbook">
                 Add Book
               </Nav.Link>

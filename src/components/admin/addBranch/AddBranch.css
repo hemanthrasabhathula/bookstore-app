@@ -1,13 +1,13 @@
 /* Medium devices (tablets, 768px and up) */
 @media (min-width: 768px) {
-  .addbook-container {
-    max-width: 700px;
+  .addbranch-container {
+    max-width: 900px;
   }
 }
 
 /* Large devices (desktops, 992px and up) */
 @media (min-width: 992px) {
-  .addbook-container {
-    max-width: 700px;
+  .addbranch-container {
+    max-width: 900px;
   }
 }
