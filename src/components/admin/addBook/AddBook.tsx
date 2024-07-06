@@ -253,56 +253,11 @@ const AddBook = () => {
                   { branch: "", copies: "" },
                 ],
               });
-            }} // Add a new branch form
+            }}
           >
             Add Branch
           </Button>
         )}
-        {/* <Row className="g-2">
-          <Col md sm xs>
-            <FloatingLabel
-              controlId="branch"
-              label="Select Branch"
-              className="mb-3"
-            >
-              <Form.Select
-                required
-                aria-label="Select Branch"
-                className="mb-3"
-                name="branch"
-                value={formData.branch}
-                onChange={handleSelectChange}
-                isInvalid={validated && !formData.branch}
-              >
-                <option></option>
-                {branchesList.map((branch) => (
-                  <option key={branch.id} value={branch.id}>
-                    {branch.name}
-                  </option>
-                ))}
-              </Form.Select>
-              <Form.Control.Feedback type="invalid">
-                please select a branch.
-              </Form.Control.Feedback>
-            </FloatingLabel>
-          </Col>
-          <Col md sm xs>
-            <FloatingLabel controlId="copies" label="Copies" className="mb-3">
-              <Form.Control
-                required
-                type="number"
-                placeholder="Copies"
-                name="copies"
-                value={formData.copies}
-                onChange={handleInputChange}
-                isInvalid={validated && !formData.copies}
-              />
-              <Form.Control.Feedback type="invalid">
-                please enter no of copies.
-              </Form.Control.Feedback>
-            </FloatingLabel>
-          </Col>
-        </Row> */}
         <Row className="g-2">
           <Button className="floating-label-container" type="submit">
             Submit
@@ -336,15 +291,6 @@ const BranchesForm = ({
       });
     })
   );
-
-  //   const branchesListmod = branchesList.filter((branch) => {
-  //     return !formData.branchCopy.some((branchCopy) => {
-  //       return branchCopy.branch === branch.id.toString();
-  //     });
-  //   });
-  //   console.log("BranchesListMod:: ", branchesListmod);
-
-  console.log("New Branches:: ", newBranch);
 
   return (
     <>
