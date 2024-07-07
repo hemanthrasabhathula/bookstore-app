@@ -259,6 +259,7 @@ const AddBook = () => {
           ))}
           {branchesList.length !== formData.branchCopy.length && (
             <Button
+              variant="link"
               className="mb-3"
               onClick={() => {
                 setFormData({
@@ -270,7 +271,7 @@ const AddBook = () => {
                 });
               }}
             >
-              Add Branch
+              + Add Branch
             </Button>
           )}
           <Row className="g-2">

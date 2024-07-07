@@ -4,7 +4,8 @@ import { BookAndBranches } from "../../model/Definitions";
 const BookContext = createContext<{
   bookslist: BookAndBranches[];
   updateBooklist: (books: BookAndBranches) => void;
-}>({ bookslist: [], updateBooklist: () => {} });
+  clearBooklist: () => void;
+}>({ bookslist: [], updateBooklist: () => {}, clearBooklist: () => {} });
 
 export const useBooks = () => useContext(BookContext);
 
@@ -59,8 +60,12 @@ export const BookProvider: React.FC<{ children: React.ReactNode }> = ({
     localStorage.setItem("timestamp", new Date().getTime().toString());
   }, [bookslist]);
 
+  const clearBooklist = () => {
+    setBooksList([]);
+  };
+
   return (
-    <BookContext.Provider value={{ bookslist, updateBooklist }}>
+    <BookContext.Provider value={{ bookslist, updateBooklist, clearBooklist }}>
       {children}
     </BookContext.Provider>
   );

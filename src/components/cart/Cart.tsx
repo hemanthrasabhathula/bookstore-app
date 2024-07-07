@@ -1,4 +1,11 @@
-import { Breadcrumb, Button, Form, Table } from "react-bootstrap";
+import {
+  Breadcrumb,
+  Button,
+  Container,
+  Table,
+  Row,
+  Col,
+} from "react-bootstrap";
 import { useBooks } from "../bookcontext/BookContext";
 import { Link } from "react-router-dom";
 import { BookAndBranches, Branch } from "../../model/Definitions";
@@ -7,7 +14,7 @@ import { useEffect, useRef, useState } from "react";
 import "./Cart.css";
 
 const Cart = () => {
-  const { bookslist, updateBooklist } = useBooks();
+  const { bookslist, updateBooklist, clearBooklist } = useBooks();
 
   console.log("BooksList", bookslist);
 
@@ -19,36 +26,56 @@ const Cart = () => {
         </li>
         <Breadcrumb.Item active>Cart</Breadcrumb.Item>
       </Breadcrumb>
-
-      {bookslist.length === 0 ? ( // If no books are found, display a message to the user
-        <h2>No Books in the Cart</h2>
-      ) : (
-        <Table bordered hover>
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>Book</th>
-              <th>Branches</th>
-              <th>Copies</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            {bookslist.map((book, bookIndex) => (
-              <>
-                {book.branches?.map((branch, branchIndex) => (
-                  <CartTable
-                    book={book}
-                    bookIndex={bookIndex}
-                    branch={branch}
-                    branchIndex={branchIndex}
-                  />
-                ))}
-              </>
-            ))}
-          </tbody>
-        </Table>
-      )}
+      <Container>
+        {bookslist.length === 0 ? ( // If no books are found, display a message to the user
+          <Row>
+            <h2>No Books in the Cart</h2>{" "}
+          </Row>
+        ) : (
+          <>
+            <Row>
+              <Table bordered hover>
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Book</th>
+                    <th>Branches</th>
+                    <th>Copies</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {bookslist.map((book, bookIndex) => (
+                    <>
+                      {book.branches?.map((branch, branchIndex) => (
+                        <CartTable
+                          book={book}
+                          bookIndex={bookIndex}
+                          branch={branch}
+                          branchIndex={branchIndex}
+                        />
+                      ))}
+                    </>
+                  ))}
+                </tbody>
+              </Table>
+            </Row>
+            <Row className="justify-content-md-end">
+              <Col lg="auto" md="auto" xs="auto" sm="auto">
+                <Button>Buy</Button>
+                <Button
+                  style={{ marginLeft: "10px" }}
+                  onClick={() => {
+                    clearBooklist();
+                  }}
+                >
+                  Clear Cart
+                </Button>
+              </Col>
+            </Row>
+          </>
+        )}
+      </Container>
     </>
   );
 };
@@ -138,7 +165,8 @@ const CartTable = ({
               rowSpan={book.branches?.length}
               style={{ verticalAlign: "middle" }}
             >
-              {`${book.title} by ${book.author}`}{" "}
+              <b>{book.title}</b>
+              {` by ${book.author}`}
             </td>
           </>
         )}
