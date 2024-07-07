@@ -20,61 +20,65 @@ const Cart = () => {
 
   return (
     <>
-      <Breadcrumb>
-        <li className="breadcrumb-item">
-          <Link to="/">Home</Link>
-        </li>
-        <Breadcrumb.Item active>Cart</Breadcrumb.Item>
-      </Breadcrumb>
-      <Container>
-        {bookslist.length === 0 ? ( // If no books are found, display a message to the user
-          <Row>
-            <h2>No Books in the Cart</h2>{" "}
-          </Row>
-        ) : (
-          <>
-            <Row>
-              <Table bordered hover>
-                <thead>
-                  <tr>
-                    <th>#</th>
-                    <th>Book</th>
-                    <th>Branches</th>
-                    <th>Copies</th>
-                    <th>Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {bookslist.map((book, bookIndex) => (
-                    <>
-                      {book.branches?.map((branch, branchIndex) => (
-                        <CartTable
-                          book={book}
-                          bookIndex={bookIndex}
-                          branch={branch}
-                          branchIndex={branchIndex}
-                        />
+      <Container style={{ paddingTop: "20px", paddingBottom: "100px" }}>
+        <Breadcrumb>
+          <li className="breadcrumb-item">
+            <Link to="/">Home</Link>
+          </li>
+          <Breadcrumb.Item active>Cart</Breadcrumb.Item>
+        </Breadcrumb>
+        <Row className="justify-content-evenly">
+          <Col lg="10" md="10" xs="auto" sm="auto">
+            {bookslist.length === 0 ? ( // If no books are found, display a message to the user
+              <Row>
+                <h2>No Books in the Cart</h2>
+              </Row>
+            ) : (
+              <>
+                <Row>
+                  <Table bordered hover>
+                    <thead>
+                      <tr>
+                        <th>#</th>
+                        <th>Book</th>
+                        <th>Branches</th>
+                        <th>Copies</th>
+                        <th>Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {bookslist.map((book, bookIndex) => (
+                        <>
+                          {book.branches?.map((branch, branchIndex) => (
+                            <CartTable
+                              book={book}
+                              bookIndex={bookIndex}
+                              branch={branch}
+                              branchIndex={branchIndex}
+                            />
+                          ))}
+                        </>
                       ))}
-                    </>
-                  ))}
-                </tbody>
-              </Table>
-            </Row>
-            <Row className="justify-content-md-end">
-              <Col lg="auto" md="auto" xs="auto" sm="auto">
-                <Button>Buy</Button>
-                <Button
-                  style={{ marginLeft: "10px" }}
-                  onClick={() => {
-                    clearBooklist();
-                  }}
-                >
-                  Clear Cart
-                </Button>
-              </Col>
-            </Row>
-          </>
-        )}
+                    </tbody>
+                  </Table>
+                </Row>
+                <Row className="justify-content-md-end">
+                  <Col lg="auto" md="auto" xs="auto" sm="auto">
+                    <Button>Buy</Button>
+                    <Button
+                      style={{ marginLeft: "10px" }}
+                      onClick={() => {
+                        clearBooklist();
+                      }}
+                    >
+                      Clear Cart
+                    </Button>
+                  </Col>
+                </Row>
+              </>
+            )}
+          </Col>
+        </Row>
       </Container>
     </>
   );
