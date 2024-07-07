@@ -43,6 +43,7 @@ const BranchItem = ({
           key={branch.id}
           className="quantity-input"
           value={counter}
+          id={`quantity-input${branch.id}`}
           // onChange={(e) => {
           //   handleCounter(parseInt(e.target.value || "0"), branch);
           // }}

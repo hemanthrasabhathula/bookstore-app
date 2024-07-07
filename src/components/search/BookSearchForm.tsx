@@ -19,6 +19,7 @@ const BookSearchForm = ({
           aria-describedby="input-search"
           onChange={onSearchInput}
           value={searchTerm}
+          id="input-search"
         />
         <Button type="submit" variant="outline-secondary" id="search-button">
           Search
