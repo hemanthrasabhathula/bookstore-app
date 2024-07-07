@@ -21,7 +21,7 @@ const BookSearchForm = ({
           value={searchTerm}
           id="input-search"
         />
-        <Button type="submit" variant="outline-secondary" id="search-button">
+        <Button type="submit" variant="outline-primary" id="search-button">
           Search
         </Button>
       </InputGroup>

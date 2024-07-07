@@ -74,23 +74,24 @@ const BookItem = () => {
 
   return (
     <>
-      <Breadcrumb>
-        <li className="breadcrumb-item">
-          <Link to="/">Home</Link>
-        </li>
-        <Breadcrumb.Item active>Book</Breadcrumb.Item>
-      </Breadcrumb>
-      <Container
-        className="book-list-container"
-        fluid="md"
-        style={{ paddingTop: "100px" }}
-      >
-        <Row id="image" className="justify-content-center">
-          <Col sm={1} md={2} lg={4}></Col>
+      <Container style={{ paddingTop: "20px", paddingBottom: "100px" }}>
+        <Breadcrumb>
+          <li className="breadcrumb-item">
+            <Link to="/">Home</Link>
+          </li>
+          <Breadcrumb.Item active>Book</Breadcrumb.Item>
+        </Breadcrumb>
+        <Row
+          id="image"
+          className="justify-content-evenly"
+          style={{ paddingTop: "20px" }}
+        >
           <Col
-            sm={5}
-            md={4}
-            lg={2}
+            lg={{ span: 2, offset: 2 }}
+            md="4"
+            xs="auto"
+            sm="auto"
+            className="justify-content-end"
             onClick={() => (window.location.href = book.image)}
           >
             <Image
@@ -106,31 +107,33 @@ const BookItem = () => {
           </Col>
           <Col
             id="details"
-            className="justify-content-center book-text "
-            sm={6}
-            md={6}
-            lg={6}
+            lg="6"
+            md="6"
+            xs="auto"
+            sm="auto"
+            className="justify-content-evenly"
           >
             <div className="book-details-container">
               <Row>
-                <div className="book-title">{book.title}</div>
+                <div>
+                  <b>{book.title}</b>
+                </div>
                 <div>{`Author: ${book.author}`}</div>
                 <div>{`ISBN: ${book.ISBN}`}</div>
                 <div>{`Genre: ${book.genre}`}</div>
                 <div>{`Published: ${book.published}`}</div>
                 <div>{`Pages: ${book.pages}`}</div>
               </Row>
-              <Row>
+              <Row className="mt-4">
                 <div>Available at:</div>
-                <span>
-                  {branchesCombined.map((branch) => (
-                    <BranchItem
-                      key={branch.id}
-                      branch={branch}
-                      onCountChange={handletotalCount}
-                    />
-                  ))}
-                </span>
+
+                {branchesCombined.map((branch) => (
+                  <BranchItem
+                    key={branch.id}
+                    branch={branch}
+                    onCountChange={handletotalCount}
+                  />
+                ))}
               </Row>
             </div>
           </Col>

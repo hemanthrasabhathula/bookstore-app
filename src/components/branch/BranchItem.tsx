@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Branch } from "../../model/Definitions";
-import { Button } from "react-bootstrap";
+import { Button, Col, Form, InputGroup, Row } from "react-bootstrap";
 import "./BranchItem.css";
 
 const BranchItem = ({
@@ -27,49 +27,55 @@ const BranchItem = ({
   };
 
   return (
-    <div className="item-container">
-      <li>{branch.name}</li>
-      <div className="button-input-container">
-        <Button
-          disabled={counter === 0}
-          onClick={() => {
-            counter > 0 && handleCounter(-1, branch);
-          }}
-        >
-          -
-        </Button>{" "}
-        <input
-          type="number"
-          key={branch.id}
-          className="quantity-input"
-          value={counter}
-          id={`quantity-input${branch.id}`}
-          // onChange={(e) => {
-          //   handleCounter(parseInt(e.target.value || "0"), branch);
-          // }}
-          onChange={(e) => {
-            // Assuming handleCounter is designed to correctly update the counter state
-            // based on the new input value. Adjust as necessary for your application logic.
-            if (parseInt(e.target.value) < 0) {
-              e.target.value = "0";
-              return;
-            }
-            const newValue = parseInt(e.target.value, 10);
-            if (!isNaN(newValue)) {
-              // Check if the parsed value is a number
-              handleCounter(newValue - counter, branch); // Adjust the counter based on the difference
-            }
-          }}
-        />
-        <Button
-          onClick={() => {
-            handleCounter(+1, branch);
-          }}
-        >
-          +
-        </Button>
-      </div>
-    </div>
+    <Row className="justify-content-start mb-1">
+      <Col xs={5} sm={5} md={3} lg={3} className="align-content-center">
+        {branch.name}
+      </Col>
+      <Col xs={5} sm={5} md={3} lg={4} className="items-center">
+        <InputGroup>
+          <Button
+            variant="outline-primary"
+            id="button-addon2"
+            disabled={counter === 0}
+            onClick={() => {
+              counter > 0 && handleCounter(-1, branch);
+            }}
+          >
+            {`-`}
+          </Button>
+          <Form.Control
+            type="number"
+            key={branch.id}
+            placeholder="0"
+            aria-label="copies"
+            style={{
+              maxWidth: "46px",
+            }}
+            id={`quantity-input${branch.id}`}
+            value={counter}
+            onChange={(e) => {
+              if (parseInt(e.target.value) < 0) {
+                e.target.value = "0";
+                return;
+              }
+              const newValue = parseInt(e.target.value, 10);
+              if (!isNaN(newValue)) {
+                handleCounter(newValue - counter, branch);
+              }
+            }}
+          />
+          <Button
+            variant="outline-primary"
+            id="button-addon2"
+            onClick={() => {
+              handleCounter(+1, branch);
+            }}
+          >
+            {`+`}
+          </Button>
+        </InputGroup>
+      </Col>
+    </Row>
   );
 };
 
