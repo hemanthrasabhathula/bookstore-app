@@ -1,5 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
-import { BookAndBranches, Branch } from "../../model/Definitions";
+import { Book, BookAndBranches, Branch } from "../../model/Definitions";
 import { Breadcrumb, Col, Container, Image, Row } from "react-bootstrap";
 import "./BookItem.css";
 import { branchesList } from "../../data/Branches_dummy";
@@ -9,12 +9,12 @@ import { useBooks } from "../bookcontext/BookContext";
 
 const BookItem = () => {
   const location = useLocation();
-  const [book, setBook] = useState(location.state?.book);
+  const [book, setBook] = useState<Book>(location.state?.book);
   const [totalCount, setTotalCount] = useState(0);
 
-  const { bookslist, updateBooklist } = useBooks();
+  const { bookslist, branches, updateBooklist } = useBooks();
 
-  const bookIndex = bookslist.findIndex((b) => b.id === book.id);
+  const bookIndex = bookslist.findIndex((b) => b._id.$oid === book._id.$oid);
   const [branchCopies, setBranchCopies] = useState<Branch[]>(
     bookIndex >= 0 ? bookslist[bookIndex].branches : []
   );
@@ -24,10 +24,10 @@ const BookItem = () => {
     branchesCombined.push(...bookslist[bookIndex].branches);
   }
 
-  branchesList.forEach((branchFromList) => {
+  branches.forEach((branchFromList) => {
     // Check if the branch is not already in branchesCombined
     const isBranchAlreadyIncluded = branchesCombined.some(
-      (combinedBranch) => combinedBranch.id === branchFromList.id
+      (combinedBranch) => combinedBranch._id.$oid === branchFromList._id.$oid
     );
 
     // If the branch is not in branchesCombined, push it to branchesCombined
@@ -35,15 +35,15 @@ const BookItem = () => {
       branchesCombined.push(branchFromList);
     }
   });
-  branchesCombined.sort((a, b) =>
-    a.id.toString().localeCompare(b.id.toString())
-  );
+  branchesCombined.sort((a, b) => a._id.$oid.localeCompare(b._id.$oid));
 
   const handletotalCount = (num: number, branch: Branch) => {
     if (branchCopies.length === 0) {
       branchCopies.push(branch);
     } else {
-      const index = branchCopies.findIndex((b) => b.id === branch.id);
+      const index = branchCopies.findIndex(
+        (b) => b._id.$oid === branch._id.$oid
+      );
       if (index !== -1) {
         // If branch is found, replace the old branch with the new one
         if (branch.count === 0) {
@@ -129,7 +129,7 @@ const BookItem = () => {
 
                 {branchesCombined.map((branch) => (
                   <BranchItem
-                    key={branch.id}
+                    key={branch._id.$oid}
                     branch={branch}
                     onCountChange={handletotalCount}
                   />

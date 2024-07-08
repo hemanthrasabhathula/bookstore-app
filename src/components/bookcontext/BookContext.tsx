@@ -1,11 +1,23 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { BookAndBranches } from "../../model/Definitions";
+import { Book, BookAndBranches, Branch } from "../../model/Definitions";
 
 const BookContext = createContext<{
+  books: Book[];
+  branches: Branch[];
   bookslist: BookAndBranches[];
+  setBooks: (books: Book[]) => void;
   updateBooklist: (books: BookAndBranches) => void;
+  setBranches: (branches: Branch[]) => void;
   clearBooklist: () => void;
-}>({ bookslist: [], updateBooklist: () => {}, clearBooklist: () => {} });
+}>({
+  books: [],
+  branches: [],
+  bookslist: [],
+  setBooks: () => {},
+  setBranches: () => {},
+  updateBooklist: () => {},
+  clearBooklist: () => {},
+});
 
 export const useBooks = () => useContext(BookContext);
 
@@ -14,6 +26,10 @@ export const BookProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const [bookslist, setBooksList] = useState<BookAndBranches[]>([]);
 
+  const [branches, setBranches] = useState<Branch[]>([]);
+
+  const [books, setBooks] = useState<Book[]>([]);
+
   const updateBooklist = (book: BookAndBranches) => {
     if (bookslist.length === 0) {
       setBooksList([book]);
@@ -21,7 +37,7 @@ export const BookProvider: React.FC<{ children: React.ReactNode }> = ({
     }
     console.log("BookwithBranches", bookslist);
 
-    const index = bookslist.findIndex((b) => b.id === book.id);
+    const index = bookslist.findIndex((b) => b._id.$oid === book._id.$oid);
     console.log("BookwithBranches -book :: ", book, index);
     if (index !== -1) {
       // If book is found, replace the old book with the new one
@@ -51,7 +67,7 @@ export const BookProvider: React.FC<{ children: React.ReactNode }> = ({
       console.log("Time Diff", timeDiff, timeDiff <= 1);
       if (timeDiff <= 1) setBooksList(JSON.parse(storedBooksList));
     }
-  }, [setBooksList]);
+  }, []);
 
   // Save bookslist to localStorage whenever it changes
   useEffect(() => {
@@ -65,7 +81,17 @@ export const BookProvider: React.FC<{ children: React.ReactNode }> = ({
   };
 
   return (
-    <BookContext.Provider value={{ bookslist, updateBooklist, clearBooklist }}>
+    <BookContext.Provider
+      value={{
+        books,
+        branches,
+        bookslist,
+        setBooks,
+        setBranches,
+        updateBooklist,
+        clearBooklist,
+      }}
+    >
       {children}
     </BookContext.Provider>
   );

@@ -28,10 +28,16 @@ const BranchItem = ({
 
   return (
     <Row className="justify-content-start mb-1">
-      <Col xs={5} sm={5} md={3} lg={3} className="align-content-center">
+      <Col xs={5} sm={5} md={4} lg={5} className="align-content-center">
         {branch.name}
       </Col>
-      <Col xs={5} sm={5} md={3} lg={4} className="items-center">
+      <Col
+        xs={5}
+        sm={5}
+        md={"auto"}
+        lg={"auto"}
+        className="align-content-center"
+      >
         <InputGroup>
           <Button
             variant="outline-primary"
@@ -45,13 +51,13 @@ const BranchItem = ({
           </Button>
           <Form.Control
             type="number"
-            key={branch.id}
+            key={branch._id.$oid}
             placeholder="0"
             aria-label="copies"
             style={{
               maxWidth: "46px",
             }}
-            id={`quantity-input${branch.id}`}
+            id={`quantity-input${branch._id.$oid}`}
             value={counter}
             onChange={(e) => {
               if (parseInt(e.target.value) < 0) {

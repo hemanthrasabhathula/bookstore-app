@@ -1,7 +1,7 @@
 import { FormEvent } from "react";
 
 type Book = {
-  id: number;
+  _id: idObj;
   title: string;
   author: string;
   ISBN: string;
@@ -11,12 +11,16 @@ type Book = {
   image: string;
 };
 
+type idObj = {
+  $oid: string;
+};
+
 type SearchFormProps = {
   onSearchSubmit: (event: FormEvent<HTMLFormElement>) => void;
 };
 
 type Branch = {
-  id: number;
+  _id: idObj;
   name: string;
   address: string;
   state: string;
@@ -25,7 +29,7 @@ type Branch = {
 };
 
 type BookAndBranches = {
-  id: number;
+  _id: idObj;
   title: string;
   author: string;
   ISBN: string;

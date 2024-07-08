@@ -100,7 +100,7 @@ const AddBook = () => {
 
   return (
     <>
-      <Container style={{ paddingTop: "20px", paddingBottom: "100px" }}>
+      <Container style={{ paddingTop: "20px", paddingBottom: "20px" }}>
         <Breadcrumb>
           <li className="breadcrumb-item">
             <Link to="/">Home</Link>
@@ -315,7 +315,7 @@ const BranchesForm = ({
   const [newBranch, setNewBranch] = useState<Branch[]>(
     branchesList.filter((branch) => {
       return !formData.branchCopy.some((branchCopy) => {
-        return branchCopy.branch === branch.id.toString();
+        return branchCopy.branch === branch._id.$oid;
       });
     })
   );
@@ -340,7 +340,7 @@ const BranchesForm = ({
             >
               <option></option>
               {newBranch.map((branch) => (
-                <option key={branch.id} value={branch.id}>
+                <option key={branch._id.$oid} value={branch._id.$oid}>
                   {branch.name}
                 </option>
               ))}

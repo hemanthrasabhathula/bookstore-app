@@ -1,15 +1,19 @@
 import React, { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import "./App.css";
-import { booksList } from "./data/Books_dummy";
+// import { booksList } from "./data/Books_dummy";
 import { BookSearchForm } from "./components/search/BookSearchForm";
 import { Container, Row } from "react-bootstrap";
 import { Book } from "./model/Definitions";
+import { API_ENDPOINT } from "./model/Constants";
 import BookList from "./components/bookgrid/BookGrid";
+import { useBooks } from "./components/bookcontext/BookContext";
 
 const App = () => {
   console.log("App");
-  const [books, setBooks] = useState<Book[]>([]);
+  //const [books, setBooks] = useState<Book[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
+
+  const { books, branches, setBooks, setBranches } = useBooks();
 
   const handleSearchInput = (event: ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
@@ -29,8 +33,32 @@ const App = () => {
       .includes(searchTerm.replaceAll(" ", "").toLowerCase())
   );
 
+  const handleFetchBooks = async () => {
+    try {
+      const response = await fetch(`${API_ENDPOINT}/getbooks`);
+      const data = await response.json();
+      console.log("Books Data", data);
+      setBooks(data);
+    } catch (error) {
+      console.error("Error fetching books", error);
+    }
+  };
+
+  const handleFetchBranches = async () => {
+    try {
+      const response = await fetch(`${API_ENDPOINT}/getbranches`);
+      const data = await response.json();
+      console.log("Branches Data", data);
+      setBranches(data);
+    } catch (error) {
+      console.error("Error fetching branches", error);
+    }
+  };
+
   useEffect(() => {
-    setBooks(booksList);
+    if (books.length === 0) handleFetchBooks();
+    if (branches.length === 0) handleFetchBranches();
+    //setBooks(booksList); // Comment this line when using the API
   }, []);
 
   return (

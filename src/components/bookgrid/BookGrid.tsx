@@ -14,12 +14,12 @@ const BookList = ({ booklist }: { booklist: Book[] }) => {
       <Row>
         <h2 className="mb-3">All Books</h2>
         {booklist.map((book) => (
-          <Col xs={4} sm={4} md={3} lg={2} key={book.id} className="mb-4">
+          <Col xs={4} sm={4} md={3} lg={2} key={book._id.$oid} className="mb-4">
             <div className="book-item">
               <div
                 className="book-image"
                 onClick={() =>
-                  navigate(`/book/${book.id}`, { state: { book } })
+                  navigate(`/book/${book._id.$oid}`, { state: { book } })
                 }
               >
                 <Image

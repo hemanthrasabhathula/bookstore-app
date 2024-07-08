@@ -11,7 +11,7 @@ const BookSearchForm = ({
 }) => {
   return (
     <Form onSubmit={onSearchSubmit}>
-      <InputGroup className="mb-3" onSubmit={onSearchSubmit}>
+      <InputGroup className="mb-3 mt-4" onSubmit={onSearchSubmit}>
         <Form.Control
           type="text"
           placeholder="Search Book ..."

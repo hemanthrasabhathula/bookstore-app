@@ -8,14 +8,36 @@ import {
   Table,
 } from "react-bootstrap";
 import "./AddBranch.css";
-import { branchesList } from "../../../data/Branches_dummy";
-import { useState } from "react";
+//import { branchesList } from "../../../data/Branches_dummy";
+import { API_ENDPOINT } from "../../../model/Constants";
+import { useEffect, useState } from "react";
 import { Branch } from "../../../model/Definitions";
 import { Link } from "react-router-dom";
+import { useBooks } from "../../bookcontext/BookContext";
 const AddBranch = () => {
   const [addBranchToggle, setAddBranchToggle] = useState(false);
+  const { branches, setBranches } = useBooks();
+  const [branchesList, setBranchesList] = useState<Branch[]>(branches);
+
+  const fetchBranches = async () => {
+    try {
+      const response = await fetch(`${API_ENDPOINT}/getbranches`);
+      const data = await response.json();
+      console.log("Branches Data", data);
+      setBranches(data);
+      setBranchesList(data);
+    } catch (error) {
+      console.error("Error fetching branches", error);
+    }
+  };
+  useEffect(() => {
+    if (branches.length === 0) fetchBranches();
+
+    //setBranchesList(branchesList);
+  }, []);
+
   const [branch, setBranch] = useState<Branch>({
-    id: branchesList.length + 1,
+    _id: { $oid: "" },
     name: "",
     address: "",
     state: "",
@@ -45,7 +67,7 @@ const AddBranch = () => {
 
     branchesList.push(branch);
     setBranch({
-      id: branchesList.length + 1,
+      _id: { $oid: "" },
       name: "",
       address: "",
       state: "",
@@ -84,8 +106,8 @@ const AddBranch = () => {
                   </thead>
                   <tbody>
                     {branchesList.map((branch, index) => (
-                      <tr key={branch.id}>
-                        <td>{branch.id}</td>
+                      <tr key={branch._id.$oid}>
+                        <td>{branch._id.$oid}</td>
                         <td>{branch.name}</td>
                         <td>{branch.address}</td>
                         <td>{branch.state}</td>
@@ -94,7 +116,7 @@ const AddBranch = () => {
                     ))}
                     {addBranchToggle && (
                       <tr>
-                        <td>{branch.id}</td>
+                        <td>{branch._id.$oid}</td>
                         <td>
                           <Form.Control
                             type="text"

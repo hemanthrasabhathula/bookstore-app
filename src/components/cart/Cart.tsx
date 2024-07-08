@@ -98,12 +98,12 @@ const CartTable = ({
   const [readOnly, setReadOnly] = useState(true);
   const { bookslist, updateBooklist } = useBooks();
   const [bookCount, setBookCount] = useState<number>(branch.count || 0);
-  const handleTableActions = (bookId: number, branchId: number) => {
+  const handleTableActions = (bookId: string, branchId: string) => {
     console.log("Remove", bookId, branchId);
     bookslist.forEach((book) => {
-      if (book.id === bookId) {
+      if (book._id.$oid === bookId) {
         book.branches = book.branches?.filter(
-          (branch) => branch.id !== branchId
+          (branch) => branch._id.$oid !== branchId
         );
 
         updateBooklist(book);
@@ -121,8 +121,8 @@ const CartTable = ({
   }, [readOnly]);
 
   const handleBlur = (
-    bookId: number,
-    branchId: number,
+    bookId: string,
+    branchId: string,
     copyCount: number | undefined,
     branchCount: number
   ) => {
@@ -134,9 +134,9 @@ const CartTable = ({
     //   setBookCount(branchCount);
     // } else {
     bookslist.forEach((book) => {
-      if (book.id === bookId) {
+      if (book._id.$oid === bookId) {
         book.branches?.forEach((branch) => {
-          if (branch.id === branchId) {
+          if (branch._id.$oid === branchId.toString()) {
             if (copyCount === undefined || isNaN(copyCount) || copyCount < 0) {
               console.log("Invalid count:: ", copyCount);
               setBookCount(branchCount);
@@ -163,7 +163,7 @@ const CartTable = ({
               rowSpan={book.branches?.length}
               style={{ verticalAlign: "middle" }}
             >
-              {book.id}
+              {book._id.$oid}
             </td>
             <td
               rowSpan={book.branches?.length}
@@ -181,7 +181,7 @@ const CartTable = ({
             ref={inputRef}
             readOnly={readOnly}
             style={{ border: "none", backgroundColor: "transparent" }}
-            key={branch.id}
+            key={branch._id.$oid}
             className="quantity-input"
             defaultValue={bookCount}
             onBlur={(e) => {
@@ -191,8 +191,8 @@ const CartTable = ({
                 e.target.value = branch.count?.toString() || "0";
               } else {
                 handleBlur(
-                  book.id,
-                  branch.id,
+                  book._id.$oid,
+                  branch._id.$oid,
                   parseInt(e.target.value),
                   branch.count || 0
                 );
@@ -210,7 +210,9 @@ const CartTable = ({
           </button>
         </td>
         <td>
-          <Button onClick={() => handleTableActions(book.id, branch.id)}>
+          <Button
+            onClick={() => handleTableActions(book._id.$oid, branch._id.$oid)}
+          >
             Remove
           </Button>
         </td>
