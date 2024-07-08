@@ -36,9 +36,9 @@ const App = () => {
   const handleFetchBooks = async () => {
     try {
       const response = await fetch(`${API_ENDPOINT}/books`);
-      const data = await response.json();
-      console.log("Books Data", data);
-      setBooks(data);
+      const items = await response.json();
+      console.log("Books Data", items.data);
+      setBooks(items.data);
     } catch (error) {
       console.error("Error fetching books", error);
     }
@@ -47,9 +47,9 @@ const App = () => {
   const handleFetchBranches = async () => {
     try {
       const response = await fetch(`${API_ENDPOINT}/branches`);
-      const data = await response.json();
-      console.log("Branches Data", data);
-      setBranches(data);
+      const items = await response.json();
+      console.log("Branches Data", items.data);
+      setBranches(items.data);
     } catch (error) {
       console.error("Error fetching branches", error);
     }

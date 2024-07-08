@@ -39,7 +39,7 @@ const Cart = () => {
                   <Table bordered hover>
                     <thead>
                       <tr>
-                        <th>#</th>
+                        {/* <th>#</th> */}
                         <th>Book</th>
                         <th>Branches</th>
                         <th>Copies</th>
@@ -159,12 +159,12 @@ const CartTable = ({
       <tr key={`${bookIndex}-${branchIndex}`}>
         {branchIndex === 0 && (
           <>
-            <td
+            {/* <td
               rowSpan={book.branches?.length}
               style={{ verticalAlign: "middle" }}
             >
               {book._id.$oid}
-            </td>
+            </td> */}
             <td
               rowSpan={book.branches?.length}
               style={{ verticalAlign: "middle" }}

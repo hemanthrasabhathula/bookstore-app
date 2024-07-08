@@ -22,14 +22,34 @@ const AddBranch = () => {
   const fetchBranches = async () => {
     try {
       const response = await fetch(`${API_ENDPOINT}/branches`);
-      const data = await response.json();
-      console.log("Branches Data", data);
-      setBranches(data);
-      setBranchesList(data);
+      const items = await response.json();
+      console.log("Branches Data", items.data);
+      setBranches(items.data);
+      //setBranchesList(items.data);
     } catch (error) {
       console.error("Error fetching branches", error);
     }
   };
+
+  const addBranch = async (branch: Branch) => {
+    try {
+      const response = await fetch(`${API_ENDPOINT}/branch`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(branch),
+      });
+      const items = await response.json();
+      if (response.status === 201 && items.data._id.$oid) {
+        const newBranch: Branch = items.data;
+        setBranches([...branches, newBranch]);
+      }
+    } catch (error) {
+      console.error("Error adding branch", error);
+    }
+  };
+
   useEffect(() => {
     if (branches.length === 0) fetchBranches();
 
@@ -65,7 +85,9 @@ const AddBranch = () => {
       return;
     }
 
-    branchesList.push(branch);
+    //setBranches([...branches, branch]);
+    addBranch(branch);
+    //branchesList.push(branch);
     setBranch({
       _id: { $oid: "" },
       name: "",
@@ -75,7 +97,7 @@ const AddBranch = () => {
     });
     setAddBranchToggle(!addBranchToggle);
 
-    console.log(branchesList);
+    console.log(branches);
   };
 
   return (
@@ -89,7 +111,7 @@ const AddBranch = () => {
         </Breadcrumb>
         <Row className="justify-content-evenly">
           <Col lg="10" md="10" xs="auto" sm="auto">
-            {branchesList.length === 0 ? (
+            {branches.length === 0 ? (
               <h3> No Branches Found</h3>
             ) : (
               <>
@@ -97,7 +119,7 @@ const AddBranch = () => {
                 <Table bordered hover>
                   <thead>
                     <tr>
-                      <th>#</th>
+                      {/* <th>#</th> */}
                       <th>Branch Name</th>
                       <th>Address</th>
                       <th>State</th>
@@ -105,9 +127,9 @@ const AddBranch = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {branchesList.map((branch, index) => (
+                    {branches.map((branch, index) => (
                       <tr key={branch._id.$oid}>
-                        <td>{branch._id.$oid}</td>
+                        {/* <td>{branch._id.$oid}</td> */}
                         <td>{branch.name}</td>
                         <td>{branch.address}</td>
                         <td>{branch.state}</td>
@@ -116,7 +138,7 @@ const AddBranch = () => {
                     ))}
                     {addBranchToggle && (
                       <tr>
-                        <td>{branch._id.$oid}</td>
+                        {/* <td>{branch._id.$oid}</td> */}
                         <td>
                           <Form.Control
                             type="text"
