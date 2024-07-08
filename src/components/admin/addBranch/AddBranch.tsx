@@ -21,7 +21,7 @@ const AddBranch = () => {
 
   const fetchBranches = async () => {
     try {
-      const response = await fetch(`${API_ENDPOINT}/getbranches`);
+      const response = await fetch(`${API_ENDPOINT}/branches`);
       const data = await response.json();
       console.log("Branches Data", data);
       setBranches(data);
