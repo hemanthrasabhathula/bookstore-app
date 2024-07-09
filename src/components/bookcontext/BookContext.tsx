@@ -1,5 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { Book, BookAndBranches, Branch } from "../../model/Definitions";
+import "../../model/Constants";
+import { BOOKS_LIST, BRANCHES_LIST } from "../../model/Constants";
 
 const BookContext = createContext<{
   books: Book[];
@@ -68,6 +70,11 @@ export const BookProvider: React.FC<{ children: React.ReactNode }> = ({
       if (timeDiff <= 1) setBooksList(JSON.parse(storedBooksList));
     }
   }, []);
+
+  useEffect(() => {
+    console.log("Branches Context Branches useEffect");
+    localStorage.setItem(BRANCHES_LIST, JSON.stringify(branches));
+  }, [branches]);
 
   // Save bookslist to localStorage whenever it changes
   useEffect(() => {

@@ -3,17 +3,21 @@ import "./App.css";
 // import { booksList } from "./data/Books_dummy";
 import { BookSearchForm } from "./components/search/BookSearchForm";
 import { Container, Row } from "react-bootstrap";
-import { Book } from "./model/Definitions";
-import { API_ENDPOINT } from "./model/Constants";
+import { Book, Branch } from "./model/Definitions";
+import { API_ENDPOINT, BOOKS_LIST, BRANCHES_LIST } from "./model/Constants";
 import BookList from "./components/bookgrid/BookGrid";
 import { useBooks } from "./components/bookcontext/BookContext";
+import { useBooksAndBraches } from "./components/bookcontext/BookStoreContext";
+import StorageService from "./utils/StorageService";
 
 const App = () => {
   console.log("App");
   //const [books, setBooks] = useState<Book[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
 
-  const { books, branches, setBooks, setBranches } = useBooks();
+  //const { books, branches, setBooks, setBranches } = useBooks();
+
+  const { books, branches, addBook, addBranch } = useBooksAndBraches();
 
   const handleSearchInput = (event: ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
@@ -38,7 +42,7 @@ const App = () => {
       const response = await fetch(`${API_ENDPOINT}/books`);
       const items = await response.json();
       console.log("Books Data", items.data);
-      setBooks(items.data);
+      addBook(items.data);
     } catch (error) {
       console.error("Error fetching books", error);
     }
@@ -49,15 +53,17 @@ const App = () => {
       const response = await fetch(`${API_ENDPOINT}/branches`);
       const items = await response.json();
       console.log("Branches Data", items.data);
-      setBranches(items.data);
+      addBranch(items.data);
     } catch (error) {
       console.error("Error fetching branches", error);
     }
   };
 
   useEffect(() => {
-    if (books.length === 0) handleFetchBooks();
-    if (branches.length === 0) handleFetchBranches();
+    const storedBooks = StorageService.getItem(BOOKS_LIST);
+    if (!storedBooks) handleFetchBooks();
+    const storedBranches = StorageService.getItem(BRANCHES_LIST);
+    if (!storedBranches) handleFetchBranches();
     //setBooks(booksList); // Comment this line when using the API
   }, []);
 
