@@ -2,20 +2,18 @@ import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
-//import { useBooks } from "../components/bookcontext/BookContext";
+import { useBooks } from "../components/bookcontext/BookContext";
 import { Badge } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { useBooksAndBraches } from "../components/bookcontext/BookStoreContext";
 
 const NavBar = (props: { children: React.ReactNode }) => {
-  //const { bookslist } = useBooks();
-  const { cartItems } = useBooksAndBraches();
+  const { bookslist } = useBooks();
   const navigate = useNavigate();
   const [booksCount, setBooksCount] = useState(0);
   useEffect(() => {
-    setBooksCount(cartItems.length);
-  }, [cartItems]);
+    setBooksCount(bookslist.length);
+  }, [bookslist]);
   return (
     <div>
       <Navbar collapseOnSelect expand="lg" className="bg-body-tertiary">
@@ -29,9 +27,9 @@ const NavBar = (props: { children: React.ReactNode }) => {
               <Nav.Link eventKey={1} as={Link} to="/">
                 Books
               </Nav.Link>
-              {/* <Nav.Link href="#pricing">Branches</Nav.Link> */}
-              <Nav.Link eventKey={2} as={Link} to="/branches">
-                Branches
+              <Nav.Link href="#pricing">Branches</Nav.Link>
+              <Nav.Link eventKey={2} as={Link} to="/addbranch">
+                Add Branch
               </Nav.Link>
               <Nav.Link eventKey={3} as={Link} to="/addbook">
                 Add Book

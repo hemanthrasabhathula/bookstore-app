@@ -8,17 +8,15 @@ import {
 } from "react-bootstrap";
 import { useBooks } from "../bookcontext/BookContext";
 import { Link } from "react-router-dom";
-import { Book, BookAndBranches, Branch } from "../../model/Definitions";
+import { BookAndBranches, Branch } from "../../model/Definitions";
 import { ReactComponent as Editicon } from "../../pencil.svg";
 import { useEffect, useRef, useState } from "react";
 import "./Cart.css";
-import { useBooksAndBraches } from "../bookcontext/BookStoreContext";
 
 const Cart = () => {
-  //const { bookslist, updateBooklist, clearBooklist } = useBooks();
-  const { cartItems, removeAllCartItems } = useBooksAndBraches();
+  const { bookslist, updateBooklist, clearBooklist } = useBooks();
 
-  console.log("CartList ", cartItems);
+  console.log("BooksList", bookslist);
 
   return (
     <>
@@ -31,7 +29,7 @@ const Cart = () => {
         </Breadcrumb>
         <Row className="justify-content-evenly">
           <Col lg="10" md="10" xs="auto" sm="auto">
-            {cartItems.length === 0 ? ( // If no books are found, display a message to the user
+            {bookslist.length === 0 ? ( // If no books are found, display a message to the user
               <Row>
                 <h2>No Books in the Cart</h2>
               </Row>
@@ -49,7 +47,7 @@ const Cart = () => {
                       </tr>
                     </thead>
                     <tbody>
-                      {cartItems.map((book, bookIndex) => (
+                      {bookslist.map((book, bookIndex) => (
                         <>
                           {book.branches?.map((branch, branchIndex) => (
                             <CartTable
@@ -70,7 +68,7 @@ const Cart = () => {
                     <Button
                       style={{ marginLeft: "10px" }}
                       onClick={() => {
-                        removeAllCartItems();
+                        clearBooklist();
                       }}
                     >
                       Clear Cart
@@ -92,24 +90,23 @@ const CartTable = ({
   branch,
   branchIndex,
 }: {
-  book: Book;
+  book: BookAndBranches;
   bookIndex: number;
   branch: Branch;
   branchIndex: number;
 }) => {
   const [readOnly, setReadOnly] = useState(true);
-  //const { bookslist, updateBooklist } = useBooks();
-  const { cartItems, addCartItems } = useBooksAndBraches();
-  const [bookCount, setBookCount] = useState<number>(branch.copies || 0);
+  const { bookslist, updateBooklist } = useBooks();
+  const [bookCount, setBookCount] = useState<number>(branch.count || 0);
   const handleTableActions = (bookId: string, branchId: string) => {
     console.log("Remove", bookId, branchId);
-    cartItems.forEach((book) => {
+    bookslist.forEach((book) => {
       if (book._id.$oid === bookId) {
         book.branches = book.branches?.filter(
           (branch) => branch._id.$oid !== branchId
         );
 
-        addCartItems(book);
+        updateBooklist(book);
       }
     });
   };
@@ -136,7 +133,7 @@ const CartTable = ({
     //   console.log("Invalid count:: ", copyCount);
     //   setBookCount(branchCount);
     // } else {
-    cartItems.forEach((book) => {
+    bookslist.forEach((book) => {
       if (book._id.$oid === bookId) {
         book.branches?.forEach((branch) => {
           if (branch._id.$oid === branchId.toString()) {
@@ -144,10 +141,10 @@ const CartTable = ({
               console.log("Invalid count:: ", copyCount);
               setBookCount(branchCount);
             } else {
-              branch.copies = copyCount;
+              branch.count = copyCount;
             }
             console.log("Branch --> ", branch);
-            addCartItems(book);
+            updateBooklist(book);
           }
         });
 
@@ -191,13 +188,13 @@ const CartTable = ({
               setReadOnly(true);
               console.log("onBlur", e.target.value);
               if (e.target.value === "" || isNaN(parseInt(e.target.value))) {
-                e.target.value = branch.copies?.toString() || "0";
+                e.target.value = branch.count?.toString() || "0";
               } else {
                 handleBlur(
                   book._id.$oid,
                   branch._id.$oid,
                   parseInt(e.target.value),
-                  branch.copies || 0
+                  branch.count || 0
                 );
               }
             }}

@@ -8,7 +8,6 @@ import { Route, Routes, BrowserRouter } from "react-router-dom";
 import BookItem from "./components/book/BookItem";
 import NavBar from "./navbar/navbar";
 import { BookProvider } from "./components/bookcontext/BookContext";
-import { BookStoreProvider } from "./components/bookcontext/BookStoreContext";
 import Cart from "./components/cart/Cart";
 import AddBook from "./components/admin/addBook/AddBook";
 import AddBranch from "./components/admin/addBranch/AddBranch";
@@ -20,17 +19,17 @@ root.render(
   // <React.StrictMode>
 
   <BrowserRouter>
-    <BookStoreProvider>
+    <BookProvider>
       <NavBar>
         <Routes>
           <Route path="/" element={<App />} />
           <Route path="/book/:bookId" element={<BookItem />} />
           <Route path="/cart/" element={<Cart />} />
           <Route path="/addbook" element={<AddBook />} />
-          <Route path="/branches" element={<AddBranch />} />
+          <Route path="/addbranch" element={<AddBranch />} />
         </Routes>
       </NavBar>
-    </BookStoreProvider>
+    </BookProvider>
   </BrowserRouter>
   // </React.StrictMode>
 );

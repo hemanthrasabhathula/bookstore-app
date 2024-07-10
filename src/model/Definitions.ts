@@ -9,7 +9,6 @@ type Book = {
   published: number;
   pages: number;
   image: string;
-  branches?: Branch[];
 };
 
 type idObj = {
@@ -26,7 +25,7 @@ type Branch = {
   address: string;
   state: string;
   zip: number;
-  copies?: 0 | number;
+  count?: 0 | number;
 };
 
 type BookAndBranches = {
@@ -41,24 +40,4 @@ type BookAndBranches = {
   branches: Branch[];
 };
 
-type BookContextTypeProps = {
-  books: Book[];
-  branches: Branch[];
-  cartItems: Book[];
-  addBook: (book: Book | Book[]) => void;
-  addBranch: (branch: Branch | Branch[]) => void;
-  addCartItems: (cartItem: Book) => void;
-  removeBook: (id: string) => void;
-  removeBranch: (id: string) => void;
-  removeAllBooks: () => void;
-  removeAllBranches: () => void;
-  removeAllCartItems: () => void;
-};
-
-export type {
-  Book,
-  SearchFormProps,
-  Branch,
-  BookAndBranches,
-  BookContextTypeProps,
-};
+export type { Book, SearchFormProps, Branch, BookAndBranches };

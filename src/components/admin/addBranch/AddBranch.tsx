@@ -13,12 +13,10 @@ import { API_ENDPOINT } from "../../../model/Constants";
 import { useEffect, useState } from "react";
 import { Branch } from "../../../model/Definitions";
 import { Link } from "react-router-dom";
-import { useBooksAndBraches } from "../../bookcontext/BookStoreContext";
+import { useBooks } from "../../bookcontext/BookContext";
 const AddBranch = () => {
   const [addBranchToggle, setAddBranchToggle] = useState(false);
-  //const { branches, setBranches } = useBooks();
-  const { branches, addBranch } = useBooksAndBraches();
-
+  const { branches, setBranches } = useBooks();
   const [branchesList, setBranchesList] = useState<Branch[]>(branches);
 
   const fetchBranches = async () => {
@@ -26,15 +24,14 @@ const AddBranch = () => {
       const response = await fetch(`${API_ENDPOINT}/branches`);
       const items = await response.json();
       console.log("Branches Data", items.data);
-      const branchesData: Branch[] = items.data;
-      addBranch(branchesData);
+      setBranches(items.data);
       //setBranchesList(items.data);
     } catch (error) {
       console.error("Error fetching branches", error);
     }
   };
 
-  const addOneBranch = async (branch: Branch) => {
+  const addBranch = async (branch: Branch) => {
     try {
       const response = await fetch(`${API_ENDPOINT}/branch`, {
         method: "POST",
@@ -45,8 +42,8 @@ const AddBranch = () => {
       });
       const items = await response.json();
       if (response.status === 201 && items.data._id.$oid) {
-        const branchData: Branch = items.data;
-        addBranch(branchData);
+        const newBranch: Branch = items.data;
+        setBranches([...branches, newBranch]);
       }
     } catch (error) {
       console.error("Error adding branch", error);
@@ -89,7 +86,7 @@ const AddBranch = () => {
     }
 
     //setBranches([...branches, branch]);
-    addOneBranch(branch);
+    addBranch(branch);
     //branchesList.push(branch);
     setBranch({
       _id: { $oid: "" },

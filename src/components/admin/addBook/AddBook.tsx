@@ -8,13 +8,10 @@ import {
 } from "react-bootstrap";
 import "./AddBook.css";
 import { ChangeEvent, ChangeEventHandler, FormEvent, useState } from "react";
-//import { branchesList } from "../../../data/Branches_dummy";
+import { branchesList } from "../../../data/Branches_dummy";
 import { Row } from "react-bootstrap";
 import { Branch } from "../../../model/Definitions";
 import { Link } from "react-router-dom";
-import { useBooks } from "../../bookcontext/BookContext";
-import { useBooksAndBraches } from "../../bookcontext/BookStoreContext";
-
 type FormData = {
   title: string;
   author: string;
@@ -43,8 +40,6 @@ const AddBook = () => {
     image: "",
     branchCopy: [{ branch: "", copies: "" }],
   });
-
-  const { branches } = useBooksAndBraches();
 
   const handleFormData = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -271,10 +266,9 @@ const AddBook = () => {
                   handleCopiesChange={handleCopiesChange}
                   validated={validated}
                   index={index}
-                  branches={branches}
                 />
               ))}
-              {branches.length !== formData.branchCopy.length && (
+              {branchesList.length !== formData.branchCopy.length && (
                 <Button
                   variant="link"
                   className="mb-3"
@@ -308,7 +302,6 @@ const BranchesForm = ({
   handleCopiesChange,
   validated,
   index,
-  branches,
 }: {
   formData: FormData;
   handleSelectChange: (
@@ -318,10 +311,9 @@ const BranchesForm = ({
   handleCopiesChange: (e: ChangeEvent<HTMLInputElement>, index: number) => void;
   validated: boolean;
   index: number;
-  branches: Branch[];
 }) => {
   const [newBranch, setNewBranch] = useState<Branch[]>(
-    branches.filter((branch) => {
+    branchesList.filter((branch) => {
       return !formData.branchCopy.some((branchCopy) => {
         return branchCopy.branch === branch._id.$oid;
       });

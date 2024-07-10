@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Branch } from "../../model/Definitions";
 import { Button, Col, Form, InputGroup, Row } from "react-bootstrap";
 import "./BranchItem.css";
@@ -8,28 +8,23 @@ const BranchItem = ({
   onCountChange,
 }: {
   branch: Branch;
-  onCountChange: (branch: Branch) => void;
+  onCountChange: (num: number, branch: Branch) => void;
 }) => {
   console.log("branch Item Loaded ", branch);
-  const [counter, setCounter] = useState(branch.copies || 0);
-  const [branchCopy, setBranchCopy] = useState<Branch>(branch);
+  const [counter, setCounter] = useState(branch.count || 0);
+  const [branchCopy, setBranchCopy] = useState<Branch>({ ...branch });
 
   const handleCounter = (num: number, branch: Branch) => {
-    if (branchCopy.copies === undefined) {
-      branchCopy.copies = 0;
+    if (branchCopy.count === undefined) {
+      branchCopy.count = 0;
     }
-    branchCopy.copies += num;
+    branchCopy.count += num;
     console.log("branchCopy ", branchCopy);
 
     setCounter(counter + num);
     setBranchCopy(branchCopy);
-    onCountChange(branchCopy);
+    onCountChange(num, branchCopy);
   };
-
-  useEffect(() => {
-    setCounter(branch.copies || 0);
-    setBranchCopy(branch);
-  }, [branch]);
 
   return (
     <Row className="justify-content-start mb-1">
@@ -63,7 +58,7 @@ const BranchItem = ({
               maxWidth: "46px",
             }}
             id={`quantity-input${branch._id.$oid}`}
-            value={branchCopy.copies || 0}
+            value={counter}
             onChange={(e) => {
               if (parseInt(e.target.value) < 0) {
                 e.target.value = "0";

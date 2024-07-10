@@ -1,177 +1,76 @@
-import { Link, useLocation, useParams } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { Book, BookAndBranches, Branch } from "../../model/Definitions";
 import { Breadcrumb, Col, Container, Image, Row } from "react-bootstrap";
 import "./BookItem.css";
 import { branchesList } from "../../data/Branches_dummy";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import BranchItem from "../branch/BranchItem";
 import { useBooks } from "../bookcontext/BookContext";
-import { useBooksAndBraches } from "../bookcontext/BookStoreContext";
 
 const BookItem = () => {
-  const { bookId } = useParams();
   const location = useLocation();
-  const { cartItems, branches, addCartItems } = useBooksAndBraches();
-  // const bookVal = () => {
-  //   if (cartItems.length !== 0) {
-  //     const foundBook = cartItems.find((item) => item._id.$oid === bookId);
-  //     if (foundBook) {
-  //       return foundBook;
-  //     } else {
-  //       return location.state?.book;
-  //     }
-  //   } else {
-  //     return location.state?.book;
-  //   }
-  // };
   const [book, setBook] = useState<Book>(location.state?.book);
+  const [totalCount, setTotalCount] = useState(0);
 
-  useEffect(() => {
-    // if (cartItems.length !== 0) {
-    //   const foundBook = cartItems.find((item) => item._id.$oid === bookId);
-    //   if (foundBook) {
-    //     setBook(foundBook);
-    //   } else {
-    //     setBook(location.state?.book);
-    //   }
-    // } else {
-    //   setBook(location.state?.book);
-    // }
+  const { bookslist, branches, updateBooklist } = useBooks();
 
-    const bookVal = () => {
-      if (cartItems.length !== 0) {
-        const foundBook = cartItems.find((item) => item._id.$oid === bookId);
-        if (foundBook) {
-          return foundBook;
-        } else {
-          return location.state?.book;
-        }
-      } else {
-        return location.state?.book;
-      }
-    };
-    setBook(bookVal);
-  }, [cartItems, bookId, location.state]);
+  const bookIndex = bookslist.findIndex((b) => b._id.$oid === book._id.$oid);
+  const [branchCopies, setBranchCopies] = useState<Branch[]>(
+    bookIndex >= 0 ? bookslist[bookIndex].branches : []
+  );
+  const branchesCombined: Branch[] = [];
+  if (bookIndex >= 0) {
+    console.log("found book in bookslist");
+    branchesCombined.push(...bookslist[bookIndex].branches);
+  }
 
-  //const [book, setBook] = useState<Book>(location.state?.book);
-  // const [totalCount, setTotalCount] = useState(0);
+  branches.forEach((branchFromList) => {
+    // Check if the branch is not already in branchesCombined
+    const isBranchAlreadyIncluded = branchesCombined.some(
+      (combinedBranch) => combinedBranch._id.$oid === branchFromList._id.$oid
+    );
 
-  // const { bookslist, updateBooklist } = useBooks();
-
-  // const branchCopies: Branch[] = branches.map((branch) => {
-  //   if (book.branches !== undefined) {
-  //     const index = book.branches.findIndex(
-  //       (b) => b._id.$oid === branch._id.$oid
-  //     );
-  //     if (index !== -1) {
-  //       return book.branches[index];
-  //     }
-  //   }
-  //   const branchTemp = branch;
-  //   branchTemp.copies = 0;
-  //   return branchTemp;
-  // });
-
-  console.log("Book", book);
-
-  const branchCopies: Branch[] = branches.map((branch) => {
-    if (book.branches !== undefined) {
-      const index = book.branches.findIndex(
-        (b) => b._id.$oid === branch._id.$oid
-      );
-      if (index !== -1) {
-        return book.branches[index];
-      }
+    // If the branch is not in branchesCombined, push it to branchesCombined
+    if (!isBranchAlreadyIncluded) {
+      branchesCombined.push(branchFromList);
     }
-    const branchTemp = branch;
-    branchTemp.copies = 0;
-    return branchTemp;
   });
+  branchesCombined.sort((a, b) => a._id.$oid.localeCompare(b._id.$oid));
 
-  console.log("Branch Copies", branchCopies);
-
-  const handleBranchCopies = (branch: Branch) => {
-    if (book.branches === undefined || book.branches.length === 0) {
-      if (branch.copies !== 0) {
-        book.branches = [branch];
-      }
+  const handletotalCount = (num: number, branch: Branch) => {
+    if (branchCopies.length === 0) {
+      branchCopies.push(branch);
     } else {
-      const index = book.branches.findIndex(
+      const index = branchCopies.findIndex(
         (b) => b._id.$oid === branch._id.$oid
       );
       if (index !== -1) {
-        if (branch.copies === 0) {
-          book.branches.splice(index, 1);
+        // If branch is found, replace the old branch with the new one
+        if (branch.count === 0) {
+          branchCopies.splice(index, 1);
         } else {
-          book.branches.splice(index, 1, branch);
+          branchCopies.splice(index, 1, branch);
         }
       } else {
-        book.branches.push(branch);
+        // If branch is not found, push the new branch into branchCopies
+        branchCopies.push(branch);
       }
     }
-    addCartItems(book);
+
+    setBranchCopies(branchCopies);
+
+    const updatedBook: BookAndBranches = { ...book, branches: branchCopies };
+    setBook(updatedBook);
+    updateBooklist(updatedBook);
+
+    const totalCountNum = totalCount + num;
+    setTotalCount(totalCountNum);
   };
 
-  // const bookIndex = bookslist.findIndex((b) => b._id.$oid === book._id.$oid);
-  // const [branchCopies, setBranchCopies] = useState<Branch[]>(
-  //   bookIndex >= 0 ? bookslist[bookIndex].branches : []
-  // );
-
-  // const branchesCombined = branches.map((branch)=> branch._id.$oid === );
-
-  // const branchesCombined: Branch[] = [];
-  // if (bookIndex >= 0) {
-  //   console.log("found book in bookslist");
-  //   branchesCombined.push(...bookslist[bookIndex].branches);
-  // }
-
-  // branches.forEach((branchFromList) => {
-  //   // Check if the branch is not already in branchesCombined
-  //   const isBranchAlreadyIncluded = branchesCombined.some(
-  //     (combinedBranch) => combinedBranch._id.$oid === branchFromList._id.$oid
-  //   );
-
-  //   // If the branch is not in branchesCombined, push it to branchesCombined
-  //   if (!isBranchAlreadyIncluded) {
-  //     branchesCombined.push(branchFromList);
-  //   }
-  // });
-  // branchesCombined.sort((a, b) => a._id.$oid.localeCompare(b._id.$oid));
-
-  // const handletotalCount = (num: number, branch: Branch) => {
-  //   if (branchCopies.length === 0) {
-  //     branchCopies.push(branch);
-  //   } else {
-  //     const index = branchCopies.findIndex(
-  //       (b) => b._id.$oid === branch._id.$oid
-  //     );
-  //     if (index !== -1) {
-  //       // If branch is found, replace the old branch with the new one
-  //       if (branch.copies === 0) {
-  //         branchCopies.splice(index, 1);
-  //       } else {
-  //         branchCopies.splice(index, 1, branch);
-  //       }
-  //     } else {
-  //       // If branch is not found, push the new branch into branchCopies
-  //       branchCopies.push(branch);
-  //     }
-  //   }
-
-  //   setBranchCopies(branchCopies);
-
-  //   const updatedBook: BookAndBranches = { ...book, branches: branchCopies };
-  //   setBook(updatedBook);
-  //   updateBooklist(updatedBook);
-
-  //   const totalCountNum = totalCount + num;
-  //   setTotalCount(totalCountNum);
-  // };
-
-  // useEffect(() => {
-  //   console.log("book ", book);
-  //   console.log("totalCount ", totalCount);
-  // }, [totalCount]);
+  useEffect(() => {
+    console.log("book ", book);
+    console.log("totalCount ", totalCount);
+  }, [totalCount]);
 
   return (
     <>
@@ -185,7 +84,7 @@ const BookItem = () => {
         <Row
           id="image"
           className="justify-content-evenly"
-          style={{ paddingTop: "20px", alignItems: "center" }}
+          style={{ paddingTop: "20px" }}
         >
           <Col
             lg={{ span: 2, offset: 2 }}
@@ -228,11 +127,11 @@ const BookItem = () => {
               <Row className="mt-4">
                 <div>Available at:</div>
 
-                {branchCopies.map((branch) => (
+                {branchesCombined.map((branch) => (
                   <BranchItem
                     key={branch._id.$oid}
                     branch={branch}
-                    onCountChange={handleBranchCopies}
+                    onCountChange={handletotalCount}
                   />
                 ))}
               </Row>
