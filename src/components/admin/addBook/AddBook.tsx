@@ -7,11 +7,18 @@ import {
   Form,
 } from "react-bootstrap";
 import "./AddBook.css";
-import { ChangeEvent, ChangeEventHandler, FormEvent, useState } from "react";
-import { branchesList } from "../../../data/Branches_dummy";
+import {
+  ChangeEvent,
+  ChangeEventHandler,
+  FormEvent,
+  useEffect,
+  useState,
+} from "react";
 import { Row } from "react-bootstrap";
 import { Branch } from "../../../model/Definitions";
 import { Link } from "react-router-dom";
+import { useBookStoreContext } from "../../bookcontext/BookStoreContext";
+import BranchItem from "../../branch/BranchItem";
 type FormData = {
   title: string;
   author: string;
@@ -40,6 +47,13 @@ const AddBook = () => {
     image: "",
     branchCopy: [{ branch: "", copies: "" }],
   });
+
+  const { branches } = useBookStoreContext();
+  const [branchesList, setBranchesList] = useState<Branch[]>(branches);
+
+  useEffect(() => {
+    setBranchesList(branches);
+  }, [branches]);
 
   const handleFormData = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -262,6 +276,7 @@ const AddBook = () => {
                 <BranchesForm
                   key={index}
                   formData={formData}
+                  branchesList={branchesList}
                   handleSelectChange={handleSelectChange}
                   handleCopiesChange={handleCopiesChange}
                   validated={validated}
@@ -298,12 +313,14 @@ const AddBook = () => {
 
 const BranchesForm = ({
   formData,
+  branchesList,
   handleSelectChange,
   handleCopiesChange,
   validated,
   index,
 }: {
   formData: FormData;
+  branchesList: Branch[];
   handleSelectChange: (
     e: React.ChangeEvent<HTMLSelectElement>,
     index: number
@@ -319,6 +336,16 @@ const BranchesForm = ({
       });
     })
   );
+
+  useEffect(() => {
+    setNewBranch(
+      branchesList.filter((branch) => {
+        return !formData.branchCopy.some((branchCopy) => {
+          return branchCopy.branch === branch._id.$oid;
+        });
+      })
+    );
+  }, [branchesList]);
 
   return (
     <>

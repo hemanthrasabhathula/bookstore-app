@@ -13,13 +13,11 @@ import { API_ENDPOINT } from "../../../model/Constants";
 import { useEffect, useState } from "react";
 import { Branch } from "../../../model/Definitions";
 import { Link } from "react-router-dom";
-import { useBooks } from "../../bookcontext/BookContext";
+
 import { useBookStoreContext } from "../../bookcontext/BookStoreContext";
 const AddBranch = () => {
   const [addBranchToggle, setAddBranchToggle] = useState(false);
-  //const { branches, setBranches } = useBooks();
   const { branches, addBranches } = useBookStoreContext();
-  const [branchesList, setBranchesList] = useState<Branch[]>(branches);
 
   const fetchBranches = async () => {
     try {

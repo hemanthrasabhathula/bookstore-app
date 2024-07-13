@@ -28,9 +28,9 @@ const NavBar = (props: { children: React.ReactNode }) => {
               <Nav.Link eventKey={1} as={Link} to="/">
                 Books
               </Nav.Link>
-              <Nav.Link href="#pricing">Branches</Nav.Link>
+              {/* <Nav.Link href="#pricing">Branches</Nav.Link> */}
               <Nav.Link eventKey={2} as={Link} to="/addbranch">
-                Add Branch
+                Branches
               </Nav.Link>
               <Nav.Link eventKey={3} as={Link} to="/addbook">
                 Add Book
