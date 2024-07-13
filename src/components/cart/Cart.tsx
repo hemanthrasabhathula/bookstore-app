@@ -8,15 +8,23 @@ import {
 } from "react-bootstrap";
 import { useBooks } from "../bookcontext/BookContext";
 import { Link } from "react-router-dom";
-import { BookAndBranches, Branch } from "../../model/Definitions";
+import {
+  Book,
+  BookAndBranches,
+  Branch,
+  CartItem,
+} from "../../model/Definitions";
 import { ReactComponent as Editicon } from "../../pencil.svg";
 import { useEffect, useRef, useState } from "react";
 import "./Cart.css";
+import { useBookStoreContext } from "../bookcontext/BookStoreContext";
 
 const Cart = () => {
-  const { bookslist, updateBooklist, clearBooklist } = useBooks();
+  //const { bookslist, updateBooklist, clearBooklist } = useBooks();
 
-  console.log("BooksList", bookslist);
+  const { cartItems, clearCart, addToCart } = useBookStoreContext();
+
+  console.log("CartItems ", cartItems);
 
   return (
     <>
@@ -29,7 +37,7 @@ const Cart = () => {
         </Breadcrumb>
         <Row className="justify-content-evenly">
           <Col lg="10" md="10" xs="auto" sm="auto">
-            {bookslist.length === 0 ? ( // If no books are found, display a message to the user
+            {cartItems.length === 0 ? ( // If no books are found, display a message to the user
               <Row>
                 <h2>No Books in the Cart</h2>
               </Row>
@@ -47,14 +55,16 @@ const Cart = () => {
                       </tr>
                     </thead>
                     <tbody>
-                      {bookslist.map((book, bookIndex) => (
+                      {cartItems.map((cartItem, cartIndex) => (
                         <>
-                          {book.branches?.map((branch, branchIndex) => (
+                          {cartItem.branches?.map((branch, branchIndex) => (
                             <CartTable
-                              book={book}
-                              bookIndex={bookIndex}
+                              cartItems={cartItems}
+                              cartItem={cartItem}
+                              cartIndex={cartIndex}
                               branch={branch}
                               branchIndex={branchIndex}
+                              addToCart={addToCart}
                             />
                           ))}
                         </>
@@ -68,7 +78,7 @@ const Cart = () => {
                     <Button
                       style={{ marginLeft: "10px" }}
                       onClick={() => {
-                        clearBooklist();
+                        clearCart();
                       }}
                     >
                       Clear Cart
@@ -85,31 +95,35 @@ const Cart = () => {
 };
 
 const CartTable = ({
-  book,
-  bookIndex,
+  cartItems,
+  cartItem,
+  cartIndex,
   branch,
   branchIndex,
+  addToCart,
 }: {
-  book: BookAndBranches;
-  bookIndex: number;
+  cartItems: CartItem[];
+  cartItem: CartItem;
+  cartIndex: number;
   branch: Branch;
   branchIndex: number;
+  addToCart: (book: Book, branch: Branch) => void;
 }) => {
   const [readOnly, setReadOnly] = useState(true);
-  const { bookslist, updateBooklist } = useBooks();
+  //const { bookslist, updateBooklist } = useBooks();
   const [bookCount, setBookCount] = useState<number>(branch.count || 0);
-  const handleTableActions = (bookId: string, branchId: string) => {
-    console.log("Remove", bookId, branchId);
-    bookslist.forEach((book) => {
-      if (book._id.$oid === bookId) {
-        book.branches = book.branches?.filter(
-          (branch) => branch._id.$oid !== branchId
-        );
+  // const handleTableActions = (bookId: string, branchId: string) => {
+  //   console.log("Remove", bookId, branchId);
+  //   cartItems.forEach((cartItem) => {
+  //     if (cartItem.book._id.$oid === bookId) {
+  //       cartItem.branches = cartItem.branches?.filter(
+  //         (branch) => branch._id.$oid !== branchId
+  //       );
 
-        updateBooklist(book);
-      }
-    });
-  };
+  //       addToCart(book);
+  //     }
+  //   });
+  // };
 
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -133,9 +147,9 @@ const CartTable = ({
     //   console.log("Invalid count:: ", copyCount);
     //   setBookCount(branchCount);
     // } else {
-    bookslist.forEach((book) => {
-      if (book._id.$oid === bookId) {
-        book.branches?.forEach((branch) => {
+    cartItems.forEach((cartItem) => {
+      if (cartItem.book._id.$oid === bookId) {
+        cartItem.branches?.forEach((branch) => {
           if (branch._id.$oid === branchId.toString()) {
             if (copyCount === undefined || isNaN(copyCount) || copyCount < 0) {
               console.log("Invalid count:: ", copyCount);
@@ -144,11 +158,9 @@ const CartTable = ({
               branch.count = copyCount;
             }
             console.log("Branch --> ", branch);
-            updateBooklist(book);
+            addToCart(cartItem.book, branch);
           }
         });
-
-        console.log("Book --> ", book);
       }
     });
     //}
@@ -156,7 +168,7 @@ const CartTable = ({
 
   return (
     <>
-      <tr key={`${bookIndex}-${branchIndex}`}>
+      <tr key={`${cartIndex}-${branchIndex}`}>
         {branchIndex === 0 && (
           <>
             {/* <td
@@ -166,11 +178,11 @@ const CartTable = ({
               {book._id.$oid}
             </td> */}
             <td
-              rowSpan={book.branches?.length}
+              rowSpan={cartItem.branches?.length}
               style={{ verticalAlign: "middle" }}
             >
-              <b>{book.title}</b>
-              {` by ${book.author}`}
+              <b>{cartItem.book.title}</b>
+              {` by ${cartItem.book.author}`}
             </td>
           </>
         )}
@@ -191,7 +203,7 @@ const CartTable = ({
                 e.target.value = branch.count?.toString() || "0";
               } else {
                 handleBlur(
-                  book._id.$oid,
+                  cartItem.book._id.$oid,
                   branch._id.$oid,
                   parseInt(e.target.value),
                   branch.count || 0
@@ -211,7 +223,7 @@ const CartTable = ({
         </td>
         <td>
           <Button
-            onClick={() => handleTableActions(book._id.$oid, branch._id.$oid)}
+            onClick={() => addToCart(cartItem.book, { ...branch, count: 0 })}
           >
             Remove
           </Button>

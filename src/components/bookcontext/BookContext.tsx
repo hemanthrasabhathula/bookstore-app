@@ -55,25 +55,25 @@ export const BookProvider: React.FC<{ children: React.ReactNode }> = ({
 
   // Load bookslist from localStorage on initial load
   useEffect(() => {
-    console.log("Book Context setBooksList useEffect");
-    const storedBooksList = localStorage.getItem("bookslist");
-    const storedTimeStamp = localStorage.getItem("timestamp");
-    const currentTime = new Date().getTime();
-    //console.log(JSON.stringify(storedBooksList));
-    console.log("Book Context", storedBooksList, storedTimeStamp, currentTime);
-    if (storedBooksList && storedTimeStamp) {
-      const timeDiff =
-        (currentTime - parseInt(storedTimeStamp, 10)) / (1000 * 60);
-      console.log("Time Diff", timeDiff, timeDiff <= 1);
-      if (timeDiff <= 1) setBooksList(JSON.parse(storedBooksList));
-    }
+    // console.log("Book Context setBooksList useEffect");
+    // const storedBooksList = localStorage.getItem("bookslist");
+    // const storedTimeStamp = localStorage.getItem("timestamp");
+    // const currentTime = new Date().getTime();
+    // //console.log(JSON.stringify(storedBooksList));
+    // console.log("Book Context", storedBooksList, storedTimeStamp, currentTime);
+    // if (storedBooksList && storedTimeStamp) {
+    //   const timeDiff =
+    //     (currentTime - parseInt(storedTimeStamp, 10)) / (1000 * 60);
+    //   console.log("Time Diff", timeDiff, timeDiff <= 1);
+    //   if (timeDiff <= 1) setBooksList(JSON.parse(storedBooksList));
+    // }
   }, []);
 
   // Save bookslist to localStorage whenever it changes
   useEffect(() => {
-    console.log("Book Context bookslist useEffect");
-    localStorage.setItem("bookslist", JSON.stringify(bookslist));
-    localStorage.setItem("timestamp", new Date().getTime().toString());
+    // console.log("Book Context bookslist useEffect");
+    // localStorage.setItem("bookslist", JSON.stringify(bookslist));
+    // localStorage.setItem("timestamp", new Date().getTime().toString());
   }, [bookslist]);
 
   const clearBooklist = () => {

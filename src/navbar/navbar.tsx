@@ -6,14 +6,15 @@ import { useBooks } from "../components/bookcontext/BookContext";
 import { Badge } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { useBookStoreContext } from "../components/bookcontext/BookStoreContext";
 
 const NavBar = (props: { children: React.ReactNode }) => {
-  const { bookslist } = useBooks();
+  const { cartItems } = useBookStoreContext();
   const navigate = useNavigate();
   const [booksCount, setBooksCount] = useState(0);
   useEffect(() => {
-    setBooksCount(bookslist.length);
-  }, [bookslist]);
+    setBooksCount(cartItems.length);
+  }, [cartItems]);
   return (
     <div>
       <Navbar collapseOnSelect expand="lg" className="bg-body-tertiary">

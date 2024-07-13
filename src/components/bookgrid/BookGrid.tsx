@@ -6,9 +6,9 @@ import { useBooks } from "../bookcontext/BookContext";
 
 const BookList = ({ booklist }: { booklist: Book[] }) => {
   const navigate = useNavigate();
-  const { bookslist } = useBooks();
+  // const { bookslist } = useBooks();
 
-  console.log("BooksList", bookslist);
+  // console.log("BooksList", bookslist);
   return (
     <>
       <Row>

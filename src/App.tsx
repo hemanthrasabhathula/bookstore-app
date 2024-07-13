@@ -7,13 +7,19 @@ import { Book } from "./model/Definitions";
 import { API_ENDPOINT } from "./model/Constants";
 import BookList from "./components/bookgrid/BookGrid";
 import { useBooks } from "./components/bookcontext/BookContext";
+import { useBookStoreContext } from "./components/bookcontext/BookStoreContext";
 
 const App = () => {
   console.log("App");
   //const [books, setBooks] = useState<Book[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
 
-  const { books, branches, setBooks, setBranches } = useBooks();
+  const { books, branches } = useBookStoreContext();
+
+  if (useBookStoreContext() === undefined) {
+    console.log("useBookStoreContext is undefined");
+  }
+  const { setBooks, setBranches } = useBooks();
 
   const handleSearchInput = (event: ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
@@ -56,8 +62,9 @@ const App = () => {
   };
 
   useEffect(() => {
-    if (books.length === 0) handleFetchBooks();
-    if (branches.length === 0) handleFetchBranches();
+    //if (books.length === 0)
+    //handleFetchBooks();
+    //if (branches.length === 0) handleFetchBranches();
     //setBooks(booksList); // Comment this line when using the API
   }, []);
 

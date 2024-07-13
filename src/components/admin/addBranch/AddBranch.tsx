@@ -14,9 +14,11 @@ import { useEffect, useState } from "react";
 import { Branch } from "../../../model/Definitions";
 import { Link } from "react-router-dom";
 import { useBooks } from "../../bookcontext/BookContext";
+import { useBookStoreContext } from "../../bookcontext/BookStoreContext";
 const AddBranch = () => {
   const [addBranchToggle, setAddBranchToggle] = useState(false);
-  const { branches, setBranches } = useBooks();
+  //const { branches, setBranches } = useBooks();
+  const { branches, addBranches } = useBookStoreContext();
   const [branchesList, setBranchesList] = useState<Branch[]>(branches);
 
   const fetchBranches = async () => {
@@ -24,14 +26,14 @@ const AddBranch = () => {
       const response = await fetch(`${API_ENDPOINT}/branches`);
       const items = await response.json();
       console.log("Branches Data", items.data);
-      setBranches(items.data);
+      addBranches(items.data);
       //setBranchesList(items.data);
     } catch (error) {
       console.error("Error fetching branches", error);
     }
   };
 
-  const addBranch = async (branch: Branch) => {
+  const addNewBranch = async (branch: Branch) => {
     try {
       const response = await fetch(`${API_ENDPOINT}/branch`, {
         method: "POST",
@@ -43,7 +45,7 @@ const AddBranch = () => {
       const items = await response.json();
       if (response.status === 201 && items.data._id.$oid) {
         const newBranch: Branch = items.data;
-        setBranches([...branches, newBranch]);
+        addBranches(newBranch);
       }
     } catch (error) {
       console.error("Error adding branch", error);
@@ -51,8 +53,7 @@ const AddBranch = () => {
   };
 
   useEffect(() => {
-    if (branches.length === 0) fetchBranches();
-
+    //if (branches.length === 0) fetchBranches();
     //setBranchesList(branchesList);
   }, []);
 
@@ -86,7 +87,7 @@ const AddBranch = () => {
     }
 
     //setBranches([...branches, branch]);
-    addBranch(branch);
+    addNewBranch(branch);
     //branchesList.push(branch);
     setBranch({
       _id: { $oid: "" },
