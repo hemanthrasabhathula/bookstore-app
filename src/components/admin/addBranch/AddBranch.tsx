@@ -18,6 +18,7 @@ import { useBookStoreContext } from "../../bookcontext/BookStoreContext";
 import { insertBranch, removeBranchAPI } from "../../../utils/BranchService";
 const AddBranch = () => {
   const [addBranchToggle, setAddBranchToggle] = useState(false);
+  const [validated, setValidated] = useState(false);
   const { branches, addBranches, removeBranch } = useBookStoreContext();
   const [branchesList, setBranchesList] = useState<Branch[]>(branches);
 
@@ -43,13 +44,12 @@ const AddBranch = () => {
     zip: 0,
   });
 
-  const [validated, setValidated] = useState(false);
-
   const handleRemoveBranch = (branchId: string) => {
     removeBranchAPI(branchId)
       .then(() => {
         console.log("Branch Removed");
         removeBranch(branchId);
+        setValidated(false);
       })
       .catch((error) => {
         console.error("Error removing branch", error);
