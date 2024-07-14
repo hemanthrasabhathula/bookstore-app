@@ -328,9 +328,11 @@ const AddBook = () => {
                     borderRadius: "0.375rem",
                   }}
                   src={
-                    formData.image === "" ? imagePlaceHolder : formData.image
+                    formData.image.match(".jpg$|.jpeg$|.png$|.gif$/i")
+                      ? formData.image
+                      : imagePlaceHolder
                   }
-                  alt={formData.image}
+                  alt={imagePlaceHolder}
                 />
               </Col>
             </Row>
