@@ -78,6 +78,14 @@ const BookStoreProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     }
   };
 
+  const removeBranch = (branchId: string) => {
+    const updatedBranches = branches.filter(
+      (branch) => branch._id.$oid !== branchId
+    );
+
+    setBranches(updatedBranches);
+  };
+
   const clearCart = () => {
     setCartItems([]);
   };
@@ -145,6 +153,7 @@ const BookStoreProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
         cartItems,
         addBooks,
         addBranches,
+        removeBranch,
         addToCart,
         clearCart,
       }}

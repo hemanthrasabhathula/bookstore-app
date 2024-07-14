@@ -52,6 +52,7 @@ type BookStoreContextProps = {
   cartItems: CartItem[];
   addBooks: (book: Book | Book[]) => void;
   addBranches: (branch: Branch | Branch[]) => void;
+  removeBranch: (branchId: string) => void;
   addToCart: (book: Book, branch: Branch) => void;
   clearCart: () => void;
 };

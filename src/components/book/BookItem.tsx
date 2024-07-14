@@ -111,6 +111,7 @@ const BookItem = () => {
             xs="auto"
             sm="auto"
             className="justify-content-end"
+            style={{ alignContent: "center" }}
             onClick={() => (window.location.href = book.image)}
           >
             <Image
