@@ -16,38 +16,42 @@ import {
   useState,
 } from "react";
 import { Row } from "react-bootstrap";
-import { Branch } from "../../../model/Definitions";
+import { Branch, Copy } from "../../../model/Definitions";
 import { Link } from "react-router-dom";
 import { useBookStoreContext } from "../../bookcontext/BookStoreContext";
 import BranchItem from "../../branch/BranchItem";
 import imagePlaceHolder from "../../../assets/image_placeholder.png";
-type FormData = {
-  title: string;
-  author: string;
-  isbn: string;
-  genre: string;
-  published: string;
-  pages: string;
-  image: string;
-  branchCopy: BranchCopy[];
-};
+import { addCopies } from "../../../utils/CopyService";
+import ConfirmationModal from "../../common/ConfirmationModal";
+// type FormData = {
+//   title: string;
+//   author: string;
+//   ISBN: string;
+//   genre: string;
+//   published: string;
+//   pages: string;
+//   image: string;
+//   branchCopy: BranchCopy[];
+// };
 
-type BranchCopy = {
-  branch: string;
-  copies: string;
-};
+// type BranchCopy = {
+//   branch: string;
+//   copies: string;
+// };
 
 const AddBook = () => {
   const [validated, setValidated] = useState(false);
-  const [formData, setFormData] = useState<FormData>({
+  const [showModal, setShowModal] = useState(false);
+  const [formErrors, setFormErrors] = useState<{ [key: string]: string }>({});
+  const [formData, setFormData] = useState<Copy>({
     title: "",
     author: "",
-    isbn: "",
+    ISBN: "",
     genre: "",
-    published: "",
-    pages: "",
+    published: 0,
+    pages: 0,
     image: "",
-    branchCopy: [{ branch: "", copies: "" }],
+    branchCopy: [{ branchName: "", branchId: "", copies: 0 }],
   });
 
   const { branches } = useBookStoreContext();
@@ -69,25 +73,76 @@ const AddBook = () => {
     console.log("Form Data", data);
     const formDataObj = Object.fromEntries(data.entries());
     console.log("Form Data JSON", JSON.stringify(formDataObj));
+    // Validate form data
+    const errors: { [key: string]: string } = {};
+    if (!formDataObj.title) {
+      errors.title = "Title is required";
+    }
+    if (!formDataObj.author) {
+      errors.author = "Author is required";
+    }
+
+    if (!formDataObj.ISBN) {
+      errors.ISBN = "ISBN is required";
+    }
+
+    if (!formDataObj.genre) {
+      errors.genre = "Genre is required";
+    }
+
+    if (!formDataObj.published) {
+      errors.published = "Published is required";
+    }
+
+    if (!formDataObj.pages) {
+      errors.pages = "Pages is required";
+    }
+
+    if (!formDataObj.image) {
+      errors.image = "Image is required";
+    }
+
+    formData.branchCopy.forEach((branchCopy, index) => {
+      if (!branchCopy.branchId) {
+        errors[`branch${index}`] = "Branch is required";
+      }
+      if (!branchCopy.copies) {
+        errors[`copies${index}`] = "Copies is required";
+      }
+    });
 
     console.log("formData:: ", formData);
+    if (Object.keys(errors).length > 0) {
+      setFormErrors(errors);
+      return;
+    }
+    setFormErrors({});
+    setShowModal(true);
+
+    console.log("formData to be submitted :: ", formData);
   };
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    if ((name === "published" || name === "pages") && value !== "") {
+      setFormData({ ...formData, [name]: parseInt(value) });
+    } else {
+      setFormData({ ...formData, [name]: value });
+    }
   };
 
   const handleCopiesChange = (
     e: ChangeEvent<HTMLInputElement>,
     index: number
   ) => {
+    e.preventDefault();
     console.log("handleCopiesChange", e.target.value, index);
     const { name, value } = e.target;
     const updatedBranchCopy = [...formData.branchCopy];
+    updatedBranchCopy[index].copies = 0;
     console.log("Updated Branch Copy", updatedBranchCopy);
-    if (name === "copies") {
-      updatedBranchCopy[index].copies = value;
+    if (name === "copies" && value !== "") {
+      updatedBranchCopy[index].copies = parseInt(value);
     }
 
     setFormData({
@@ -100,20 +155,40 @@ const AddBook = () => {
     e: React.ChangeEvent<HTMLSelectElement>,
     index: number
   ) => {
-    const { name, value } = e.target;
-    console.log("handleSelectChange", value, index);
-    const updatedBranchCopy = [...formData.branchCopy];
-    console.log("Updated Branch Copy", updatedBranchCopy);
-    if (name === "branch") {
-      updatedBranchCopy[index].branch = value;
-    }
+    const selectedOption = e.target.options[e.target.selectedIndex];
+    const branchName = selectedOption.text;
+    const branchId = selectedOption.value;
+    console.log("Selected Branch", branchName);
+    // const { name, value } = e.target;
+    // console.log("handleSelectChange", value, index);
+    // const updatedBranchCopy = [...formData.branchCopy];
+    // console.log("Updated Branch Copy", updatedBranchCopy);
+    // if (name === "branch") {
+    //   updatedBranchCopy[index].branch = value;
+    // }
+
+    const updatedBranches = formData.branchCopy.map((branch, i) =>
+      i === index
+        ? { ...branch, branchName: branchName, branchId: branchId }
+        : branch
+    );
 
     setFormData({
       ...formData,
-      branchCopy: updatedBranchCopy,
+      branchCopy: updatedBranches,
     });
   };
 
+  const handleOnConfirm = () => {
+    setShowModal(false);
+    addCopies(formData).then((response) => {
+      console.log("Response", response);
+    });
+  };
+
+  const handleOnClose = () => {
+    setShowModal(false);
+  };
   return (
     <>
       <Container style={{ paddingTop: "20px", paddingBottom: "20px" }}>
@@ -163,7 +238,7 @@ const AddBook = () => {
               <Row className="g-2">
                 <Col md sm xs>
                   <FloatingLabel
-                    controlId="isbn"
+                    controlId="ISBN"
                     label="ISBN"
                     className="mb-3 "
                   >
@@ -171,10 +246,10 @@ const AddBook = () => {
                       required
                       type="text"
                       placeholder="ISBN"
-                      name="isbn"
-                      value={formData.isbn}
+                      name="ISBN"
+                      value={formData.ISBN}
                       onChange={handleInputChange}
-                      isInvalid={validated && !formData.isbn}
+                      isInvalid={validated && !formData.ISBN}
                     />
                     <Form.Control.Feedback type="invalid">
                       please enter the ISBN.
@@ -215,7 +290,7 @@ const AddBook = () => {
                       type="number"
                       placeholder="Published"
                       name="published"
-                      value={formData.published}
+                      value={formData.published === 0 ? "" : formData.published}
                       onChange={handleInputChange}
                       isInvalid={validated && !formData.published}
                     />
@@ -236,7 +311,7 @@ const AddBook = () => {
                       type="number"
                       placeholder="Pages"
                       name="pages"
-                      value={formData.pages}
+                      value={formData.pages === 0 ? "" : formData.pages}
                       onChange={(e: ChangeEvent<HTMLInputElement>) => {
                         console.log(e.target.value);
                         if (
@@ -294,7 +369,7 @@ const AddBook = () => {
                       ...formData,
                       branchCopy: [
                         ...formData.branchCopy,
-                        { branch: "", copies: "" },
+                        { branchName: "", branchId: "", copies: 0 },
                       ],
                     });
                   }}
@@ -349,7 +424,7 @@ const AddBook = () => {
                   <b>{`Title: ${formData.title}`}</b>
                 </div>
                 <div>{`Author: ${formData.author}`}</div>
-                <div>{`ISBN: ${formData.isbn}`}</div>
+                <div>{`ISBN: ${formData.ISBN}`}</div>
                 <div>{`Genre: ${formData.genre}`}</div>
                 <div>{`Published: ${formData.published}`}</div>
                 <div>{`Pages: ${formData.pages}`}</div>
@@ -357,8 +432,8 @@ const AddBook = () => {
                 {branchesList.map((branch) =>
                   formData.branchCopy.map(
                     (branchCopy) =>
-                      branchCopy.branch === branch._id.$oid && (
-                        <div key={branchCopy.branch}>
+                      branchCopy.branchId === branch._id.$oid && (
+                        <div key={branchCopy.branchId}>
                           <div>{`Branch: ${branch.name} `}</div>
                           <div>{` Copies:  ${branchCopy.copies}`}</div>
                         </div>
@@ -370,6 +445,13 @@ const AddBook = () => {
           </Col>
         </Row>
       </Container>
+      <ConfirmationModal
+        isOpen={showModal}
+        title="Add Book Details"
+        message="Confirm to Submit the Book Details"
+        onConfirm={handleOnConfirm}
+        onClose={handleOnClose}
+      />
     </>
   );
 };
@@ -382,7 +464,7 @@ const BranchesForm = ({
   validated,
   index,
 }: {
-  formData: FormData;
+  formData: Copy;
   branchesList: Branch[];
   handleSelectChange: (
     e: React.ChangeEvent<HTMLSelectElement>,
@@ -395,7 +477,7 @@ const BranchesForm = ({
   const [newBranch, setNewBranch] = useState<Branch[]>(
     branchesList.filter((branch) => {
       return !formData.branchCopy.some((branchCopy) => {
-        return branchCopy.branch === branch._id.$oid;
+        return branchCopy.branchId === branch._id.$oid;
       });
     })
   );
@@ -403,7 +485,7 @@ const BranchesForm = ({
     setNewBranch(
       branchesList.filter((branch) => {
         return !formData.branchCopy.some((branchCopy) => {
-          return branchCopy.branch === branch._id.$oid;
+          return branchCopy.branchId === branch._id.$oid;
         });
       })
     );
@@ -413,7 +495,7 @@ const BranchesForm = ({
     setNewBranch(
       branchesList.filter((branch) => {
         return !formData.branchCopy.some((branchCopy) => {
-          return branchCopy.branch === branch._id.$oid;
+          return branchCopy.branchId === branch._id.$oid;
         });
       })
     );
@@ -433,9 +515,9 @@ const BranchesForm = ({
               aria-label="Select Branch"
               className="mb-3"
               name="branch"
-              value={formData.branchCopy[index].branch}
+              value={formData.branchCopy[index].branchId}
               onChange={(e) => handleSelectChange(e, index)}
-              isInvalid={validated && !formData.branchCopy[index].branch}
+              isInvalid={validated && !formData.branchCopy[index].branchId}
             >
               <option></option>
               {newBranch.map((branch) => (
@@ -460,7 +542,11 @@ const BranchesForm = ({
               type="number"
               placeholder="Copies"
               name="copies"
-              value={formData.branchCopy[index].copies}
+              value={
+                formData.branchCopy[index].copies === 0
+                  ? ""
+                  : formData.branchCopy[index].copies
+              }
               onChange={(e: ChangeEvent<HTMLInputElement>) =>
                 handleCopiesChange(e, index)
               }

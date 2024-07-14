@@ -57,6 +57,22 @@ type BookStoreContextProps = {
   clearCart: () => void;
 };
 
+type BranchCopy = {
+  branchName: string;
+  branchId: string;
+  copies: number;
+};
+type Copy = {
+  title: string;
+  author: string;
+  ISBN: string;
+  genre: string;
+  published: number;
+  pages: number;
+  image: string;
+  branchCopy: BranchCopy[];
+};
+
 export type {
   Book,
   SearchFormProps,
@@ -64,4 +80,5 @@ export type {
   BookAndBranches,
   CartItem,
   BookStoreContextProps,
+  Copy,
 };
