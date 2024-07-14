@@ -5,6 +5,7 @@ import {
   Container,
   FloatingLabel,
   Form,
+  Image,
 } from "react-bootstrap";
 import "./AddBook.css";
 import {
@@ -19,6 +20,7 @@ import { Branch } from "../../../model/Definitions";
 import { Link } from "react-router-dom";
 import { useBookStoreContext } from "../../bookcontext/BookStoreContext";
 import BranchItem from "../../branch/BranchItem";
+import imagePlaceHolder from "../../../assets/image_placeholder.png";
 type FormData = {
   title: string;
   author: string;
@@ -122,7 +124,7 @@ const AddBook = () => {
           <Breadcrumb.Item active>Add Book</Breadcrumb.Item>
         </Breadcrumb>
         <Row className="justify-content-evenly">
-          <Col lg="auto" md="auto" xs="auto" sm="auto">
+          <Col lg="5" md="5" xs="auto" sm="auto">
             <h3 className="mb-4">Add New Book </h3>
             <Form noValidate validated={validated} onSubmit={handleFormData}>
               <FloatingLabel
@@ -305,6 +307,65 @@ const AddBook = () => {
               </Row>
             </Form>
           </Col>
+
+          <Col lg="5" md="5" xs="auto" sm="auto">
+            <Row
+              id="image"
+              style={{
+                height: "380px",
+                width: "100%", // Set a fixed width if needed, e.g., width: "400px"
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <Col lg="auto" md="auto" xs="auto" sm="auto">
+                <Image
+                  style={{
+                    width: "200px",
+                    aspectRatio: "2/3",
+                    objectFit: "cover",
+                    borderRadius: "0.375rem",
+                  }}
+                  src={
+                    formData.image === "" ? imagePlaceHolder : formData.image
+                  }
+                  alt={formData.image}
+                />
+              </Col>
+            </Row>
+            <Row
+              style={{
+                width: "100%",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <Col lg="auto" md="auto" xs="auto" sm="auto">
+                <div>
+                  <b>{`Title: ${formData.title}`}</b>
+                </div>
+                <div>{`Author: ${formData.author}`}</div>
+                <div>{`ISBN: ${formData.isbn}`}</div>
+                <div>{`Genre: ${formData.genre}`}</div>
+                <div>{`Published: ${formData.published}`}</div>
+                <div>{`Pages: ${formData.pages}`}</div>
+                <br></br>
+                {branchesList.map((branch) =>
+                  formData.branchCopy.map(
+                    (branchCopy) =>
+                      branchCopy.branch === branch._id.$oid && (
+                        <div key={branchCopy.branch}>
+                          <div>{`Branch: ${branch.name} `}</div>
+                          <div>{` Copies:  ${branchCopy.copies}`}</div>
+                        </div>
+                      )
+                  )
+                )}
+              </Col>
+            </Row>
+          </Col>
         </Row>
       </Container>
     </>
@@ -336,6 +397,15 @@ const BranchesForm = ({
       });
     })
   );
+  useEffect(() => {
+    setNewBranch(
+      branchesList.filter((branch) => {
+        return !formData.branchCopy.some((branchCopy) => {
+          return branchCopy.branch === branch._id.$oid;
+        });
+      })
+    );
+  }, []);
 
   useEffect(() => {
     setNewBranch(
