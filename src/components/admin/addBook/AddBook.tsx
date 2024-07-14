@@ -308,7 +308,7 @@ const AddBook = () => {
             </Form>
           </Col>
 
-          <Col lg="5" md="5" xs="auto" sm="auto">
+          <Col lg="4" md="4" xs="auto" sm="auto">
             <Row
               id="image"
               style={{
