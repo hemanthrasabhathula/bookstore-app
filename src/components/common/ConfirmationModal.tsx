@@ -6,12 +6,16 @@ const ConfirmationModal = ({
   onConfirm,
   title,
   message,
+  confirmText,
+  cancelText,
 }: {
   isOpen: boolean;
   onClose: () => void;
   onConfirm: () => void;
   title: string;
   message: string;
+  confirmText?: string;
+  cancelText?: string;
 }) => {
   return (
     <>
@@ -22,10 +26,10 @@ const ConfirmationModal = ({
         <Modal.Body>{message}</Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={onClose}>
-            Close
+            {cancelText || "Cancel"}
           </Button>
           <Button variant="primary" onClick={onConfirm}>
-            Save
+            {confirmText || "Save"}
           </Button>
         </Modal.Footer>
       </Modal>

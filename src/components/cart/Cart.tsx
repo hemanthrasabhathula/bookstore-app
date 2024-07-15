@@ -18,16 +18,55 @@ import { ReactComponent as Editicon } from "../../pencil.svg";
 import { useEffect, useRef, useState } from "react";
 import "./Cart.css";
 import { useBookStoreContext } from "../bookcontext/BookStoreContext";
+import ConfirmationModal from "../common/ConfirmationModal";
+import ToastItem from "../common/ToastItem";
+import { maketransaction } from "../../utils/CartService";
 
 const Cart = () => {
   //const { bookslist, updateBooklist, clearBooklist } = useBooks();
 
   const { cartItems, clearCart, addToCart } = useBookStoreContext();
+  const [showModal, setShowModal] = useState(false);
+  const [showToast, setShowToast] = useState(false);
+  const [toastObject, setToastObject] = useState({
+    heading: "",
+    message: "",
+    variant: "", // e.g., 'success', 'error', etc.
+  });
+
+  const toggleShowtoast = () => setShowToast(!showToast);
 
   console.log("CartItems ", cartItems);
 
-  const handlePurchase = () => {
+  const handleOnConfirm = () => {
+    setShowModal(false);
     console.log("Purchase Items:: ", cartItems);
+    maketransaction(cartItems)
+      .then((response) => {
+        console.log("Transaction Response", response);
+        clearCart();
+
+        setToastObject({
+          heading: "Success",
+          message: response,
+          variant: "success",
+        });
+
+        toggleShowtoast();
+      })
+      .catch((error) => {
+        console.error("Error purchasing books", error);
+        setToastObject({
+          heading: "Error",
+          message: error.message,
+          variant: "danger",
+        });
+        toggleShowtoast();
+      });
+  };
+
+  const handleOnClose = () => {
+    setShowModal(false);
   };
   return (
     <>
@@ -77,7 +116,13 @@ const Cart = () => {
                 </Row>
                 <Row className="justify-content-md-end">
                   <Col lg="auto" md="auto" xs="auto" sm="auto">
-                    <Button onClick={handlePurchase}>Buy</Button>
+                    <Button
+                      onClick={() => {
+                        setShowModal(true);
+                      }}
+                    >
+                      Buy
+                    </Button>
                     <Button
                       style={{ marginLeft: "10px" }}
                       onClick={() => {
@@ -93,6 +138,19 @@ const Cart = () => {
           </Col>
         </Row>
       </Container>
+      <ConfirmationModal
+        isOpen={showModal}
+        title="Confirm to Buy"
+        message="Click on Confirm to buy the Books"
+        onConfirm={handleOnConfirm}
+        onClose={handleOnClose}
+        confirmText="Confirm"
+      />
+      <ToastItem
+        showToast={showToast}
+        {...toastObject}
+        toggleToast={toggleShowtoast}
+      />
     </>
   );
 };
