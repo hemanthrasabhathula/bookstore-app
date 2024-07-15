@@ -16,6 +16,7 @@ import { Link } from "react-router-dom";
 
 import { useBookStoreContext } from "../../bookcontext/BookStoreContext";
 import { insertBranch, removeBranchAPI } from "../../../utils/BranchService";
+import BreadcrumbComp from "../../common/BreadcrumbComp";
 const AddBranch = () => {
   const [addBranchToggle, setAddBranchToggle] = useState(false);
   const [validated, setValidated] = useState(false);
@@ -92,12 +93,7 @@ const AddBranch = () => {
   return (
     <>
       <Container style={{ paddingTop: "20px", paddingBottom: "100px" }}>
-        <Breadcrumb>
-          <li className="breadcrumb-item">
-            <Link to="/">Home</Link>
-          </li>
-          <Breadcrumb.Item active>Branches</Breadcrumb.Item>
-        </Breadcrumb>
+        <BreadcrumbComp active={"Branches"} />
         <Row className="justify-content-evenly">
           <Col lg="10" md="10" xs="auto" sm="auto">
             {branchesList.length === 0 ? (

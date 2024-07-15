@@ -73,6 +73,19 @@ type Copy = {
   branchCopy: BranchCopy[];
 };
 
+type Transaction = {
+  _id: IdObj;
+  bookId: IdObj;
+  bookName: string;
+  author: string;
+  branchId: IdObj;
+  branchName: string;
+  status: string;
+  borrowedDate: string;
+  dueDate: string;
+  lateFee: number;
+};
+
 export type {
   Book,
   SearchFormProps,
@@ -81,4 +94,5 @@ export type {
   CartItem,
   BookStoreContextProps,
   Copy,
+  Transaction,
 };

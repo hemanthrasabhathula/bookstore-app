@@ -48,7 +48,7 @@ const NavBar = (props: { children: React.ReactNode }) => {
               </Nav.Link>
               <NavDropdown title="User" id="collapsible-nav-dropdown">
                 <NavDropdown.Item href="#action/3.1">Profile</NavDropdown.Item>
-                <NavDropdown.Item href="#action/3.2">
+                <NavDropdown.Item as={Link} to="/transactions">
                   Transactions
                 </NavDropdown.Item>
                 {/* <NavDropdown.Item href="#action/3.3">logout</NavDropdown.Item> */}

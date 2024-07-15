@@ -21,6 +21,7 @@ import { useBookStoreContext } from "../bookcontext/BookStoreContext";
 import ConfirmationModal from "../common/ConfirmationModal";
 import ToastItem from "../common/ToastItem";
 import { maketransaction } from "../../utils/CartService";
+import BreadcrumbComp from "../common/BreadcrumbComp";
 
 const Cart = () => {
   //const { bookslist, updateBooklist, clearBooklist } = useBooks();
@@ -71,12 +72,7 @@ const Cart = () => {
   return (
     <>
       <Container style={{ paddingTop: "20px", paddingBottom: "100px" }}>
-        <Breadcrumb>
-          <li className="breadcrumb-item">
-            <Link to="/">Home</Link>
-          </li>
-          <Breadcrumb.Item active>Cart</Breadcrumb.Item>
-        </Breadcrumb>
+        <BreadcrumbComp active={"Cart"} />
         <Row className="justify-content-evenly">
           <Col lg="10" md="10" xs="auto" sm="auto">
             {cartItems.length === 0 ? ( // If no books are found, display a message to the user

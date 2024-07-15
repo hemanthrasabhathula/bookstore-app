@@ -8,6 +8,7 @@ import BranchItem from "../branch/BranchItem";
 import { useBooks } from "../bookcontext/BookContext";
 import { useBookStoreContext } from "../bookcontext/BookStoreContext";
 import { count } from "console";
+import BreadcrumbComp from "../common/BreadcrumbComp";
 
 const BookItem = () => {
   const location = useLocation();
@@ -94,12 +95,7 @@ const BookItem = () => {
   return (
     <>
       <Container style={{ paddingTop: "20px", paddingBottom: "100px" }}>
-        <Breadcrumb>
-          <li className="breadcrumb-item">
-            <Link to="/">Home</Link>
-          </li>
-          <Breadcrumb.Item active>Book</Breadcrumb.Item>
-        </Breadcrumb>
+        <BreadcrumbComp active={"Book"} />
         <Row
           id="image"
           className="justify-content-evenly"

@@ -23,6 +23,7 @@ import BranchItem from "../../branch/BranchItem";
 import imagePlaceHolder from "../../../assets/image_placeholder.png";
 import { addCopies } from "../../../utils/CopyService";
 import ConfirmationModal from "../../common/ConfirmationModal";
+import BreadcrumbComp from "../../common/BreadcrumbComp";
 // type FormData = {
 //   title: string;
 //   author: string;
@@ -192,12 +193,7 @@ const AddBook = () => {
   return (
     <>
       <Container style={{ paddingTop: "20px", paddingBottom: "20px" }}>
-        <Breadcrumb>
-          <li className="breadcrumb-item">
-            <Link to="/">Home</Link>
-          </li>
-          <Breadcrumb.Item active>Add Book</Breadcrumb.Item>
-        </Breadcrumb>
+        <BreadcrumbComp active={"Add Book"} />
         <Row className="justify-content-evenly">
           <Col lg="5" md="5" xs="auto" sm="auto">
             <h3 className="mb-4">Add New Book </h3>
