@@ -51,6 +51,7 @@ const BranchItem = ({
           </Button>
           <Form.Control
             type="number"
+            readOnly={true}
             key={branch._id.$oid}
             placeholder="0"
             aria-label="copies"
@@ -73,6 +74,7 @@ const BranchItem = ({
           <Button
             variant="outline-primary"
             id="button-addon2"
+            disabled={counter === 5}
             onClick={() => {
               handleCounter(+1, branch);
             }}

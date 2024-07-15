@@ -26,6 +26,9 @@ const Cart = () => {
 
   console.log("CartItems ", cartItems);
 
+  const handlePurchase = () => {
+    console.log("Purchase Items:: ", cartItems);
+  };
   return (
     <>
       <Container style={{ paddingTop: "20px", paddingBottom: "100px" }}>
@@ -74,7 +77,7 @@ const Cart = () => {
                 </Row>
                 <Row className="justify-content-md-end">
                   <Col lg="auto" md="auto" xs="auto" sm="auto">
-                    <Button>Buy</Button>
+                    <Button onClick={handlePurchase}>Buy</Button>
                     <Button
                       style={{ marginLeft: "10px" }}
                       onClick={() => {
@@ -196,11 +199,16 @@ const CartTable = ({
             key={branch._id.$oid}
             className="quantity-input"
             defaultValue={bookCount}
+            value={bookCount}
+            onChange={(e) => {
+              console.log("onChange", e.target.value);
+              setBookCount(parseInt(e.target.value));
+            }}
             onBlur={(e) => {
               setReadOnly(true);
               console.log("onBlur", e.target.value);
               if (e.target.value === "" || isNaN(parseInt(e.target.value))) {
-                e.target.value = branch.count?.toString() || "0";
+                e.target.value = bookCount.toString() || "0";
               } else {
                 handleBlur(
                   cartItem.book._id.$oid,
