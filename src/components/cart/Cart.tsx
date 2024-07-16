@@ -82,6 +82,7 @@ const Cart = () => {
             ) : (
               <>
                 <Row>
+                  <h3 className="mb-4">Cart Items </h3>
                   <Table bordered hover>
                     <thead>
                       <tr>

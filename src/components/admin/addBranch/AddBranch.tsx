@@ -92,7 +92,7 @@ const AddBranch = () => {
 
   return (
     <>
-      <Container style={{ paddingTop: "20px", paddingBottom: "100px" }}>
+      <Container style={{ paddingTop: "20px", paddingBottom: "20px" }}>
         <BreadcrumbComp active={"Branches"} />
         <Row className="justify-content-evenly">
           <Col lg="10" md="10" xs="auto" sm="auto">

@@ -14,7 +14,11 @@ const ToastItem = ({
   variant?: string;
 }) => {
   return (
-    <ToastContainer className="p-3" position="bottom-end" style={{ zIndex: 1 }}>
+    <ToastContainer
+      className="p-3 position-fixed"
+      position="bottom-end"
+      style={{ zIndex: 1 }}
+    >
       <Toast
         bg={variant || "success"}
         onClose={toggleToast}

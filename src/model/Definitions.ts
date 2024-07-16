@@ -16,6 +16,10 @@ type IdObj = {
   $oid: string;
 };
 
+type dateObj = {
+  $date: string;
+};
+
 type SearchFormProps = {
   onSearchSubmit: (event: FormEvent<HTMLFormElement>) => void;
 };
@@ -80,9 +84,11 @@ type Transaction = {
   author: string;
   branchId: IdObj;
   branchName: string;
+  copyId: IdObj;
   status: string;
-  borrowedDate: string;
-  dueDate: string;
+  borrowedDate: dateObj;
+  dueDate: dateObj;
+  returnDate: dateObj;
   lateFee: number;
 };
 
