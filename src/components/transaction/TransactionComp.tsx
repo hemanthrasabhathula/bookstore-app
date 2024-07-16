@@ -133,7 +133,11 @@ const TransactionComp = () => {
                         </td>
                         <td style={{ textAlign: "center" }}>
                           <Button
-                            variant="outline-primary"
+                            variant={
+                              transaction.status === "returned"
+                                ? "outline-primary"
+                                : "primary"
+                            }
                             onClick={() =>
                               handleReturn(transaction.copyId.$oid, index)
                             }
