@@ -5,6 +5,7 @@ import {
   Table,
   Row,
   Col,
+  Fade,
 } from "react-bootstrap";
 import { useBooks } from "../bookcontext/BookContext";
 import { Link } from "react-router-dom";
@@ -71,33 +72,34 @@ const Cart = () => {
   };
   return (
     <>
-      <Container style={{ paddingTop: "20px", paddingBottom: "100px" }}>
-        <BreadcrumbComp active={"Cart"} />
-        <Row className="justify-content-evenly">
-          <Col lg="10" md="10" xs="auto" sm="auto">
-            {cartItems.length === 0 ? ( // If no books are found, display a message to the user
-              <Row>
-                <h2>No Books in the Cart</h2>
-              </Row>
-            ) : (
-              <>
+      <Fade appear in={true}>
+        <Container style={{ paddingTop: "20px", paddingBottom: "100px" }}>
+          <BreadcrumbComp active={"Cart"} />
+          <Row className="justify-content-evenly">
+            <Col lg="10" md="10" xs="auto" sm="auto">
+              {cartItems.length === 0 ? ( // If no books are found, display a message to the user
                 <Row>
-                  <h3 className="mb-4">Cart Items </h3>
-                  <Table bordered hover>
-                    <thead>
-                      <tr>
-                        {/* <th>#</th> */}
-                        <th>Book</th>
-                        <th>Branches</th>
-                        <th>Copies</th>
-                        <th>Action</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {cartItems.map((cartItem, cartIndex) => (
-                        <>
-                          {cartItem.branches?.map((branch, branchIndex) => (
+                  <h2>No Books in the Cart</h2>
+                </Row>
+              ) : (
+                <>
+                  <Row>
+                    <h3 className="mb-4">Cart Items </h3>
+                    <Table bordered hover>
+                      <thead>
+                        <tr>
+                          {/* <th>#</th> */}
+                          <th>Book</th>
+                          <th>Branches</th>
+                          <th>Copies</th>
+                          <th>Action</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {cartItems.map((cartItem, cartIndex) =>
+                          cartItem.branches?.map((branch, branchIndex) => (
                             <CartTable
+                              key={`${cartIndex}-${branchIndex}`}
                               cartItems={cartItems}
                               cartItem={cartItem}
                               cartIndex={cartIndex}
@@ -105,36 +107,36 @@ const Cart = () => {
                               branchIndex={branchIndex}
                               addToCart={addToCart}
                             />
-                          ))}
-                        </>
-                      ))}
-                    </tbody>
-                  </Table>
-                </Row>
-                <Row className="justify-content-md-end">
-                  <Col lg="auto" md="auto" xs="auto" sm="auto">
-                    <Button
-                      onClick={() => {
-                        setShowModal(true);
-                      }}
-                    >
-                      Buy
-                    </Button>
-                    <Button
-                      style={{ marginLeft: "10px" }}
-                      onClick={() => {
-                        clearCart();
-                      }}
-                    >
-                      Clear Cart
-                    </Button>
-                  </Col>
-                </Row>
-              </>
-            )}
-          </Col>
-        </Row>
-      </Container>
+                          ))
+                        )}
+                      </tbody>
+                    </Table>
+                  </Row>
+                  <Row className="justify-content-md-end">
+                    <Col lg="auto" md="auto" xs="auto" sm="auto">
+                      <Button
+                        onClick={() => {
+                          setShowModal(true);
+                        }}
+                      >
+                        Buy
+                      </Button>
+                      <Button
+                        style={{ marginLeft: "10px" }}
+                        onClick={() => {
+                          clearCart();
+                        }}
+                      >
+                        Clear Cart
+                      </Button>
+                    </Col>
+                  </Row>
+                </>
+              )}
+            </Col>
+          </Row>
+        </Container>
+      </Fade>
       <ConfirmationModal
         isOpen={showModal}
         title="Confirm to Buy"
@@ -253,7 +255,6 @@ const CartTable = ({
             style={{ border: "none", backgroundColor: "transparent" }}
             key={branch._id.$oid}
             className="quantity-input"
-            defaultValue={bookCount}
             value={bookCount}
             onChange={(e) => {
               console.log("onChange", e.target.value);
@@ -275,6 +276,7 @@ const CartTable = ({
             }}
           />
           <button
+            key={`${cartIndex}-${branchIndex}`}
             style={{ border: "none", backgroundColor: "transparent" }}
             onClick={() => {
               console.log("readonly ", !readOnly);
@@ -286,6 +288,7 @@ const CartTable = ({
         </td>
         <td>
           <Button
+            key={`${cartIndex}-${branchIndex}`}
             onClick={() => addToCart(cartItem.book, { ...branch, count: 0 })}
           >
             Remove

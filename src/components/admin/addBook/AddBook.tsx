@@ -3,6 +3,7 @@ import {
   Button,
   Col,
   Container,
+  Fade,
   FloatingLabel,
   Form,
   Image,
@@ -24,6 +25,7 @@ import imagePlaceHolder from "../../../assets/image_placeholder.png";
 import { addCopies } from "../../../utils/CopyService";
 import ConfirmationModal from "../../common/ConfirmationModal";
 import BreadcrumbComp from "../../common/BreadcrumbComp";
+import ToastItem from "../../common/ToastItem";
 // type FormData = {
 //   title: string;
 //   author: string;
@@ -54,7 +56,14 @@ const AddBook = () => {
     image: "",
     branchCopy: [{ branchName: "", branchId: "", copies: 0 }],
   });
+  const [showToast, setShowToast] = useState(false);
+  const [toastObject, setToastObject] = useState({
+    heading: "",
+    message: "",
+    variant: "", // e.g., 'success', 'error', etc.
+  });
 
+  const toggleShowtoast = () => setShowToast(!showToast);
   const { branches } = useBookStoreContext();
   const [branchesList, setBranchesList] = useState<Branch[]>(branches);
 
@@ -182,9 +191,47 @@ const AddBook = () => {
 
   const handleOnConfirm = () => {
     setShowModal(false);
-    addCopies(formData).then((response) => {
-      console.log("Response", response);
-    });
+    addCopies(formData)
+      .then((response) => {
+        setFormData({
+          title: "",
+          author: "",
+          ISBN: "",
+          genre: "",
+          published: 0,
+          pages: 0,
+          image: "",
+          branchCopy: [{ branchName: "", branchId: "", copies: 0 }],
+        });
+        setValidated(false);
+        setFormErrors({});
+        setShowModal(false);
+        if (response) {
+          setShowToast(true);
+          setToastObject({
+            heading: "Success",
+            message: "Book Added Successfully",
+            variant: "success",
+          });
+        } else {
+          setShowToast(true);
+          setToastObject({
+            heading: "Error",
+            message: "Error Adding Book",
+            variant: "danger",
+          });
+        }
+        console.log("Response", response);
+      })
+      .catch((error) => {
+        console.error("Error adding book", error);
+        setShowToast(true);
+        setToastObject({
+          heading: "Error",
+          message: "Error Adding Book",
+          variant: "danger",
+        });
+      });
   };
 
   const handleOnClose = () => {
@@ -192,261 +239,274 @@ const AddBook = () => {
   };
   return (
     <>
-      <Container style={{ paddingTop: "20px", paddingBottom: "20px" }}>
-        <BreadcrumbComp active={"Add Book"} />
-        <Row className="justify-content-evenly">
-          <Col lg="5" md="5" xs="auto" sm="auto">
-            <h3 className="mb-4">Add New Book </h3>
-            <Form noValidate validated={validated} onSubmit={handleFormData}>
-              <FloatingLabel
-                style={{ paddingLeft: "0" }}
-                controlId="title"
-                label="Title"
-                className="mb-3"
-              >
-                <Form.Control
-                  required
-                  type="text"
-                  placeholder="Title"
-                  name="title"
-                  value={formData.title}
-                  onChange={handleInputChange}
-                  isInvalid={validated && !formData.title}
-                />
-                <Form.Control.Feedback type="invalid">
-                  please enter a title.
-                </Form.Control.Feedback>
-              </FloatingLabel>
-              <FloatingLabel controlId="author" label="Author" className="mb-3">
-                <Form.Control
-                  required
-                  type="text"
-                  placeholder="Author"
-                  name="author"
-                  value={formData.author}
-                  onChange={handleInputChange}
-                  isInvalid={validated && !formData.author}
-                />
-                <Form.Control.Feedback type="invalid">
-                  please enter author name.
-                </Form.Control.Feedback>
-              </FloatingLabel>
-              <Row className="g-2">
-                <Col md sm xs>
-                  <FloatingLabel
-                    controlId="ISBN"
-                    label="ISBN"
-                    className="mb-3 "
-                  >
-                    <Form.Control
-                      required
-                      type="text"
-                      placeholder="ISBN"
-                      name="ISBN"
-                      value={formData.ISBN}
-                      onChange={handleInputChange}
-                      isInvalid={validated && !formData.ISBN}
-                    />
-                    <Form.Control.Feedback type="invalid">
-                      please enter the ISBN.
-                    </Form.Control.Feedback>
-                  </FloatingLabel>
-                </Col>
-
-                <Col md sm xs>
-                  <FloatingLabel
-                    controlId="genre"
-                    label="Genre"
-                    className="mb-3"
-                  >
-                    <Form.Control
-                      required
-                      type="text"
-                      placeholder="Genre"
-                      name="genre"
-                      value={formData.genre}
-                      onChange={handleInputChange}
-                      isInvalid={validated && !formData.genre}
-                    />
-                    <Form.Control.Feedback type="invalid">
-                      please select a genre.
-                    </Form.Control.Feedback>
-                  </FloatingLabel>
-                </Col>
-              </Row>
-              <Row className="g-2">
-                <Col md sm xs>
-                  <FloatingLabel
-                    controlId="published"
-                    label="Published Year"
-                    className="mb-3"
-                  >
-                    <Form.Control
-                      required
-                      type="number"
-                      placeholder="Published"
-                      name="published"
-                      value={formData.published === 0 ? "" : formData.published}
-                      onChange={handleInputChange}
-                      isInvalid={validated && !formData.published}
-                    />
-                    <Form.Control.Feedback type="invalid">
-                      please enter the published date.
-                    </Form.Control.Feedback>
-                  </FloatingLabel>
-                </Col>
-
-                <Col md sm xs>
-                  <FloatingLabel
-                    controlId="pages"
-                    label="No of Pages"
-                    className="mb-3"
-                  >
-                    <Form.Control
-                      required
-                      type="number"
-                      placeholder="Pages"
-                      name="pages"
-                      value={formData.pages === 0 ? "" : formData.pages}
-                      onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                        console.log(e.target.value);
-                        if (
-                          (e.target.value.length <= 4 &&
-                            !isNaN(parseInt(e.target.value))) ||
-                          e.target.value === ""
-                        ) {
-                          console.log("Valid");
-                          handleInputChange(e);
-                        }
-                      }}
-                      isInvalid={validated && !formData.pages}
-                    />
-                    <Form.Control.Feedback type="invalid">
-                      please enter no of pages.
-                    </Form.Control.Feedback>
-                  </FloatingLabel>
-                </Col>
-              </Row>
-              <FloatingLabel
-                controlId="image"
-                label="Image Url"
-                className="mb-3"
-              >
-                <Form.Control
-                  required
-                  type="Url"
-                  placeholder="Image Url"
-                  name="image"
-                  value={formData.image}
-                  onChange={handleInputChange}
-                  isInvalid={validated && !formData.image}
-                />
-                <Form.Control.Feedback type="invalid">
-                  please enter a valid url.
-                </Form.Control.Feedback>
-              </FloatingLabel>
-              {formData.branchCopy.map((branch, index) => (
-                <BranchesForm
-                  key={index}
-                  formData={formData}
-                  branchesList={branchesList}
-                  handleSelectChange={handleSelectChange}
-                  handleCopiesChange={handleCopiesChange}
-                  validated={validated}
-                  index={index}
-                />
-              ))}
-              {branchesList.length !== formData.branchCopy.length && (
-                <Button
-                  variant="link"
+      <Fade appear in={true}>
+        <Container style={{ paddingTop: "20px", paddingBottom: "20px" }}>
+          <BreadcrumbComp active={"Add Book"} />
+          <Row className="justify-content-evenly">
+            <Col lg="5" md="5" xs="auto" sm="auto">
+              <h3 className="mb-4">Add New Book </h3>
+              <Form noValidate validated={validated} onSubmit={handleFormData}>
+                <FloatingLabel
+                  style={{ paddingLeft: "0" }}
+                  controlId="title"
+                  label="Title"
                   className="mb-3"
-                  onClick={() => {
-                    setFormData({
-                      ...formData,
-                      branchCopy: [
-                        ...formData.branchCopy,
-                        { branchName: "", branchId: "", copies: 0 },
-                      ],
-                    });
-                  }}
                 >
-                  + Add Branch
-                </Button>
-              )}
-              <Row className="g-2">
-                <Button type="submit">Submit</Button>
-              </Row>
-            </Form>
-          </Col>
+                  <Form.Control
+                    required
+                    type="text"
+                    placeholder="Title"
+                    name="title"
+                    value={formData.title}
+                    onChange={handleInputChange}
+                    isInvalid={validated && !formData.title}
+                  />
+                  <Form.Control.Feedback type="invalid">
+                    please enter a title.
+                  </Form.Control.Feedback>
+                </FloatingLabel>
+                <FloatingLabel
+                  controlId="author"
+                  label="Author"
+                  className="mb-3"
+                >
+                  <Form.Control
+                    required
+                    type="text"
+                    placeholder="Author"
+                    name="author"
+                    value={formData.author}
+                    onChange={handleInputChange}
+                    isInvalid={validated && !formData.author}
+                  />
+                  <Form.Control.Feedback type="invalid">
+                    please enter author name.
+                  </Form.Control.Feedback>
+                </FloatingLabel>
+                <Row className="g-2">
+                  <Col md sm xs>
+                    <FloatingLabel
+                      controlId="ISBN"
+                      label="ISBN"
+                      className="mb-3 "
+                    >
+                      <Form.Control
+                        required
+                        type="text"
+                        placeholder="ISBN"
+                        name="ISBN"
+                        value={formData.ISBN}
+                        onChange={handleInputChange}
+                        isInvalid={validated && !formData.ISBN}
+                      />
+                      <Form.Control.Feedback type="invalid">
+                        please enter the ISBN.
+                      </Form.Control.Feedback>
+                    </FloatingLabel>
+                  </Col>
 
-          <Col lg="4" md="4" xs="auto" sm="auto">
-            <Row
-              id="image"
-              style={{
-                height: "380px",
-                width: "100%", // Set a fixed width if needed, e.g., width: "400px"
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <Col lg="auto" md="auto" xs="auto" sm="auto">
-                <Image
-                  style={{
-                    width: "200px",
-                    aspectRatio: "2/3",
-                    objectFit: "cover",
-                    borderRadius: "0.375rem",
-                  }}
-                  src={
-                    formData.image.match(".jpg$|.jpeg$|.png$|.gif$/i")
-                      ? formData.image
-                      : imagePlaceHolder
-                  }
-                  alt={imagePlaceHolder}
-                />
-              </Col>
-            </Row>
-            <Row
-              style={{
-                width: "100%",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <Col lg="auto" md="auto" xs="auto" sm="auto">
-                <div>
-                  <b>{`Title: ${formData.title}`}</b>
-                </div>
-                <div>{`Author: ${formData.author}`}</div>
-                <div>{`ISBN: ${formData.ISBN}`}</div>
-                <div>{`Genre: ${formData.genre}`}</div>
-                <div>{`Published: ${formData.published}`}</div>
-                <div>{`Pages: ${formData.pages}`}</div>
-                <br></br>
-                {branchesList.map((branch) =>
-                  formData.branchCopy.map(
-                    (branchCopy) =>
-                      branchCopy.branchId === branch._id.$oid && (
-                        <div key={branchCopy.branchId}>
-                          <div>{`Branch: ${branch.name} `}</div>
-                          <div>{` Copies:  ${branchCopy.copies}`}</div>
-                        </div>
-                      )
-                  )
+                  <Col md sm xs>
+                    <FloatingLabel
+                      controlId="genre"
+                      label="Genre"
+                      className="mb-3"
+                    >
+                      <Form.Control
+                        required
+                        type="text"
+                        placeholder="Genre"
+                        name="genre"
+                        value={formData.genre}
+                        onChange={handleInputChange}
+                        isInvalid={validated && !formData.genre}
+                      />
+                      <Form.Control.Feedback type="invalid">
+                        please select a genre.
+                      </Form.Control.Feedback>
+                    </FloatingLabel>
+                  </Col>
+                </Row>
+                <Row className="g-2">
+                  <Col md sm xs>
+                    <FloatingLabel
+                      controlId="published"
+                      label="Published Year"
+                      className="mb-3"
+                    >
+                      <Form.Control
+                        required
+                        type="number"
+                        placeholder="Published"
+                        name="published"
+                        value={
+                          formData.published === 0 ? "" : formData.published
+                        }
+                        onChange={handleInputChange}
+                        isInvalid={validated && !formData.published}
+                      />
+                      <Form.Control.Feedback type="invalid">
+                        please enter the published date.
+                      </Form.Control.Feedback>
+                    </FloatingLabel>
+                  </Col>
+
+                  <Col md sm xs>
+                    <FloatingLabel
+                      controlId="pages"
+                      label="No of Pages"
+                      className="mb-3"
+                    >
+                      <Form.Control
+                        required
+                        type="number"
+                        placeholder="Pages"
+                        name="pages"
+                        value={formData.pages === 0 ? "" : formData.pages}
+                        onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                          console.log(e.target.value);
+                          if (
+                            (e.target.value.length <= 4 &&
+                              !isNaN(parseInt(e.target.value))) ||
+                            e.target.value === ""
+                          ) {
+                            console.log("Valid");
+                            handleInputChange(e);
+                          }
+                        }}
+                        isInvalid={validated && !formData.pages}
+                      />
+                      <Form.Control.Feedback type="invalid">
+                        please enter no of pages.
+                      </Form.Control.Feedback>
+                    </FloatingLabel>
+                  </Col>
+                </Row>
+                <FloatingLabel
+                  controlId="image"
+                  label="Image Url"
+                  className="mb-3"
+                >
+                  <Form.Control
+                    required
+                    type="Url"
+                    placeholder="Image Url"
+                    name="image"
+                    value={formData.image}
+                    onChange={handleInputChange}
+                    isInvalid={validated && !formData.image}
+                  />
+                  <Form.Control.Feedback type="invalid">
+                    please enter a valid url.
+                  </Form.Control.Feedback>
+                </FloatingLabel>
+                {formData.branchCopy.map((branch, index) => (
+                  <BranchesForm
+                    key={index}
+                    formData={formData}
+                    branchesList={branchesList}
+                    handleSelectChange={handleSelectChange}
+                    handleCopiesChange={handleCopiesChange}
+                    validated={validated}
+                    index={index}
+                  />
+                ))}
+                {branchesList.length !== formData.branchCopy.length && (
+                  <Button
+                    variant="link"
+                    className="mb-3"
+                    onClick={() => {
+                      setFormData({
+                        ...formData,
+                        branchCopy: [
+                          ...formData.branchCopy,
+                          { branchName: "", branchId: "", copies: 0 },
+                        ],
+                      });
+                    }}
+                  >
+                    + Add Branch
+                  </Button>
                 )}
-              </Col>
-            </Row>
-          </Col>
-        </Row>
-      </Container>
+                <Row className="g-2">
+                  <Button type="submit">Submit</Button>
+                </Row>
+              </Form>
+            </Col>
+
+            <Col lg="4" md="4" xs="auto" sm="auto">
+              <Row
+                id="image"
+                style={{
+                  height: "380px",
+                  width: "100%", // Set a fixed width if needed, e.g., width: "400px"
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <Col lg="auto" md="auto" xs="auto" sm="auto">
+                  <Image
+                    style={{
+                      width: "200px",
+                      aspectRatio: "2/3",
+                      objectFit: "cover",
+                      borderRadius: "0.375rem",
+                    }}
+                    src={
+                      formData.image.match(".jpg$|.jpeg$|.png$|.gif$/i")
+                        ? formData.image
+                        : imagePlaceHolder
+                    }
+                    alt={imagePlaceHolder}
+                  />
+                </Col>
+              </Row>
+              <Row
+                style={{
+                  width: "100%",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <Col lg="auto" md="auto" xs="auto" sm="auto">
+                  <div>
+                    <b>{`Title: ${formData.title}`}</b>
+                  </div>
+                  <div>{`Author: ${formData.author}`}</div>
+                  <div>{`ISBN: ${formData.ISBN}`}</div>
+                  <div>{`Genre: ${formData.genre}`}</div>
+                  <div>{`Published: ${formData.published}`}</div>
+                  <div>{`Pages: ${formData.pages}`}</div>
+                  <br></br>
+                  {branchesList.map((branch) =>
+                    formData.branchCopy.map(
+                      (branchCopy) =>
+                        branchCopy.branchId === branch._id.$oid && (
+                          <div key={branchCopy.branchId}>
+                            <div>{`Branch: ${branch.name} `}</div>
+                            <div>{` Copies:  ${branchCopy.copies}`}</div>
+                          </div>
+                        )
+                    )
+                  )}
+                </Col>
+              </Row>
+            </Col>
+          </Row>
+        </Container>
+      </Fade>
       <ConfirmationModal
         isOpen={showModal}
         title="Add Book Details"
         message="Confirm to Submit the Book Details"
         onConfirm={handleOnConfirm}
         onClose={handleOnClose}
+      />
+      <ToastItem
+        showToast={showToast}
+        {...toastObject}
+        toggleToast={toggleShowtoast}
       />
     </>
   );

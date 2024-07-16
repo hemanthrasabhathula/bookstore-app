@@ -1,6 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
 import { Book, BookAndBranches, Branch } from "../../model/Definitions";
-import { Breadcrumb, Col, Container, Image, Row } from "react-bootstrap";
+import { Breadcrumb, Col, Container, Fade, Image, Row } from "react-bootstrap";
 import "./BookItem.css";
 import { branchesList } from "../../data/Branches_dummy";
 import { useEffect, useState } from "react";
@@ -94,67 +94,69 @@ const BookItem = () => {
 
   return (
     <>
-      <Container style={{ paddingTop: "20px", paddingBottom: "100px" }}>
-        <BreadcrumbComp active={"Book"} />
-        <Row
-          id="image"
-          className="justify-content-evenly"
-          style={{ paddingTop: "20px" }}
-        >
-          <Col
-            lg={{ span: 2, offset: 2 }}
-            md="4"
-            xs="auto"
-            sm="auto"
-            className="justify-content-end"
-            style={{ alignContent: "center" }}
-            onClick={() => (window.location.href = book.image)}
-          >
-            <Image
-              rounded
-              style={{
-                width: "200px",
-                aspectRatio: "2/3",
-                objectFit: "cover",
-              }}
-              src={book.image}
-              alt={book.title}
-            />
-          </Col>
-          <Col
-            id="details"
-            lg="6"
-            md="6"
-            xs="auto"
-            sm="auto"
+      <Fade appear in={true}>
+        <Container style={{ paddingTop: "20px", paddingBottom: "100px" }}>
+          <BreadcrumbComp active={"Book"} />
+          <Row
+            id="image"
             className="justify-content-evenly"
+            style={{ paddingTop: "20px" }}
           >
-            <div className="book-details-container">
-              <Row>
-                <div>
-                  <b>{book.title}</b>
-                </div>
-                <div>{`Author: ${book.author}`}</div>
-                <div>{`ISBN: ${book.ISBN}`}</div>
-                <div>{`Genre: ${book.genre}`}</div>
-                <div>{`Published: ${book.published}`}</div>
-                <div>{`Pages: ${book.pages}`}</div>
-              </Row>
-              <Row className="mt-4">
-                <div>Available at:</div>
+            <Col
+              lg={{ span: 2, offset: 2 }}
+              md="4"
+              xs="auto"
+              sm="auto"
+              className="justify-content-end"
+              style={{ alignContent: "center" }}
+              onClick={() => (window.location.href = book.image)}
+            >
+              <Image
+                rounded
+                style={{
+                  width: "200px",
+                  aspectRatio: "2/3",
+                  objectFit: "cover",
+                }}
+                src={book.image}
+                alt={book.title}
+              />
+            </Col>
+            <Col
+              id="details"
+              lg="6"
+              md="6"
+              xs="auto"
+              sm="auto"
+              className="justify-content-evenly"
+            >
+              <div className="book-details-container">
+                <Row>
+                  <div>
+                    <b>{book.title}</b>
+                  </div>
+                  <div>{`Author: ${book.author}`}</div>
+                  <div>{`ISBN: ${book.ISBN}`}</div>
+                  <div>{`Genre: ${book.genre}`}</div>
+                  <div>{`Published: ${book.published}`}</div>
+                  <div>{`Pages: ${book.pages}`}</div>
+                </Row>
+                <Row className="mt-4">
+                  <div>Available at:</div>
 
-                {branchCopies.map((branch) => (
-                  <BranchItem
-                    key={branch._id.$oid}
-                    branch={branch}
-                    onCountChange={handleCartItem}
-                  />
-                ))}
-              </Row>
-            </div>
-          </Col>
-        </Row>
-      </Container>
+                  {branchCopies.map((branch) => (
+                    <BranchItem
+                      key={branch._id.$oid}
+                      branch={branch}
+                      onCountChange={handleCartItem}
+                    />
+                  ))}
+                </Row>
+              </div>
+            </Col>
+          </Row>
+        </Container>
+      </Fade>
     </>
   );
 };

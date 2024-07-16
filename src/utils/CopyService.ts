@@ -7,6 +7,9 @@ export const addCopies = async (copydata: Copy): Promise<Copy> => {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(copydata),
     });
+    if (response.status !== 201) {
+      throw new Error("Error adding book");
+    }
     const item = await response.json();
     return item.data;
   } catch (error) {
