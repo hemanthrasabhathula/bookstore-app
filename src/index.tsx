@@ -13,6 +13,8 @@ import AddBook from "./components/admin/addBook/AddBook";
 import AddBranch from "./components/admin/addBranch/AddBranch";
 import { BookStoreProvider } from "./components/bookcontext/BookStoreContext";
 import TransactionComp from "./components/transaction/TransactionComp";
+import Login from "./components/login/Login";
+import Register from "./components/register/Register";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
@@ -31,6 +33,9 @@ root.render(
             <Route path="/addbook" element={<AddBook />} />
             <Route path="/addbranch" element={<AddBranch />} />
             <Route path="/transactions" element={<TransactionComp />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="*" element={<h1>Not Found</h1>} />
+            <Route path="/register" element={<Register />} />
           </Routes>
         </NavBar>
       </BookStoreProvider>
