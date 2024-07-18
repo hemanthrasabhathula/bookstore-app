@@ -13,7 +13,7 @@ export const RegisterUserAPI = async (
       body: JSON.stringify(user),
     });
     const api_data = (await response.json()) as APIResponse;
-    if (!response.ok) {
+    if (response.status !== 200 && response.status !== 409) {
       throw new Error(api_data.message);
     }
     //const api_data = (await response.json()) as APIResponse;

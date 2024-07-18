@@ -13,7 +13,7 @@ import {
   Row,
   Spinner,
 } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { UserRegister } from "../../model/Definitions";
 import * as formik from "formik";
 import * as yup from "yup";
@@ -37,6 +37,8 @@ const Register = () => {
     variant: "", // e.g., 'success', 'error', etc.
   });
   const toggleShowtoast = () => setShowToast(!showToast);
+
+  const navigate = useNavigate();
 
   const { Formik } = formik;
 
@@ -99,6 +101,13 @@ const Register = () => {
             message: response.message,
             variant: "success",
           });
+        } else if (response.status === 409) {
+          console.log("Error registering user", response);
+          setToastObject({
+            heading: "Error",
+            message: response.message,
+            variant: "info",
+          });
         } else {
           console.log("Error registering user", response);
           setToastObject({
@@ -108,6 +117,9 @@ const Register = () => {
           });
         }
         toggleShowtoast();
+        setTimeout(() => {
+          navigate("/login");
+        }, 2000);
         console.log("Response", response);
       })
       .catch((error: Error) => {
@@ -125,15 +137,6 @@ const Register = () => {
   useEffect(() => {
     console.log("Register Form", userRegisterForm);
   }, [userRegisterForm]);
-
-  //   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //     console.log("Onchange", e.target.value);
-
-  //     setUserRegisterForm({
-  //       ...userRegisterForm,
-  //       [e.target.name]: e.target.value,
-  //     });
-  //   };
 
   return (
     <>
