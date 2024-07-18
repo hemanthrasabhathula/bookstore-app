@@ -104,6 +104,12 @@ type UserLogin = {
   password: string;
 };
 
+type APIResponse = {
+  data: any;
+  status: number;
+  message: string;
+};
+
 export type {
   Book,
   SearchFormProps,
@@ -115,4 +121,5 @@ export type {
   Transaction,
   UserRegister,
   UserLogin,
+  APIResponse,
 };
