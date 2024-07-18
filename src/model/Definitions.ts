@@ -92,6 +92,18 @@ type Transaction = {
   lateFee: number;
 };
 
+type UserRegister = {
+  username: string;
+  email: string;
+  password: string;
+  confirmpassword: string;
+};
+
+type UserLogin = {
+  email: string;
+  password: string;
+};
+
 export type {
   Book,
   SearchFormProps,
@@ -101,4 +113,6 @@ export type {
   BookStoreContextProps,
   Copy,
   Transaction,
+  UserRegister,
+  UserLogin,
 };
