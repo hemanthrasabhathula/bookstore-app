@@ -92,6 +92,12 @@ type Transaction = {
   lateFee: number;
 };
 
+type User = {
+  _id: IdObj;
+  username: string;
+  email: string;
+};
+
 type UserRegister = {
   username: string;
   email: string;
@@ -122,4 +128,5 @@ export type {
   UserRegister,
   UserLogin,
   APIResponse,
+  User,
 };

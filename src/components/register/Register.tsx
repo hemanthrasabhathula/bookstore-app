@@ -1,4 +1,4 @@
-import { faEye, faEyeSlash, faLock } from "@fortawesome/free-solid-svg-icons";
+import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useState } from "react";
 import {
@@ -74,11 +74,11 @@ const Register = () => {
     setShowConfirmPassword(!showConfirmPassword);
   };
 
-  const onHandleSubmit = (
+  const onHandleSubmit = async (
     values: UserRegister,
     formikHelpers: formik.FormikHelpers<UserRegister>
   ) => {
-    const errors = formikHelpers.validateForm();
+    const errors = await formikHelpers.validateForm();
     console.log("Errors ", Object.keys(errors).length);
     if (Object.keys(errors).length !== 0) {
       console.log("Validation errors:", errors);

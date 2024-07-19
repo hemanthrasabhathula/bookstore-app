@@ -15,6 +15,8 @@ import { BookStoreProvider } from "./components/bookcontext/BookStoreContext";
 import TransactionComp from "./components/transaction/TransactionComp";
 import Login from "./components/login/Login";
 import Register from "./components/register/Register";
+import RequireAuth from "./components/common/RequireAuth";
+import { AuthProvider } from "./context/AuthContext";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
@@ -23,23 +25,67 @@ root.render(
   // <React.StrictMode>
 
   <BrowserRouter>
-    <BookProvider>
-      <BookStoreProvider>
-        <NavBar>
-          <Routes>
-            <Route path="/" element={<App />} />
-            <Route path="/book/:bookId" element={<BookItem />} />
-            <Route path="/cart/" element={<Cart />} />
-            <Route path="/addbook" element={<AddBook />} />
-            <Route path="/addbranch" element={<AddBranch />} />
-            <Route path="/transactions" element={<TransactionComp />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="*" element={<h1>Not Found</h1>} />
-            <Route path="/register" element={<Register />} />
-          </Routes>
-        </NavBar>
-      </BookStoreProvider>
-    </BookProvider>
+    <AuthProvider>
+      <BookProvider>
+        <BookStoreProvider>
+          <NavBar>
+            <Routes>
+              <Route path="/login" element={<Login />} />
+              <Route
+                path="/"
+                element={
+                  <RequireAuth>
+                    <App />
+                  </RequireAuth>
+                }
+              />
+              <Route
+                path="/book/:bookId"
+                element={
+                  <RequireAuth>
+                    <BookItem />
+                  </RequireAuth>
+                }
+              />
+              <Route
+                path="/cart/"
+                element={
+                  <RequireAuth>
+                    <Cart />
+                  </RequireAuth>
+                }
+              />
+              <Route
+                path="/addbook"
+                element={
+                  <RequireAuth>
+                    <AddBook />
+                  </RequireAuth>
+                }
+              />
+              <Route
+                path="/addbranch"
+                element={
+                  <RequireAuth>
+                    <AddBranch />
+                  </RequireAuth>
+                }
+              />
+              <Route
+                path="/transactions"
+                element={
+                  <RequireAuth>
+                    <TransactionComp />
+                  </RequireAuth>
+                }
+              />
+
+              <Route path="/register" element={<Register />} />
+            </Routes>
+          </NavBar>
+        </BookStoreProvider>
+      </BookProvider>
+    </AuthProvider>
   </BrowserRouter>
   // </React.StrictMode>
 );

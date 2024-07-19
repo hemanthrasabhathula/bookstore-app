@@ -7,11 +7,13 @@ import { Badge } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useBookStoreContext } from "../components/bookcontext/BookStoreContext";
+import { useAuth } from "../context/AuthContext";
 
 const NavBar = (props: { children: React.ReactNode }) => {
   const { cartItems } = useBookStoreContext();
   const navigate = useNavigate();
   const [booksCount, setBooksCount] = useState(0);
+  const { user, logout } = useAuth();
   useEffect(() => {
     setBooksCount(cartItems.length);
   }, [cartItems]);
@@ -46,17 +48,30 @@ const NavBar = (props: { children: React.ReactNode }) => {
                   </Badge>
                 )}
               </Nav.Link>
-              <NavDropdown title="User" id="collapsible-nav-dropdown">
-                <NavDropdown.Item as={Link} to="/login">
-                  Login
-                </NavDropdown.Item>
+              <NavDropdown
+                title={user ? user.username : "User"}
+                id="collapsible-nav-dropdown"
+              >
+                {!user && (
+                  <NavDropdown.Item as={Link} to="/login">
+                    Login
+                  </NavDropdown.Item>
+                )}
+
                 <NavDropdown.Item href="#action/3.1">Profile</NavDropdown.Item>
                 <NavDropdown.Item as={Link} to="/transactions">
                   Transactions
                 </NavDropdown.Item>
                 {/* <NavDropdown.Item href="#action/3.3">logout</NavDropdown.Item> */}
                 <NavDropdown.Divider />
-                <NavDropdown.Item href="#action/3.4">Log out</NavDropdown.Item>
+                <NavDropdown.Item
+                  onClick={() => {
+                    logout();
+                    navigate("/login");
+                  }}
+                >
+                  Log out
+                </NavDropdown.Item>
               </NavDropdown>
             </Nav>
           </Navbar.Collapse>

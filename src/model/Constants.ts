@@ -10,3 +10,6 @@ export const CART = "cart";
 export const BOOKS_URL = `${API_ENDPOINT}/books`;
 export const BRANCHES_URL = `${API_ENDPOINT}/branches`;
 export const CART_URL = `${API_ENDPOINT}/cart`;
+
+export const SESSION_KEY = "userSession";
+export const SESSION_TIMEOUT = 1000 * 60 * 1 * 1; // 1 minute

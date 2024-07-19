@@ -1,4 +1,5 @@
-import { Book, Branch, CartItem } from "../model/Definitions";
+import { SESSION_KEY, SESSION_TIMEOUT } from "../model/Constants";
+import { Book, Branch, CartItem, User } from "../model/Definitions";
 
 class StorageService {
   static getItem(key: string) {
@@ -28,6 +29,31 @@ class StorageService {
   static removeItem(key: string) {
     localStorage.removeItem(key);
   }
+
+  static setUserSession = (user: User, expires: number = SESSION_TIMEOUT) => {
+    const now = new Date();
+    const item = {
+      user: user,
+      expires: now.getTime() + expires,
+    };
+    localStorage.setItem(SESSION_KEY, JSON.stringify(item));
+  };
+
+  static getUserSession = () => {
+    const itemStr = localStorage.getItem(SESSION_KEY);
+    if (!itemStr) return null;
+    const item = JSON.parse(itemStr) as { user: User; expires: number };
+    const now = new Date();
+    if (now.getTime() > item.expires) {
+      localStorage.removeItem(SESSION_KEY);
+      return null;
+    }
+    return item.user;
+  };
+
+  static clearUserSession = () => {
+    localStorage.removeItem(SESSION_KEY);
+  };
 }
 
 export default StorageService;
