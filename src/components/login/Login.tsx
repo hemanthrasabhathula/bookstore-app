@@ -21,6 +21,7 @@ import { LoginUserAPI } from "../../utils/AuthenticationService";
 import ToastItem from "../common/ToastItem";
 import { useAuth } from "../../context/AuthContext";
 import StorageService from "../../utils/StorageService";
+import { SESSION_TIMEOUT } from "../../model/Constants";
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -76,7 +77,7 @@ const Login = () => {
             variant: "success",
           });
           toggleShowtoast();
-          login(response.data, 60000); // 1 minute expiry
+          login(response.data, SESSION_TIMEOUT); // 1 minute expiry
           setTimeout(() => {
             navigate("/");
           }, 1000);

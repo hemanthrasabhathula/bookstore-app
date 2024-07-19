@@ -27,11 +27,11 @@ const NavBar = (props: { children: React.ReactNode }) => {
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav">
             <Nav className="me-auto">
-              <Nav.Link eventKey={1} as={Link} to="/">
+              <Nav.Link eventKey={1} as={Link} to="/books">
                 Books
               </Nav.Link>
               {/* <Nav.Link href="#pricing">Branches</Nav.Link> */}
-              <Nav.Link eventKey={2} as={Link} to="/addbranch">
+              <Nav.Link eventKey={2} as={Link} to="/branches">
                 Branches
               </Nav.Link>
               <Nav.Link eventKey={3} as={Link} to="/addbook">

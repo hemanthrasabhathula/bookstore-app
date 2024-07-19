@@ -30,7 +30,7 @@ class StorageService {
     localStorage.removeItem(key);
   }
 
-  static setUserSession = (user: User, expires: number = SESSION_TIMEOUT) => {
+  static setUserSession = (user: User, expires: number) => {
     const now = new Date();
     const item = {
       user: user,

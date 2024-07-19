@@ -12,4 +12,8 @@ export const BRANCHES_URL = `${API_ENDPOINT}/branches`;
 export const CART_URL = `${API_ENDPOINT}/cart`;
 
 export const SESSION_KEY = "userSession";
-export const SESSION_TIMEOUT = 1000 * 60 * 1 * 1; // 1 minute
+
+const one_hr = 1000 * 60 * 60;
+const five_min = 1000 * 60 * 5;
+const fifteen_min = 1000 * 60 * 15;
+export const SESSION_TIMEOUT = fifteen_min;

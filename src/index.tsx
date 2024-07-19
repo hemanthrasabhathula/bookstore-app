@@ -40,6 +40,14 @@ root.render(
                 }
               />
               <Route
+                path="/books"
+                element={
+                  <RequireAuth>
+                    <App />
+                  </RequireAuth>
+                }
+              />
+              <Route
                 path="/book/:bookId"
                 element={
                   <RequireAuth>
@@ -64,7 +72,7 @@ root.render(
                 }
               />
               <Route
-                path="/addbranch"
+                path="/branches"
                 element={
                   <RequireAuth>
                     <AddBranch />
