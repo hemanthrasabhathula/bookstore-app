@@ -1,6 +1,7 @@
 import { createContext, useContext, useState } from "react";
 import { User } from "../model/Definitions";
 import StorageService from "../utils/StorageService";
+import { BOOKS_LIST, BRANCHES_LIST, CART_ITEMS } from "../model/Constants";
 
 interface AuthContextProps {
   user: User | null;
@@ -22,6 +23,10 @@ export const AuthProvider = ({ children }: { children: JSX.Element }) => {
 
   const logout = () => {
     StorageService.clearUserSession();
+    StorageService.clearUserSession();
+    StorageService.removeItem(CART_ITEMS);
+    StorageService.removeItem(BRANCHES_LIST);
+    StorageService.removeItem(BOOKS_LIST);
     setUser(null);
   };
 

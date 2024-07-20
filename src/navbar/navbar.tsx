@@ -48,31 +48,37 @@ const NavBar = (props: { children: React.ReactNode }) => {
                   </Badge>
                 )}
               </Nav.Link>
-              <NavDropdown
-                title={user ? user.username : "User"}
-                id="collapsible-nav-dropdown"
-              >
-                {!user && (
-                  <NavDropdown.Item as={Link} to="/login">
-                    Login
-                  </NavDropdown.Item>
-                )}
+              {user && (
+                <>
+                  <NavDropdown
+                    title={user ? user.username : "User"}
+                    id="collapsible-nav-dropdown"
+                  >
+                    {!user && (
+                      <NavDropdown.Item as={Link} to="/login">
+                        Login
+                      </NavDropdown.Item>
+                    )}
 
-                <NavDropdown.Item href="#action/3.1">Profile</NavDropdown.Item>
-                <NavDropdown.Item as={Link} to="/transactions">
-                  Transactions
-                </NavDropdown.Item>
-                {/* <NavDropdown.Item href="#action/3.3">logout</NavDropdown.Item> */}
-                <NavDropdown.Divider />
-                <NavDropdown.Item
-                  onClick={() => {
-                    logout();
-                    navigate("/login");
-                  }}
-                >
-                  Log out
-                </NavDropdown.Item>
-              </NavDropdown>
+                    <NavDropdown.Item href="#action/3.1">
+                      Profile
+                    </NavDropdown.Item>
+                    <NavDropdown.Item as={Link} to="/transactions">
+                      Transactions
+                    </NavDropdown.Item>
+                    {/* <NavDropdown.Item href="#action/3.3">logout</NavDropdown.Item> */}
+                    <NavDropdown.Divider />
+                    <NavDropdown.Item
+                      onClick={() => {
+                        logout();
+                        navigate("/login");
+                      }}
+                    >
+                      Log out
+                    </NavDropdown.Item>
+                  </NavDropdown>
+                </>
+              )}
             </Nav>
           </Navbar.Collapse>
         </Container>
