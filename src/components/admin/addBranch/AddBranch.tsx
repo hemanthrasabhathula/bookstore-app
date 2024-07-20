@@ -26,6 +26,10 @@ const AddBranch = () => {
 
   useEffect(() => {
     setBranchesList(branches);
+  }, []);
+
+  useEffect(() => {
+    setBranchesList(branches);
   }, [branches]);
   const addNewBranch = (branch: Branch) => {
     insertBranch(branch)

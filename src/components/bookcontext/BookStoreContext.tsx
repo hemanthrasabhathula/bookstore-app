@@ -42,6 +42,17 @@ const BookStoreProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     //     );
     //   } else setBranches(StorageService.getBranches(BRANCHES_LIST));
     // }
+    // if (books.length !== 0) StorageService.setItem(BOOKS_LIST, books);
+    // if (branches.length !== 0) StorageService.setItem(BRANCHES_LIST, branches);
+
+    if (books.length === 0) {
+      const booksList = StorageService.getBooks(BOOKS_LIST);
+      if (booksList.length !== 0) setBooks(booksList);
+    }
+    if (branches.length === 0) {
+      const branchesList = StorageService.getBranches(BRANCHES_LIST);
+      if (branchesList.length !== 0) setBranches(branchesList);
+    }
 
     if (cartItems.length === 0) {
       const storedCartItems = StorageService.getCartItems(CART_ITEMS);

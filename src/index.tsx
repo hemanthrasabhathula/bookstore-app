@@ -87,8 +87,8 @@ root.render(
                   </RequireAuth>
                 }
               />
-
               <Route path="/register" element={<Register />} />
+              <Route path="*" element={<Login />} />
             </Routes>
           </NavBar>
         </BookStoreProvider>
