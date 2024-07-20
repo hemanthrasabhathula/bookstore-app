@@ -29,19 +29,19 @@ const BookStoreProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   useEffect(() => {
     console.log("BookStoreProvider useEffect default fetch");
 
-    if (books.length === 0) {
-      if (StorageService.getBooks(BOOKS_LIST).length === 0) {
-        fetchAndSetBooks().then((fetchedBooks) => setBooks(fetchedBooks));
-      } else setBooks(StorageService.getBooks(BOOKS_LIST));
-    }
+    // if (books.length === 0) {
+    //   if (StorageService.getBooks(BOOKS_LIST).length === 0) {
+    //     fetchAndSetBooks().then((fetchedBooks) => setBooks(fetchedBooks));
+    //   } else setBooks(StorageService.getBooks(BOOKS_LIST));
+    // }
 
-    if (branches.length === 0) {
-      if (StorageService.getBranches(BRANCHES_LIST).length === 0) {
-        fetchAndSetBranches().then((fetchAndSetBranches) =>
-          setBranches(fetchAndSetBranches)
-        );
-      } else setBranches(StorageService.getBranches(BRANCHES_LIST));
-    }
+    // if (branches.length === 0) {
+    //   if (StorageService.getBranches(BRANCHES_LIST).length === 0) {
+    //     fetchAndSetBranches().then((fetchAndSetBranches) =>
+    //       setBranches(fetchAndSetBranches)
+    //     );
+    //   } else setBranches(StorageService.getBranches(BRANCHES_LIST));
+    // }
 
     if (cartItems.length === 0) {
       const storedCartItems = StorageService.getCartItems(CART_ITEMS);
@@ -145,6 +145,15 @@ const BookStoreProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     }
   };
 
+  const clearData = () => {
+    setBooks([]);
+    setBranches([]);
+    setCartItems([]);
+    StorageService.removeItem(BOOKS_LIST);
+    StorageService.removeItem(BRANCHES_LIST);
+    StorageService.removeItem(CART_ITEMS);
+  };
+
   return (
     <BookStoreContext.Provider
       value={{
@@ -156,6 +165,7 @@ const BookStoreProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
         removeBranch,
         addToCart,
         clearCart,
+        clearData,
       }}
     >
       {children}

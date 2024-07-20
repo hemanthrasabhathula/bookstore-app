@@ -23,10 +23,6 @@ export const AuthProvider = ({ children }: { children: JSX.Element }) => {
 
   const logout = () => {
     StorageService.clearUserSession();
-    StorageService.clearUserSession();
-    StorageService.removeItem(CART_ITEMS);
-    StorageService.removeItem(BRANCHES_LIST);
-    StorageService.removeItem(BOOKS_LIST);
     setUser(null);
   };
 

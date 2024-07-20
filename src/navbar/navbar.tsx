@@ -10,10 +10,17 @@ import { useBookStoreContext } from "../components/bookcontext/BookStoreContext"
 import { useAuth } from "../context/AuthContext";
 
 const NavBar = (props: { children: React.ReactNode }) => {
-  const { cartItems } = useBookStoreContext();
+  const { cartItems, clearData } = useBookStoreContext();
   const navigate = useNavigate();
   const [booksCount, setBooksCount] = useState(0);
   const { user, logout } = useAuth();
+
+  const handleLogout = () => {
+    clearData();
+    logout();
+    navigate("/login");
+  };
+
   useEffect(() => {
     setBooksCount(cartItems.length);
   }, [cartItems]);
@@ -68,12 +75,7 @@ const NavBar = (props: { children: React.ReactNode }) => {
                     </NavDropdown.Item>
                     {/* <NavDropdown.Item href="#action/3.3">logout</NavDropdown.Item> */}
                     <NavDropdown.Divider />
-                    <NavDropdown.Item
-                      onClick={() => {
-                        logout();
-                        navigate("/login");
-                      }}
-                    >
+                    <NavDropdown.Item onClick={handleLogout}>
                       Log out
                     </NavDropdown.Item>
                   </NavDropdown>

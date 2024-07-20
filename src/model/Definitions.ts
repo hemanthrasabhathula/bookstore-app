@@ -59,6 +59,7 @@ type BookStoreContextProps = {
   removeBranch: (branchId: string) => void;
   addToCart: (book: Book, branch: Branch) => void;
   clearCart: () => void;
+  clearData: () => void;
 };
 
 type BranchCopy = {

@@ -4,17 +4,20 @@ import "./App.css";
 import { BookSearchForm } from "./components/search/BookSearchForm";
 import { Container, Fade, Row } from "react-bootstrap";
 import { Book } from "./model/Definitions";
-import { API_ENDPOINT } from "./model/Constants";
+import { API_ENDPOINT, BOOKS_LIST, BRANCHES_LIST } from "./model/Constants";
 import BookList from "./components/bookgrid/BookGrid";
 import { useBooks } from "./components/bookcontext/BookContext";
 import { useBookStoreContext } from "./components/bookcontext/BookStoreContext";
+import StorageService from "./utils/StorageService";
+import { fetchAndSetBooks } from "./utils/BookService";
+import { fetchAndSetBranches } from "./utils/BranchService";
 
 const App = () => {
   console.log("App");
   //const [books, setBooks] = useState<Book[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
 
-  const { books, branches } = useBookStoreContext();
+  const { books, branches, addBooks, addBranches } = useBookStoreContext();
 
   if (useBookStoreContext() === undefined) {
     console.log("useBookStoreContext is undefined");
@@ -66,6 +69,19 @@ const App = () => {
     //handleFetchBooks();
     //if (branches.length === 0) handleFetchBranches();
     //setBooks(booksList); // Comment this line when using the API
+    if (books.length === 0) {
+      if (StorageService.getBooks(BOOKS_LIST).length === 0) {
+        fetchAndSetBooks().then((fetchedBooks) => addBooks(fetchedBooks));
+      } else addBooks(StorageService.getBooks(BOOKS_LIST));
+    }
+
+    if (branches.length === 0) {
+      if (StorageService.getBranches(BRANCHES_LIST).length === 0) {
+        fetchAndSetBranches().then((fetchAndSetBranches) =>
+          addBranches(fetchAndSetBranches)
+        );
+      } else addBranches(StorageService.getBranches(BRANCHES_LIST));
+    }
   }, []);
 
   return (

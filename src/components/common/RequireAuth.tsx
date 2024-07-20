@@ -7,6 +7,7 @@ import { BOOKS_LIST, BRANCHES_LIST, CART_ITEMS } from "../../model/Constants";
 const RequireAuth = ({ children }: { children: JSX.Element }) => {
   const user = StorageService.getUserSession();
 
+  console.log("User ", user);
   if (!user) {
     StorageService.clearUserSession();
     StorageService.removeItem(CART_ITEMS);
