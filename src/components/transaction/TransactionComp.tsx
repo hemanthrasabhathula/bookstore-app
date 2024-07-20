@@ -12,9 +12,11 @@ import {
 import BreadcrumbComp from "../common/BreadcrumbComp";
 import {
   fetchTransactions,
+  fetchUserTransactions,
   returnCopyTransaction,
 } from "../../utils/TransactionService";
 import ToastItem from "../common/ToastItem";
+import { useAuth } from "../../context/AuthContext";
 
 const TransactionComp = () => {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
@@ -30,8 +32,15 @@ const TransactionComp = () => {
 
   const toggleShowtoast = () => setShowToast(!showToast);
 
-  const callFetchTransactions = async () => {
-    fetchTransactions()
+  const { user } = useAuth();
+
+  const callFetchTransactions = async (userId: string | undefined) => {
+    if (!userId) {
+      setError("Invalid User");
+      setLoading(false);
+      return;
+    }
+    fetchUserTransactions(userId)
       .then((response) => {
         if (response.length === 0) {
           setError("No transactions found");
@@ -50,7 +59,7 @@ const TransactionComp = () => {
       });
   };
   useEffect(() => {
-    callFetchTransactions();
+    callFetchTransactions(user?._id.$oid);
   }, []);
 
   const handleReturn = (copy_id: string, index: number) => {
@@ -66,7 +75,7 @@ const TransactionComp = () => {
           variant: "success",
         });
         toggleShowtoast();
-        callFetchTransactions();
+        callFetchTransactions(user?._id.$oid);
       })
       .catch((error) => {
         setToastObject({

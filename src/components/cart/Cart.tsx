@@ -23,6 +23,7 @@ import ConfirmationModal from "../common/ConfirmationModal";
 import ToastItem from "../common/ToastItem";
 import { maketransaction } from "../../utils/CartService";
 import BreadcrumbComp from "../common/BreadcrumbComp";
+import { useAuth } from "../../context/AuthContext";
 
 const Cart = () => {
   //const { bookslist, updateBooklist, clearBooklist } = useBooks();
@@ -40,10 +41,22 @@ const Cart = () => {
 
   console.log("CartItems ", cartItems);
 
+  const { user } = useAuth();
+
   const handleOnConfirm = () => {
     setShowModal(false);
     console.log("Purchase Items:: ", cartItems);
-    maketransaction(cartItems)
+    if (!user) {
+      setToastObject({
+        heading: "Success",
+        message: "Invalid Session. Please login to continue",
+        variant: "success",
+      });
+
+      toggleShowtoast();
+      return;
+    }
+    maketransaction(cartItems, user)
       .then((response) => {
         console.log("Transaction Response", response);
         clearCart();

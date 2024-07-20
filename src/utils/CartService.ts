@@ -1,14 +1,17 @@
 import { API_ENDPOINT } from "../model/Constants";
-import { CartItem } from "../model/Definitions";
+import { CartItem, User } from "../model/Definitions";
 
 export const maketransaction = async (
-  cartdata: CartItem[]
+  cartdata: CartItem[],
+  user: User
 ): Promise<string> => {
+  const transaction_body = JSON.stringify({ cartdata, user });
+  console.log("Transaction Body", transaction_body);
   try {
     const response = await fetch(`${API_ENDPOINT}/transactions`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(cartdata),
+      body: transaction_body,
     });
     if (response.status !== 201) {
       throw new Error("Error while making transaction");

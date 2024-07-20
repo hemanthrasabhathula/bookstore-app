@@ -15,6 +15,22 @@ export const fetchTransactions = async (): Promise<Transaction[]> => {
   }
 };
 
+export const fetchUserTransactions = async (
+  userId: string
+): Promise<Transaction[]> => {
+  try {
+    const response = await fetch(`${API_ENDPOINT}/transactions/${userId}`);
+    if (!response.ok) {
+      throw new Error("Error fetching transactions");
+    }
+    const items = await response.json();
+    return items.data as Transaction[];
+  } catch (error) {
+    console.error("Error fetching transactions", error);
+    throw error;
+  }
+};
+
 export const returnCopyTransaction = async (
   copy_id: string
 ): Promise<string> => {
