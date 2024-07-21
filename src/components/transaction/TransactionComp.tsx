@@ -113,7 +113,7 @@ const TransactionComp = () => {
               ) : (
                 <>
                   <h3 className="mb-4">Transactions </h3>
-                  <Table bordered hover>
+                  <Table bordered hover responsive>
                     <thead>
                       <tr>
                         <th>ID</th>
