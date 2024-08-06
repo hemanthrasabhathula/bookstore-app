@@ -117,6 +117,14 @@ type APIResponse = {
   message: string;
 };
 
+type APIData = {
+  model: string;
+  messages: {
+    role: string;
+    content: string;
+  }[];
+};
+
 export type {
   Book,
   SearchFormProps,
@@ -130,4 +138,5 @@ export type {
   UserLogin,
   APIResponse,
   User,
+  APIData,
 };

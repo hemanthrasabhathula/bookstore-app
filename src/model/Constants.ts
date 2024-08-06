@@ -10,6 +10,23 @@ export const CART = "cart";
 export const BOOKS_URL = `${API_ENDPOINT}/books`;
 export const BRANCHES_URL = `${API_ENDPOINT}/branches`;
 export const CART_URL = `${API_ENDPOINT}/cart`;
+export const GROQ_API_URL = "https://api.groq.com/openai/v1/chat/completions"; // API endpoint
+export const GROQ_API_KEY =
+  "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";
+
+// export const BOOK_INFO_PROMPT = `Give me information of the Book : "your-book-title" Exactly in the below JSON format nothing else should be present in the output
+// {
+// "title": "The Alchemist",
+//             "author": "Paulo Coelho",
+//             "ISBN": "978-0062315007",
+//             "genre": "Fiction",
+//             "published": 1988,
+//             "pages": 489,
+//             "image": "https://images-na.ssl-images-amazon.com/images/I/71aFt4+OTOL.jpg"
+// }`;
+
+export const BOOK_INFO_PROMPT =
+  "Provide the book details for :your-book-title in a single-line JSON format without any extra text or newline characters. The JSON should include fields: title, author, ISBN (in the format 123-123456789), genre (comma seperated string), published (only year), pages, and image.";
 
 export const SESSION_KEY = "userSession";
 

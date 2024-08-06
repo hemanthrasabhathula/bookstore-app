@@ -7,6 +7,7 @@ import {
   FloatingLabel,
   Form,
   Image,
+  Spinner,
 } from "react-bootstrap";
 import "./AddBook.css";
 import {
@@ -17,7 +18,7 @@ import {
   useState,
 } from "react";
 import { Row } from "react-bootstrap";
-import { Branch, Copy } from "../../../model/Definitions";
+import { APIData, Branch, Copy } from "../../../model/Definitions";
 import { Link } from "react-router-dom";
 import { useBookStoreContext } from "../../bookcontext/BookStoreContext";
 import BranchItem from "../../branch/BranchItem";
@@ -26,6 +27,9 @@ import { addCopies } from "../../../utils/CopyService";
 import ConfirmationModal from "../../common/ConfirmationModal";
 import BreadcrumbComp from "../../common/BreadcrumbComp";
 import ToastItem from "../../common/ToastItem";
+import { PromptService } from "../../../utils/PromptService";
+import { BOOK_INFO_PROMPT } from "../../../model/Constants";
+import { ReactComponent as Wand } from "../../../../src/assets/magic-wand-2.svg";
 // type FormData = {
 //   title: string;
 //   author: string;
@@ -62,15 +66,18 @@ const AddBook = () => {
     message: "",
     variant: "", // e.g., 'success', 'error', etc.
   });
-
+  const [loadingPrompt, setloadingPrompt] = useState(false);
   const toggleShowtoast = () => setShowToast(!showToast);
   const { branches } = useBookStoreContext();
   const [branchesList, setBranchesList] = useState<Branch[]>(branches);
-
+  const [srcImg, setSrcImg] = useState<string>(imagePlaceHolder);
   useEffect(() => {
     setBranchesList(branches);
   }, [branches]);
 
+  useEffect(() => {
+    setSrcImg(formData.image || imagePlaceHolder);
+  }, [formData.image]);
   const handleFormData = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const form = e.currentTarget;
@@ -189,6 +196,41 @@ const AddBook = () => {
     });
   };
 
+  const handlePromptGeneration = () => {
+    setloadingPrompt(true);
+    const message: string = BOOK_INFO_PROMPT.replace(
+      "your-book-title",
+      formData.title
+    );
+    const data: APIData = {
+      model: "llama3-8b-8192",
+      messages: [{ role: "user", content: message }],
+    };
+
+    PromptService(data)
+      .then((response) => {
+        console.log("Prompt Response", response);
+        const generatedData: Copy = JSON.parse(response) as Copy;
+        console.log("Generated Data", generatedData);
+        setFormData({
+          ...formData,
+          title: generatedData.title,
+          author: generatedData.author,
+          ISBN: generatedData.ISBN,
+          genre: generatedData.genre,
+          published: generatedData.published,
+          pages: generatedData.pages,
+          image: generatedData.image,
+        });
+        setloadingPrompt(false);
+      })
+
+      .catch((error) => {
+        setloadingPrompt(false);
+        console.error("Error generating prompt", error);
+      });
+  };
+
   const handleOnConfirm = () => {
     setShowModal(false);
     addCopies(formData)
@@ -288,7 +330,7 @@ const AddBook = () => {
                     <FloatingLabel
                       controlId="ISBN"
                       label="ISBN"
-                      className="mb-3 "
+                      className="mb-3"
                     >
                       <Form.Control
                         required
@@ -428,7 +470,54 @@ const AddBook = () => {
                   </Button>
                 )}
                 <Row className="g-2">
-                  <Button type="submit">Submit</Button>
+                  <Col md={8} sm={8} xs={8} lg={8}>
+                    <Button style={{ width: "100%" }} type="submit">
+                      Submit
+                    </Button>
+                  </Col>
+
+                  <Col md={4} sm={4} xs={4} lg={4}>
+                    <Button
+                      style={{ width: "100%" }}
+                      type="button"
+                      onClick={handlePromptGeneration}
+                      disabled={loadingPrompt}
+                    >
+                      {loadingPrompt ? (
+                        <>
+                          <Spinner
+                            as="span"
+                            animation="border"
+                            size="sm"
+                            role="status"
+                            aria-hidden="true"
+                          />
+                          <Wand
+                            style={{
+                              width: "16px",
+                              height: "16px",
+                              fill: "white",
+                              paddingLeft: "2px",
+                              paddingRight: "2px",
+                            }}
+                          />
+                          {" Generating"}
+                        </>
+                      ) : (
+                        <>
+                          <Wand
+                            style={{
+                              width: "16px",
+                              height: "16px",
+                              fill: "white",
+                              paddingRight: "2px",
+                            }}
+                          />
+                          {" Generate"}
+                        </>
+                      )}
+                    </Button>
+                  </Col>
                 </Row>
               </Form>
             </Col>
@@ -452,12 +541,10 @@ const AddBook = () => {
                       objectFit: "cover",
                       borderRadius: "0.375rem",
                     }}
-                    src={
-                      formData.image.match(".jpg$|.jpeg$|.png$|.gif$/i")
-                        ? formData.image
-                        : imagePlaceHolder
-                    }
-                    alt={imagePlaceHolder}
+                    src={srcImg}
+                    onError={() => {
+                      setSrcImg(imagePlaceHolder);
+                    }}
                   />
                 </Col>
               </Row>

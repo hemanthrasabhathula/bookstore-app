@@ -67,7 +67,7 @@ const NavBar = (props: { children: React.ReactNode }) => {
                       </NavDropdown.Item>
                     )}
 
-                    <NavDropdown.Item href="#action/3.1">
+                    <NavDropdown.Item as={Link} to="/user">
                       Profile
                     </NavDropdown.Item>
                     <NavDropdown.Item as={Link} to="/transactions">
