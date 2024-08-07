@@ -11,8 +11,6 @@ export const BOOKS_URL = `${API_ENDPOINT}/books`;
 export const BRANCHES_URL = `${API_ENDPOINT}/branches`;
 export const CART_URL = `${API_ENDPOINT}/cart`;
 export const GROQ_API_URL = "https://api.groq.com/openai/v1/chat/completions"; // API endpoint
-export const GROQ_API_KEY =
-  "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";
 
 // export const BOOK_INFO_PROMPT = `Give me information of the Book : "your-book-title" Exactly in the below JSON format nothing else should be present in the output
 // {
