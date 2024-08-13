@@ -44,7 +44,10 @@ const BookLines = () => {
       "#B0A7A3", // Additional
     ];
     const color1 = colors[Math.floor(Math.random() * colors.length)];
-    const color2 = colors[Math.floor(Math.random() * colors.length)];
+    let color2;
+    do {
+      color2 = colors[Math.floor(Math.random() * colors.length)];
+    } while (color2 === color1);
     return `linear-gradient(45deg, ${color1}, ${color2})`;
   };
 

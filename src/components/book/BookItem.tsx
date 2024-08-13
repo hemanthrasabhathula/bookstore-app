@@ -10,6 +10,7 @@ import { useBookStoreContext } from "../bookcontext/BookStoreContext";
 import { count } from "console";
 import BreadcrumbComp from "../common/BreadcrumbComp";
 import BookLines from "../booklines/BookLines";
+import Fireflies from "../common/Fireflies";
 
 const BookItem = () => {
   const location = useLocation();
@@ -67,7 +68,10 @@ const BookItem = () => {
       "#B0A7A3", // Additional
     ];
     const color1 = colors[Math.floor(Math.random() * colors.length)];
-    const color2 = colors[Math.floor(Math.random() * colors.length)];
+    let color2;
+    do {
+      color2 = colors[Math.floor(Math.random() * colors.length)];
+    } while (color2 === color1);
     return `linear-gradient(45deg, ${color1}, ${color2})`;
   };
 
@@ -135,11 +139,11 @@ const BookItem = () => {
       <Fade appear in={true}>
         <div style={{ background: gradient }}>
           <Container
-            style={{
-              paddingTop: "20px",
-              paddingBottom: "20px",
-              height: "100vh",
-            }}
+            className="container-height"
+            // style={{
+            //   paddingTop: "20px",
+            //   paddingBottom: "20px",
+            // }}
           >
             <BreadcrumbComp active={"Book"} />
             <Row
@@ -208,7 +212,10 @@ const BookItem = () => {
                 </div>
               </Col>
             </Row>
-            <Row className="justify-content-center" style={{ padding: "30px" }}>
+            <Row
+              className="justify-content-center mt-5"
+              style={{ padding: "30px" }}
+            >
               <Col lg="8">
                 <div>
                   <b>Description:</b>: The Alchemist" by Paulo Coelho follows
@@ -228,6 +235,9 @@ const BookItem = () => {
           </Container>
 
           <BookLines></BookLines>
+          {/* <Fireflies>
+            <BookLines></BookLines>
+          </Fireflies> */}
         </div>
       </Fade>
     </>

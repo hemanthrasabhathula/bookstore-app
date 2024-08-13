@@ -26,7 +26,14 @@ const NavBar = (props: { children: React.ReactNode }) => {
   }, [cartItems]);
   return (
     <div>
-      <Navbar collapseOnSelect expand="lg" className="bg-body-tertiary">
+      <Navbar
+        collapseOnSelect
+        expand="lg"
+        bg="dark"
+        className="bg-body-tertiary"
+        data-bs-theme="dark"
+        style={{ backgroundColor: "transparent !important;" }}
+      >
         <Container>
           <Navbar.Brand as={Link} to="/">
             Book-Store App

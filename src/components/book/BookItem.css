@@ -4,3 +4,15 @@
   justify-content: space-between; /* Aligns children to start and end of the container */
   height: 100%; /* Ensure the container takes full height */
 }
+
+@media (max-width: 768px) {
+  .container-height {
+    height: auto !important;
+  }
+}
+
+.container-height {
+  padding-top: 20px;
+  padding-bottom: 20px;
+  height: 100vh;
+}
