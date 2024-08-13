@@ -57,6 +57,8 @@ const BranchItem = ({
             aria-label="copies"
             style={{
               maxWidth: "46px",
+              backgroundColor: "transparent",
+              border: "none",
             }}
             id={`quantity-input${branch._id.$oid}`}
             value={counter}
