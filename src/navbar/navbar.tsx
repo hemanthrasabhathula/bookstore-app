@@ -36,7 +36,7 @@ const NavBar = (props: { children: React.ReactNode }) => {
       >
         <Container>
           <Navbar.Brand as={Link} to="/">
-            Book-Store App
+            Best-Lines-Book
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav">
