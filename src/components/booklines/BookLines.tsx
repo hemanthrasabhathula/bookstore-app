@@ -67,6 +67,62 @@ const bookQuotes = [
     page: "158",
     chapter: "12",
   },
+  {
+    quote:
+      "Grown-ups never understand anything by themselves, and it is tiresome for children to be always and forever explaining things to them.",
+    page: "4",
+    chapter: "1",
+  },
+  {
+    quote:
+      "All grown-ups were once children... but only few of them remember it.",
+    page: "5",
+    chapter: "1",
+  },
+  {
+    quote: "It is such a mysterious place, the land of tears.",
+    page: "28",
+    chapter: "7",
+  },
+  {
+    quote:
+      "One sees clearly only with the heart. Anything essential is invisible to the eyes.",
+    page: "63",
+    chapter: "21",
+  },
+  {
+    quote:
+      "It is the time you have wasted for your rose that makes your rose so important.",
+    page: "64",
+    chapter: "21",
+  },
+  {
+    quote:
+      "The most beautiful things in the world cannot be seen or touched, they are felt with the heart.",
+    page: "65",
+    chapter: "21",
+  },
+  {
+    quote: "You become responsible, forever, for what you have tamed.",
+    page: "67",
+    chapter: "21",
+  },
+  {
+    quote: "What makes the desert beautiful is that somewhere it hides a well.",
+    page: "85",
+    chapter: "24",
+  },
+  {
+    quote: "But the eyes are blind. One must look with the heart.",
+    page: "86",
+    chapter: "25",
+  },
+  {
+    quote:
+      "You - you alone will have the stars as no one else has them... In one of the stars I shall be living. In one of them I shall be laughing.",
+    page: "92",
+    chapter: "26",
+  },
 ];
 
 const BookLines = () => {
@@ -188,10 +244,14 @@ const BookLines = () => {
           <Card className="card-frost" style={{ width: "34rem" }}>
             <Card.Body>
               <Card.Text
-                style={{ fontSize: "1.1rem", fontFamily: "Georgia, serif" }}
+                style={{
+                  fontSize: "1.1rem",
+                  fontFamily: "Georgia, serif",
+                  textWrap: "pretty",
+                }}
               >
                 <i>
-                  " {bookQuotes[count].quote} "
+                  " {bookQuotes[count].quote}"
                   {/* "Some quick example text to build on the card title and make
                   up the bulk of the card's content." */}
                 </i>

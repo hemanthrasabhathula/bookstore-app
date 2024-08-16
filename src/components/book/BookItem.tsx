@@ -160,6 +160,9 @@ const BookItem = () => {
     addToCart(book, branch);
   };
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   return (
     <>
       <Fade appear in={true}>
