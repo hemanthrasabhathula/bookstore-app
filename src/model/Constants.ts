@@ -32,3 +32,36 @@ const one_hr = 1000 * 60 * 60;
 const five_min = 1000 * 60 * 5;
 const fifteen_min = 1000 * 60 * 15;
 export const SESSION_TIMEOUT = fifteen_min;
+
+export const colors = [
+  "#F9DBBA",
+  "#5B99C2",
+  "#F7EFE5",
+  "#E2BFD9",
+  "#C8A1E0",
+  "#674188",
+  "#FFDFD6",
+  "#E3A5C7",
+  "#B692C2",
+  "#694F8E",
+  "#FEFAF6",
+  "#EADBC8",
+  "#102C57",
+  "#F5EEE6",
+  "#FFF8E3",
+  "#F3D7CA",
+  "#E6A4B4",
+  "#BC9F8B",
+  "#B5CFB7",
+  "#CADABF",
+  "#E7E8D8",
+  "#987D9A",
+  "#BB9AB1",
+  "#CDFADB",
+  "#FF8080",
+  "#FFFBF5",
+  "#DAC0A3",
+  "#E78895",
+  "#74512D",
+  "#8E7AB5",
+];

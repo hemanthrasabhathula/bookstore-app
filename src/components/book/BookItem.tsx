@@ -11,6 +11,7 @@ import { count } from "console";
 import BreadcrumbComp from "../common/BreadcrumbComp";
 import BookLines from "../booklines/BookLines";
 import Fireflies from "../common/Fireflies";
+import { colors } from "../../model/Constants";
 
 const BookItem = () => {
   const location = useLocation();
@@ -22,6 +23,7 @@ const BookItem = () => {
   const bookFound = cartItems.find(
     (item) => item.book._id.$oid === book._id.$oid
   );
+  const [bookId, setBookId] = useState<string>(book._id.$oid);
 
   const branchCopies: Branch[] = branches.map((branch) => {
     const defBranch = { ...branch, count: 0 };
@@ -40,59 +42,6 @@ const BookItem = () => {
   });
 
   const generateRandomGradient = () => {
-    const colors = [
-      // "#FF5733",
-      // "#33FF57",
-      // "#3357FF",
-      // "#F333FF",
-      // "#FF33A5", // Existing
-      // "#FF6F61",
-      // "#6B5B95",
-      // "#88B04B",
-      // "#F7CAC9",
-      // "#92A8D1", // Additional
-      // "#D64161",
-      // "#FFDDC1",
-      // "#6B4226",
-      // "#D9BF77",
-      // "#D5AAFF", // Additional
-      // "#FFABAB",
-      // "#FFC3A0",
-      // "#B9FBC0",
-      // "#B9E3C6",
-      // "#FFE156", // Additional
-      // "#F5B9B2",
-      // "#F0E5CF",
-      // "#C9B4A5",
-      // "#A2A2A2",
-      // "#B0A7A3", // Additional
-
-      "#F9DBBA",
-      "#5B99C2",
-      "#F7EFE5",
-      "#E2BFD9",
-      "#C8A1E0",
-      "#674188",
-      "#FFDFD6",
-      "#E3A5C7",
-      "#B692C2",
-      "#694F8E",
-      "#FEFAF6",
-      "#EADBC8",
-      "#102C57",
-      "#F5EEE6",
-      "#FFF8E3",
-      "#F3D7CA",
-      "#E6A4B4",
-      "#BC9F8B",
-      "#B5CFB7",
-      "#CADABF",
-      "#E7E8D8",
-      "#987D9A",
-      "#BB9AB1",
-      "#CDFADB",
-      "#FF8080",
-    ];
     const color1 = colors[Math.floor(Math.random() * colors.length)];
     let color2;
     do {
@@ -256,7 +205,7 @@ const BookItem = () => {
             </Row>
           </Container>
 
-          <BookLines></BookLines>
+          <BookLines bookId={bookId}></BookLines>
           {/* <Fireflies>
             <BookLines></BookLines>
           </Fireflies> */}

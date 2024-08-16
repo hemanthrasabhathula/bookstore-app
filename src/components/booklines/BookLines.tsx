@@ -1,13 +1,16 @@
 import { Button, Card, Col, Container, Row } from "react-bootstrap";
 import "./BookLines.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ReactComponent as RightArrow } from "../../assets/arrow-right.svg";
 import { ReactComponent as LeftArrow } from "../../assets/arrow-left.svg";
 import { ReactComponent as RightArrowCurve } from "../../assets/arrow-right-curve.svg";
 import { ReactComponent as LeftArrowCurve } from "../../assets/arrow-left-curve.svg";
 import CircularButton from "../common/CircularButton";
+import { colors } from "../../model/Constants";
+import { GetQuotesAPI } from "../../utils/BookLinesService";
+import { Quotes } from "../../model/Definitions";
 
-const bookQuotes = [
+const bookQuotesDummy: Quotes[] = [
   {
     quote:
       "It's the possibility of having a dream come true that makes life interesting.",
@@ -125,97 +128,27 @@ const bookQuotes = [
   },
 ];
 
-const BookLines = () => {
-  //   const [bgImage, setBgImage] = useState(
-  //     "linear-gradient(to right bottom, #051937, #004d7a, #008793, #00bf72, #a8eb12)"
-  //   );
-
-  //   const handleBgChange = () => {
-  //     setBgImage((prevImage) =>
-  //       prevImage ===
-  //       "linear-gradient(to right bottom, #051937, #004d7a, #008793, #00bf72, #a8eb12)"
-  //         ? "linear-gradient(to right, #00c9ff, #00dbf8, #00eae2, #41f6c2, #92fe9d)"
-  //         : "linear-gradient(to right bottom, #051937, #004d7a, #008793, #00bf72, #a8eb12)"
-  //     );
-  //   };
+const BookLines = ({ bookId }: { bookId: string }) => {
   const [count, setcount] = useState(0);
-  const generateRandomGradient = () => {
-    const colors = [
-      "#FF5733",
-      "#33FF57",
-      "#3357FF",
-      "#F333FF",
-      "#FF33A5", // Existing
-      "#FF6F61",
-      "#6B5B95",
-      "#88B04B",
-      "#F7CAC9",
-      "#92A8D1", // Additional
-      "#D64161",
-      "#FFDDC1",
-      "#6B4226",
-      "#D9BF77",
-      "#D5AAFF", // Additional
-      "#FFABAB",
-      "#FFC3A0",
-      "#B9FBC0",
-      "#B9E3C6",
-      "#FFE156", // Additional
-      "#F5B9B2",
-      "#F0E5CF",
-      "#C9B4A5",
-      "#A2A2A2",
-      "#B0A7A3", // Additional
-    ];
 
-    const colors2 = [
-      "#F9DBBA",
-      "#5B99C2",
-      "#F7EFE5",
-      "#E2BFD9",
-      "#C8A1E0",
-      "#674188",
-      "#FFDFD6",
-      "#E3A5C7",
-      "#B692C2",
-      "#694F8E",
-      "#FEFAF6",
-      "#EADBC8",
-      "#102C57",
-      "#F5EEE6",
-      "#FFF8E3",
-      "#F3D7CA",
-      "#E6A4B4",
-      "#BC9F8B",
-      "#B5CFB7",
-      "#CADABF",
-      "#E7E8D8",
-      "#987D9A",
-      "#BB9AB1",
-      "#CDFADB",
-      "#FF8080",
-      "#FFFBF5",
-      "#DAC0A3",
-      "#E78895",
-      "#74512D",
-      "#8E7AB5",
-    ];
-    const color1 = colors2[Math.floor(Math.random() * colors2.length)];
+  const generateRandomGradient = () => {
+    const color1 = colors[Math.floor(Math.random() * colors.length)];
     let color2;
     do {
-      color2 = colors2[Math.floor(Math.random() * colors2.length)];
+      color2 = colors[Math.floor(Math.random() * colors.length)];
     } while (color2 === color1);
     return `linear-gradient(45deg, ${color1}, ${color2})`;
   };
 
   const [gradient, setGradient] = useState(generateRandomGradient());
+  const [bookQuotes, setBookQuotes] = useState<Quotes[] | undefined>();
 
   const changeGradient = () => {
     setGradient(generateRandomGradient());
   };
 
   const handleNext = () => {
-    if (count + 1 > bookQuotes.length - 1) {
+    if (bookQuotes != undefined && count + 1 > bookQuotes.length - 1) {
       setcount(0);
     } else {
       setcount(count + 1);
@@ -224,99 +157,132 @@ const BookLines = () => {
   };
 
   const handlePrev = () => {
-    if (count - 1 < 0) {
+    if (bookQuotes != undefined && count - 1 < 0) {
       setcount(bookQuotes.length - 1);
     } else {
       setcount(count - 1);
     }
     changeGradient();
   };
+  const getQuotesFromService = (bookId: string) => {
+    GetQuotesAPI(bookId)
+      .then((response) => {
+        if (response.status != 200 || !response.data) {
+          throw Error("Error fetching Quotes");
+        }
+
+        const quotes_data = response.data as Quotes[];
+        setBookQuotes(quotes_data);
+      })
+      .catch((error: Error) => {
+        console.log("Error logging in", error);
+      });
+  };
+
+  useEffect(() => {
+    getQuotesFromService(bookId);
+  }, []);
 
   return (
-    <div
-      className="book-lines-bg"
-      style={{
-        background: gradient,
-      }}
-    >
-      <Container>
-        <Row className="justify-content-center" style={{ padding: "5px" }}>
-          <Card className="card-frost" style={{ width: "34rem" }}>
-            <Card.Body>
-              <Card.Text
-                style={{
-                  fontSize: "1.1rem",
-                  fontFamily: "Georgia, serif",
-                  textWrap: "pretty",
-                }}
-              >
-                <i>
-                  " {bookQuotes[count].quote}"
-                  {/* "Some quick example text to build on the card title and make
+    // <div
+    //   className="book-lines-bg"
+    //   style={{
+    //     background: gradient,
+    //   }}
+    // >
+    <>
+      {bookQuotes != undefined && bookQuotes.length > 0 ? (
+        <div
+          className="book-lines-bg"
+          style={{
+            background: gradient,
+          }}
+        >
+          <Container>
+            <Row className="justify-content-center" style={{ padding: "5px" }}>
+              <Card className="card-frost" style={{ width: "34rem" }}>
+                <Card.Body>
+                  <Card.Text
+                    style={{
+                      fontSize: "1.1rem",
+                      fontFamily: "Georgia, serif",
+                      textWrap: "pretty",
+                    }}
+                  >
+                    <i>
+                      " {bookQuotes[count].quote}"
+                      {/* "Some quick example text to build on the card title and make
                   up the bulk of the card's content." */}
-                </i>
-              </Card.Text>
-              <Card.Text style={{ textAlign: "end", fontSize: "12px" }}>
-                {`Page ${bookQuotes[count].page} | Chapter ${bookQuotes[count].chapter}`}
-              </Card.Text>
-              {/* <Button >Change Background</Button> */}
-            </Card.Body>
-          </Card>
-        </Row>
-        <Row className="justify-content-center mt-1" style={{ padding: "5px" }}>
-          <Col
-            lg="auto"
-            sm="auto"
-            md="auto"
-            xs="auto"
-            className="align-content-center"
-          >
-            <Button
-              variant="dark"
-              onClick={handlePrev}
-              style={{
-                borderRadius: "50%",
-                border: "none",
-                alignItems: "center",
-                justifyContent: "center",
-                width: "40px",
-                height: "40px",
-                padding: "0",
-                margin: "0",
-                background: "transparent",
-              }}
+                    </i>
+                  </Card.Text>
+                  <Card.Text style={{ textAlign: "end", fontSize: "12px" }}>
+                    {`Page ${bookQuotes[count].page} | Chapter ${bookQuotes[count].chapter}`}
+                  </Card.Text>
+                  {/* <Button >Change Background</Button> */}
+                </Card.Body>
+              </Card>
+            </Row>
+            <Row
+              className="justify-content-center mt-1"
+              style={{ padding: "5px" }}
             >
-              <LeftArrowCurve style={{ width: "46px", height: "46px" }} />
-            </Button>
-          </Col>
-          <Col
-            lg="auto"
-            sm="auto"
-            md="auto"
-            xs="auto"
-            className="align-content-center"
-          >
-            <Button
-              variant="dark"
-              onClick={handleNext}
-              style={{
-                borderRadius: "50%",
-                border: "none",
-                alignItems: "center",
-                justifyContent: "center",
-                width: "40px",
-                height: "40px",
-                padding: "0",
-                margin: "0",
-                background: "transparent",
-              }}
-            >
-              <RightArrowCurve style={{ width: "46px", height: "46px" }} />
-            </Button>
-          </Col>
-        </Row>
-      </Container>
-    </div>
+              <Col
+                lg="auto"
+                sm="auto"
+                md="auto"
+                xs="auto"
+                className="align-content-center"
+              >
+                <Button
+                  variant="dark"
+                  onClick={handlePrev}
+                  style={{
+                    borderRadius: "50%",
+                    border: "none",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    width: "40px",
+                    height: "40px",
+                    padding: "0",
+                    margin: "0",
+                    background: "transparent",
+                  }}
+                >
+                  <LeftArrowCurve style={{ width: "46px", height: "46px" }} />
+                </Button>
+              </Col>
+              <Col
+                lg="auto"
+                sm="auto"
+                md="auto"
+                xs="auto"
+                className="align-content-center"
+              >
+                <Button
+                  variant="dark"
+                  onClick={handleNext}
+                  style={{
+                    borderRadius: "50%",
+                    border: "none",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    width: "40px",
+                    height: "40px",
+                    padding: "0",
+                    margin: "0",
+                    background: "transparent",
+                  }}
+                >
+                  <RightArrowCurve style={{ width: "46px", height: "46px" }} />
+                </Button>
+              </Col>
+            </Row>
+          </Container>
+        </div>
+      ) : (
+        <></>
+      )}
+    </>
   );
 };
 

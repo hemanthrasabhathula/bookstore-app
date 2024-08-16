@@ -125,6 +125,15 @@ type APIData = {
   }[];
 };
 
+type Quotes = {
+  _id?: IdObj;
+  quote: string;
+  page: string;
+  chapter: string;
+  bookId?: IdObj;
+  booktitle?: string;
+};
+
 export type {
   Book,
   SearchFormProps,
@@ -139,4 +148,5 @@ export type {
   APIResponse,
   User,
   APIData,
+  Quotes,
 };
