@@ -1,13 +1,12 @@
 .book-lines-bg {
   padding-top: 20px;
   padding-bottom: 20px;
-  height: 100vh;
+  height: 100dvh;
   background-size: cover;
   background-position: center;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: background 1s ease-in-out;
 }
 
 .card-frost {

@@ -1,18 +1,21 @@
-.book-details-container {
+/* .book-details-container {
   display: flex;
   flex-direction: column;
   justify-content: space-between; /* Aligns children to start and end of the container */
-  height: 100%; /* Ensure the container takes full height */
-}
+/* height: 100%; Ensure the container takes full height */
+/*}*/
 
 @media (max-width: 768px) {
   .container-height {
     height: auto !important;
+  }
+  .book-details-container {
+    padding-top: 20px;
   }
 }
 
 .container-height {
   padding-top: 20px;
   padding-bottom: 20px;
-  height: 100vh;
+  height: 100dvh;
 }

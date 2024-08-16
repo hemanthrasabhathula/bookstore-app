@@ -32,7 +32,7 @@ const NavBar = (props: { children: React.ReactNode }) => {
         bg="dark"
         className="bg-body-tertiary"
         data-bs-theme="dark"
-        style={{ backgroundColor: "transparent !important;" }}
+        style={{ backgroundColor: "transparent !important" }}
       >
         <Container>
           <Navbar.Brand as={Link} to="/">

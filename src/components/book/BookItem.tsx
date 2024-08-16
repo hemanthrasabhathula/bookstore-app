@@ -41,31 +41,57 @@ const BookItem = () => {
 
   const generateRandomGradient = () => {
     const colors = [
-      "#FF5733",
-      "#33FF57",
-      "#3357FF",
-      "#F333FF",
-      "#FF33A5", // Existing
-      "#FF6F61",
-      "#6B5B95",
-      "#88B04B",
-      "#F7CAC9",
-      "#92A8D1", // Additional
-      "#D64161",
-      "#FFDDC1",
-      "#6B4226",
-      "#D9BF77",
-      "#D5AAFF", // Additional
-      "#FFABAB",
-      "#FFC3A0",
-      "#B9FBC0",
-      "#B9E3C6",
-      "#FFE156", // Additional
-      "#F5B9B2",
-      "#F0E5CF",
-      "#C9B4A5",
-      "#A2A2A2",
-      "#B0A7A3", // Additional
+      // "#FF5733",
+      // "#33FF57",
+      // "#3357FF",
+      // "#F333FF",
+      // "#FF33A5", // Existing
+      // "#FF6F61",
+      // "#6B5B95",
+      // "#88B04B",
+      // "#F7CAC9",
+      // "#92A8D1", // Additional
+      // "#D64161",
+      // "#FFDDC1",
+      // "#6B4226",
+      // "#D9BF77",
+      // "#D5AAFF", // Additional
+      // "#FFABAB",
+      // "#FFC3A0",
+      // "#B9FBC0",
+      // "#B9E3C6",
+      // "#FFE156", // Additional
+      // "#F5B9B2",
+      // "#F0E5CF",
+      // "#C9B4A5",
+      // "#A2A2A2",
+      // "#B0A7A3", // Additional
+
+      "#F9DBBA",
+      "#5B99C2",
+      "#F7EFE5",
+      "#E2BFD9",
+      "#C8A1E0",
+      "#674188",
+      "#FFDFD6",
+      "#E3A5C7",
+      "#B692C2",
+      "#694F8E",
+      "#FEFAF6",
+      "#EADBC8",
+      "#102C57",
+      "#F5EEE6",
+      "#FFF8E3",
+      "#F3D7CA",
+      "#E6A4B4",
+      "#BC9F8B",
+      "#B5CFB7",
+      "#CADABF",
+      "#E7E8D8",
+      "#987D9A",
+      "#BB9AB1",
+      "#CDFADB",
+      "#FF8080",
     ];
     const color1 = colors[Math.floor(Math.random() * colors.length)];
     let color2;
@@ -146,22 +172,13 @@ const BookItem = () => {
             // }}
           >
             <BreadcrumbComp active={"Book"} />
-            <Row
-              id="image"
-              className="justify-content-evenly"
-              style={{
-                paddingTop: "20px",
-                display: "flex",
-                alignItems: "center",
-              }}
-            >
+            <Row id="image" className="justify-content-center">
               <Col
-                lg={{ span: 2, offset: 2 }}
-                md="4"
+                lg="auto"
+                md="auto"
                 xs="auto"
                 sm="auto"
-                className="justify-content-end"
-                style={{ alignContent: "center" }}
+                style={{ alignContent: "center", paddingTop: "40px" }}
                 onClick={() => (window.location.href = book.image)}
               >
                 <Image
@@ -178,26 +195,27 @@ const BookItem = () => {
               </Col>
               <Col
                 id="details"
-                lg="6"
-                md="6"
+                lg="auto"
+                md="auto"
                 xs="auto"
                 sm="auto"
-                className="justify-content-center"
+                // className="justify-content-center"
                 style={{
                   alignContent: "center",
                 }}
               >
+                {/* <div>
+                  <Row> */}
                 <div className="book-details-container">
-                  <Row>
-                    <div>
-                      <b>{book.title}</b>
-                    </div>
-                    <div>{`Author: ${book.author}`}</div>
-                    <div>{`ISBN: ${book.ISBN}`}</div>
-                    <div>{`Genre: ${book.genre}`}</div>
-                    <div>{`Published: ${book.published}`}</div>
-                    <div>{`Pages: ${book.pages}`}</div>
-                  </Row>
+                  <div>
+                    <b>{book.title}</b>
+                  </div>
+                  <div>{`Author: ${book.author}`}</div>
+                  <div>{`ISBN: ${book.ISBN}`}</div>
+                  <div>{`Genre: ${book.genre}`}</div>
+                  <div>{`Published: ${book.published}`}</div>
+                  <div>{`Pages: ${book.pages}`}</div>
+                  {/* </Row> */}
                   {/* <Row className="mt-4">
                     <div>Available at:</div>
 
@@ -209,11 +227,12 @@ const BookItem = () => {
                       />
                     ))}
                   </Row> */}
+                  {/* </div> */}
                 </div>
               </Col>
             </Row>
             <Row
-              className="justify-content-center mt-5"
+              className="justify-content-center mt-3"
               style={{ padding: "30px" }}
             >
               <Col lg="8">

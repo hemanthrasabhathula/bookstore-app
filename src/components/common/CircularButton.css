@@ -1,0 +1,16 @@
+.circular-button {
+  width: 60px; /* Button width */
+  height: 60px; /* Button height (same as width for circular shape) */
+  border-radius: 50%; /* Makes the button circular */
+  border: none; /* Removes border */
+  background-color: #007bff; /* Background color */
+  display: flex; /* Aligns the SVG in the center */
+  align-items: center; /* Vertically centers the SVG */
+  justify-content: center; /* Horizontally centers the SVG */
+  cursor: pointer; /* Change cursor on hover */
+  transition: background-color 0.3s ease; /* Optional: smooth hover transition */
+}
+
+.circular-button:hover {
+  background-color: #0056b3; /* Optional: darker shade on hover */
+}

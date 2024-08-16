@@ -1,6 +1,73 @@
-import { Button, Card, Container, Row } from "react-bootstrap";
+import { Button, Card, Col, Container, Row } from "react-bootstrap";
 import "./BookLines.css";
 import { useState } from "react";
+import { ReactComponent as RightArrow } from "../../assets/arrow-right.svg";
+import { ReactComponent as LeftArrow } from "../../assets/arrow-left.svg";
+import { ReactComponent as RightArrowCurve } from "../../assets/arrow-right-curve.svg";
+import { ReactComponent as LeftArrowCurve } from "../../assets/arrow-left-curve.svg";
+import CircularButton from "../common/CircularButton";
+
+const bookQuotes = [
+  {
+    quote:
+      "It's the possibility of having a dream come true that makes life interesting.",
+    page: "11",
+    chapter: "1",
+  },
+  {
+    quote:
+      "And, when you want something, all the universe conspires in helping you to achieve it.",
+    page: "22",
+    chapter: "2",
+  },
+  {
+    quote:
+      "When you possess great treasures within you and try to tell others of them, seldom are you believed.",
+    page: "42",
+    chapter: "4",
+  },
+  {
+    quote: "There is only one way to learn. It’s through action.",
+    page: "67",
+    chapter: "5",
+  },
+  {
+    quote:
+      "When we strive to become better than we are, everything around us becomes better too.",
+    page: "99",
+    chapter: "7",
+  },
+  {
+    quote:
+      "Everyone seems to have a clear idea of how other people should lead their lives, but none about his or her own.",
+    page: "109",
+    chapter: "8",
+  },
+  {
+    quote:
+      "Remember that wherever your heart is, there you will find your treasure.",
+    page: "123",
+    chapter: "9",
+  },
+  {
+    quote:
+      "The secret of life, though, is to fall seven times and to get up eight times.",
+    page: "137",
+    chapter: "10",
+  },
+  {
+    quote:
+      "Tell your heart that the fear of suffering is worse than the suffering itself.",
+    page: "146",
+    chapter: "11",
+  },
+  {
+    quote:
+      "The simple things are also the most extraordinary things, and only the wise can see them.",
+    page: "158",
+    chapter: "12",
+  },
+];
 
 const BookLines = () => {
   //   const [bgImage, setBgImage] = useState(
@@ -15,6 +82,7 @@ const BookLines = () => {
   //         : "linear-gradient(to right bottom, #051937, #004d7a, #008793, #00bf72, #a8eb12)"
   //     );
   //   };
+  const [count, setcount] = useState(0);
   const generateRandomGradient = () => {
     const colors = [
       "#FF5733",
@@ -43,10 +111,43 @@ const BookLines = () => {
       "#A2A2A2",
       "#B0A7A3", // Additional
     ];
-    const color1 = colors[Math.floor(Math.random() * colors.length)];
+
+    const colors2 = [
+      "#F9DBBA",
+      "#5B99C2",
+      "#F7EFE5",
+      "#E2BFD9",
+      "#C8A1E0",
+      "#674188",
+      "#FFDFD6",
+      "#E3A5C7",
+      "#B692C2",
+      "#694F8E",
+      "#FEFAF6",
+      "#EADBC8",
+      "#102C57",
+      "#F5EEE6",
+      "#FFF8E3",
+      "#F3D7CA",
+      "#E6A4B4",
+      "#BC9F8B",
+      "#B5CFB7",
+      "#CADABF",
+      "#E7E8D8",
+      "#987D9A",
+      "#BB9AB1",
+      "#CDFADB",
+      "#FF8080",
+      "#FFFBF5",
+      "#DAC0A3",
+      "#E78895",
+      "#74512D",
+      "#8E7AB5",
+    ];
+    const color1 = colors2[Math.floor(Math.random() * colors2.length)];
     let color2;
     do {
-      color2 = colors[Math.floor(Math.random() * colors.length)];
+      color2 = colors2[Math.floor(Math.random() * colors2.length)];
     } while (color2 === color1);
     return `linear-gradient(45deg, ${color1}, ${color2})`;
   };
@@ -55,6 +156,24 @@ const BookLines = () => {
 
   const changeGradient = () => {
     setGradient(generateRandomGradient());
+  };
+
+  const handleNext = () => {
+    if (count + 1 > bookQuotes.length - 1) {
+      setcount(0);
+    } else {
+      setcount(count + 1);
+    }
+    changeGradient();
+  };
+
+  const handlePrev = () => {
+    if (count - 1 < 0) {
+      setcount(bookQuotes.length - 1);
+    } else {
+      setcount(count - 1);
+    }
+    changeGradient();
   };
 
   return (
@@ -68,16 +187,73 @@ const BookLines = () => {
         <Row className="justify-content-center" style={{ padding: "5px" }}>
           <Card className="card-frost" style={{ width: "34rem" }}>
             <Card.Body>
-              <Card.Text>
-                "Some quick example text to build on the card title and make up
-                the bulk of the card's content."
+              <Card.Text
+                style={{ fontSize: "1.1rem", fontFamily: "Georgia, serif" }}
+              >
+                <i>
+                  " {bookQuotes[count].quote} "
+                  {/* "Some quick example text to build on the card title and make
+                  up the bulk of the card's content." */}
+                </i>
               </Card.Text>
-              <Card.Text style={{ textAlign: "end" }}>
-                Page 18 | Chapter 3
+              <Card.Text style={{ textAlign: "end", fontSize: "12px" }}>
+                {`Page ${bookQuotes[count].page} | Chapter ${bookQuotes[count].chapter}`}
               </Card.Text>
-              <Button onClick={changeGradient}>Change Background</Button>
+              {/* <Button >Change Background</Button> */}
             </Card.Body>
           </Card>
+        </Row>
+        <Row className="justify-content-center mt-1" style={{ padding: "5px" }}>
+          <Col
+            lg="auto"
+            sm="auto"
+            md="auto"
+            xs="auto"
+            className="align-content-center"
+          >
+            <Button
+              variant="dark"
+              onClick={handlePrev}
+              style={{
+                borderRadius: "50%",
+                border: "none",
+                alignItems: "center",
+                justifyContent: "center",
+                width: "40px",
+                height: "40px",
+                padding: "0",
+                margin: "0",
+                background: "transparent",
+              }}
+            >
+              <LeftArrowCurve style={{ width: "46px", height: "46px" }} />
+            </Button>
+          </Col>
+          <Col
+            lg="auto"
+            sm="auto"
+            md="auto"
+            xs="auto"
+            className="align-content-center"
+          >
+            <Button
+              variant="dark"
+              onClick={handleNext}
+              style={{
+                borderRadius: "50%",
+                border: "none",
+                alignItems: "center",
+                justifyContent: "center",
+                width: "40px",
+                height: "40px",
+                padding: "0",
+                margin: "0",
+                background: "transparent",
+              }}
+            >
+              <RightArrowCurve style={{ width: "46px", height: "46px" }} />
+            </Button>
+          </Col>
         </Row>
       </Container>
     </div>
