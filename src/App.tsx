@@ -82,83 +82,8 @@ const App = () => {
         );
       } else addBranches(StorageService.getBranches(BRANCHES_LIST));
     }
-    changeGradient();
   }, []);
 
-  const generateRandomGradient = () => {
-    const colors = [
-      "#FF5733",
-      "#33FF57",
-      "#3357FF",
-      "#F333FF",
-      "#FF33A5", // Existing
-      "#FF6F61",
-      "#6B5B95",
-      "#88B04B",
-      "#F7CAC9",
-      "#92A8D1", // Additional
-      "#D64161",
-      "#FFDDC1",
-      "#6B4226",
-      "#D9BF77",
-      "#D5AAFF", // Additional
-      "#FFABAB",
-      "#FFC3A0",
-      "#B9FBC0",
-      "#B9E3C6",
-      "#FFE156", // Additional
-      "#F5B9B2",
-      "#F0E5CF",
-      "#C9B4A5",
-      "#A2A2A2",
-      "#B0A7A3", // Additional
-    ];
-
-    const colors2 = [
-      "#F9DBBA",
-      "#5B99C2",
-      "#F7EFE5",
-      "#E2BFD9",
-      "#C8A1E0",
-      "#674188",
-      "#FFDFD6",
-      "#E3A5C7",
-      "#B692C2",
-      "#694F8E",
-      "#FEFAF6",
-      "#EADBC8",
-      "#102C57",
-      "#F5EEE6",
-      "#FFF8E3",
-      "#F3D7CA",
-      "#E6A4B4",
-      "#BC9F8B",
-      "#B5CFB7",
-      "#CADABF",
-      "#E7E8D8",
-      "#987D9A",
-      "#BB9AB1",
-      "#CDFADB",
-      "#FF8080",
-      "#FFFBF5",
-      "#DAC0A3",
-      "#E78895",
-      "#74512D",
-      "#8E7AB5",
-    ];
-    const color1 = colors2[Math.floor(Math.random() * colors2.length)];
-    let color2;
-    do {
-      color2 = colors2[Math.floor(Math.random() * colors2.length)];
-    } while (color2 === color1);
-    return `linear-gradient(45deg, ${color1}, ${color2})`;
-  };
-
-  const [gradient, setGradient] = useState(generateRandomGradient());
-
-  const changeGradient = () => {
-    setGradient(generateRandomGradient());
-  };
   return (
     <div style={{ background: "#EDF9FC" }}>
       <Fade appear in={true}>

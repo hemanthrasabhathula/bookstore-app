@@ -20,6 +20,7 @@ const BookSearchForm = ({
           onChange={onSearchInput}
           value={searchTerm}
           id="input-search"
+          style={{ background: "transparent" }}
         />
         <Button type="submit" variant="outline-primary" id="search-button">
           Search
