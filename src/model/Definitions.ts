@@ -131,7 +131,7 @@ type Quotes = {
   page: string;
   chapter: string;
   bookId?: IdObj;
-  booktitle?: string;
+  bookTitle: string;
 };
 
 export type {
