@@ -36,7 +36,8 @@ const NavBar = (props: { children: React.ReactNode }) => {
       >
         <Container>
           <Navbar.Brand as={Link} to="/">
-            Best-Lines-Book
+            {`{BLOB}`}{" "}
+            <span style={{ fontSize: "0.8rem" }}>BestLinesOfBook </span>
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav">

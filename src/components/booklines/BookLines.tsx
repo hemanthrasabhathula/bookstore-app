@@ -128,7 +128,7 @@ const bookQuotesDummy: Quotes[] = [
   },
 ];
 
-const BookLines = ({ bookId }: { bookId: string }) => {
+const BookLines = ({ bookId }: { bookId: string | undefined }) => {
   const [count, setcount] = useState(0);
 
   const generateRandomGradient = () => {
@@ -180,7 +180,7 @@ const BookLines = ({ bookId }: { bookId: string }) => {
   };
 
   useEffect(() => {
-    getQuotesFromService(bookId);
+    if (bookId) getQuotesFromService(bookId);
   }, []);
 
   return (
