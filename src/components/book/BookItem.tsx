@@ -78,10 +78,11 @@ const BookItem = () => {
 
   //const { bookslist, branches, updateBooklist } = useBooks();
   const generateRandomGradient = () => {
-    const color1 = colors[Math.floor(Math.random() * colors.length)];
+    const halfLength = Math.floor(colors.length / 2);
+    const color1 = colors[Math.floor(Math.random() * halfLength)];
     let color2;
     do {
-      color2 = colors[Math.floor(Math.random() * colors.length)];
+      color2 = colors[Math.floor(Math.random() * halfLength) + halfLength];
     } while (color2 === color1);
     return `linear-gradient(45deg, ${color1}, ${color2})`;
   };
@@ -259,17 +260,20 @@ const BookItem = () => {
               >
                 <Col lg="8">
                   <div>
-                    <b>Description:</b>: The Alchemist" by Paulo Coelho follows
-                    the journey of Santiago, a young shepherd from Andalusia,
-                    who dreams of finding a treasure hidden near the Egyptian
-                    pyramids. Encouraged by a mysterious king named Melchizedek,
-                    Santiago decides to pursue his "Personal Legend," or his
-                    life's spiritual purpose. Selling his flock, he sets off for
-                    Egypt, but upon reaching Tangier in North Africa, he is
-                    robbed, forcing him to work for a crystal merchant to earn
-                    his way back to Spain. Throughout his journey, Santiago
-                    learns valuable lessons about commerce, persistence, and
-                    self-discovery. .
+                    <b>Description:</b> This book tells the story of two dads,
+                    one rich and one poor, and how they teach their sons
+                    different and opposing financial philosophies. It explores
+                    how traditional education does not cover financial literacy,
+                    and how most people live paycheque to paycheque without ever
+                    achieving financial freedom. The book encourages readers to
+                    think differently about money and teaches financial
+                    independence. The rich dad's philosophy emphasizes the
+                    importance of having multiple streams of income, building
+                    assets, and working to make money work for you, rather than
+                    working for money. The poor dad's philosophy prioritizes
+                    saving and being thrifty. The book is written in an
+                    easy-to-understand style, making it accessible to a wide
+                    range of readers.
                   </div>
                 </Col>
               </Row>

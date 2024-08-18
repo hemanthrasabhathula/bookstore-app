@@ -34,57 +34,57 @@ root.render(
               <Route
                 path="/"
                 element={
-                  <RequireAuth>
-                    <App />
-                  </RequireAuth>
+                  // <RequireAuth>
+                  <App />
+                  // </RequireAuth>
                 }
               />
               <Route
                 path="/books"
                 element={
-                  <RequireAuth>
-                    <App />
-                  </RequireAuth>
+                  // <RequireAuth>
+                  <App />
+                  // </RequireAuth>
                 }
               />
               <Route
                 path="/book/:bookId"
                 element={
-                  <RequireAuth>
-                    <BookItem />
-                  </RequireAuth>
+                  // <RequireAuth>
+                  <BookItem />
+                  // </RequireAuth>
                 }
               />
               <Route
                 path="/cart/"
                 element={
-                  <RequireAuth>
-                    <Cart />
-                  </RequireAuth>
+                  // <RequireAuth>
+                  <Cart />
+                  // </RequireAuth>
                 }
               />
               <Route
                 path="/addbook"
                 element={
-                  <RequireAuth>
-                    <AddBook />
-                  </RequireAuth>
+                  // <RequireAuth>
+                  <AddBook />
+                  // </RequireAuth>
                 }
               />
               <Route
                 path="/branches"
                 element={
-                  <RequireAuth>
-                    <AddBranch />
-                  </RequireAuth>
+                  // <RequireAuth>
+                  <AddBranch />
+                  // </RequireAuth>
                 }
               />
               <Route
                 path="/transactions"
                 element={
-                  <RequireAuth>
-                    <TransactionComp />
-                  </RequireAuth>
+                  // <RequireAuth>
+                  <TransactionComp />
+                  // </RequireAuth>
                 }
               />
               <Route path="/register" element={<Register />} />

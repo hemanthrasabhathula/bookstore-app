@@ -15,10 +15,11 @@ const BookLines = ({ bookId }: { bookId: string | undefined }) => {
   const [count, setcount] = useState(0);
 
   const generateRandomGradient = () => {
-    const color1 = colors[Math.floor(Math.random() * colors.length)];
+    const halfLength = Math.floor(colors.length / 2);
+    const color1 = colors[Math.floor(Math.random() * halfLength)];
     let color2;
     do {
-      color2 = colors[Math.floor(Math.random() * colors.length)];
+      color2 = colors[Math.floor(Math.random() * halfLength) + halfLength];
     } while (color2 === color1);
     return `linear-gradient(45deg, ${color1}, ${color2})`;
   };
